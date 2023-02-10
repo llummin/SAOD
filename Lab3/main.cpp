@@ -1,6 +1,7 @@
 // Лабораторная работа №3 (раздел 1, тема 2, номер 7) - ОЧЕРЕДЬ СО СЛУЧАЙНЫМ ЧИСЛОМ ДОБАВЛЯЕМЫХ И УДАЛЯЕМЫХ ЭЛЕМЕНТОВ
 
 #include <iostream>
+#include <conio.h>
 
 struct queueElement {
     char data;
@@ -8,19 +9,19 @@ struct queueElement {
 };
 
 // Функция инициализации очереди
-void initQueue(queueElement** begin, queueElement** end) {
+void initQueue(queueElement **begin, queueElement **end) {
     *begin = new queueElement; // выделение памяти для первого элемента в очереди
     (*begin)->next = nullptr; // установка следующего указателя первого элемента в значение nullptr
     *end = *begin;           // установка указателей begin и end так, чтобы они указывали на первый элемент
 }
 
 // Функция проверки пустоты очереди
-bool isQueueEmpty(queueElement* begin) {
-    return (begin->next == nullptr); // если следующий указатель первого элемента равен nullptr, то очередь пуста
+bool isQueueEmpty(queueElement *q) {
+    return (q->next == nullptr);
 }
 
 // Функция добавления элемента в очередь
-void enqueue(queueElement** end, char data) {
+void enqueue(queueElement **end, char data) {
     auto *newElement = new queueElement;  // создаем новый элемент
     newElement->data = data;             // записываем данные в новый элемент
     newElement->next = nullptr;         // указываем, что следующий элемент отсутствует
@@ -29,27 +30,86 @@ void enqueue(queueElement** end, char data) {
 }
 
 // Функция удаления элемента из очереди
-void dequeue(queueElement** begin) {
-    if (!isQueueEmpty(*begin)) {
-        queueElement *temp = (*begin)->next;
-        (*begin)->next = temp->next;
-        delete temp;
+void dequeue(queueElement **begin, queueElement **end) {
+    if (!isQueueEmpty(*begin)) {           // проверяем, что очередь не пуста
+        queueElement *temp = (*begin)->next; // сохраняем адрес следующего элемента в очереди
+        (*begin)->next = temp->next;        // изменяем указатель next первого элемента на указатель след. элемента
+        if (isQueueEmpty(*begin)) {     // если следующий элемент пуст, значит в очереди остался только один элемент
+            *end = *begin;                // поэтому конец очереди теперь должен указывать на начало очереди
+        }
+        delete temp;    // освобождение памяти, которую занимает удаленный элемент
+    }
+}
+
+// Вывод текущего состояния очереди
+void printQueue(queueElement *begin) {
+    if (isQueueEmpty(begin)) {            // проверяем, что очередь не пуста
+        std::cout << "Пусто";               // если пуста, выводим соответствующее сообщение
+    }
+    queueElement *temp = begin->next;     // временный указатель, указывающий на следующий элемент в очереди
+    while (temp != nullptr) {            // пока указатель не указывает на nullptr
+        std::cout << temp->data << " "; // выводим данные текущего элемента
+        temp = temp->next;             // переходим к следующему
+    }
+    std::cout << std::endl;         // переход на новую строку после вывода всех элементов
+}
+
+// Очищение памяти
+void clearQueue(queueElement *begin) {
+    queueElement *q = begin;     // создание указателя на первый элемент в очереди
+    while (begin != nullptr) {  // цикл для итерации по всем элементам очереди
+        begin = begin->next;   // переход к следующему элементу в очереди
+        delete q;             // удаление текущего элемента
+        q = begin;           // переназначение указателя `q` для перехода к следующему элементу
+    }
+}
+
+// Работа очереди со случайными элементами
+void queueWork(queueElement *begin, queueElement *end) {
+    bool work = true;
+    int operation_num = 1;
+    while (true) {
+        int timeBegin = clock();
+        while (clock() - timeBegin < 600) {
+            if (_kbhit() && (_getch() == 'q')) { // реагирует на нажатие клавиши 'q'
+                work = false;
+                break;
+            }
+        }
+        if (!work) {
+            clearQueue(begin);
+            break;
+        }
+        std::cout << operation_num << ") Операция: ";
+        int choice = (rand() % 99 + 1) % 2;
+        int amount = rand() % 3 + 1;
+        if (choice == 0) {
+            std::cout << "Добавление ";
+            for (int i = 0; i < amount; i++) {
+                char letter = rand() % 26 + 65;
+                enqueue(&end, letter);
+            }
+        } else {
+            std::cout << "Удаление ";
+            for (int i = 0; i < amount; i++) {
+                dequeue(&begin, &end);
+            }
+        }
+        std::cout << amount << " элементов(-а)\n";
+        std::cout << "Текущая очередь: ";
+        printQueue(begin);
+        std::cout << "\n\n";
+        operation_num++;
     }
 }
 
 int main() {
     setlocale(LC_ALL, "RUS");
-    queueElement *begin = nullptr;
-    queueElement *end = nullptr;
+    srand(time(nullptr));
+    std::cout << "Работа очереди запущена ...\n";
+    queueElement *begin;
+    queueElement *end;
     initQueue(&begin, &end);
-    enqueue(&end, 'A');
-    enqueue(&end, 'B');
-    enqueue(&end, 'C');
-    std::cout << "Элементы очереди: ";
-    while (!isQueueEmpty(begin)) {
-        std::cout << begin->next->data << " ";
-        dequeue(&begin);
-    }
-    std::cout << std::endl;
+    queueWork(begin, end);
     return 0;
 }
