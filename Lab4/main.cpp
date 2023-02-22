@@ -53,9 +53,16 @@ void insert(ArrayList *my_list, int item) {
     my_list->count++;
 }
 
-void search(ArrayList *my_list, int value) {
-    // TODO: Реализовать функцию для поиска элемента с заданной информационной частью
+// Функция для поиска элемента с заданной информационной частью
+int search(ArrayList *my_list, int value) {
+    for (int i = 0; i < my_list->count; i++) {
+        if (my_list->array[i] == value) {
+            return i;  // Возвращаем индекс найденного элемента
+        }
+    }
+    return -1;  // Элемент не найден
 }
+
 
 void remove(ArrayList *my_list, int index) {
     // TODO: Реализовать функцию для удаления элемента из списка по индексу
@@ -108,6 +115,7 @@ int failure(int begin, int end) {
     return choice;
 }
 
+
 // Основное меню
 void callMenu(ArrayList *my_list) {
     bool work{true};
@@ -116,32 +124,47 @@ void callMenu(ArrayList *my_list) {
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывести текущее состояние списка\n";
         std::cout << "2. Добавить элемент в список\n";
-        std::cout << "3. Завершить работу программы\n";
+        std::cout << "3. Поиск элемента\n";
+        std::cout << "4. Завершить работу программы\n";
         std::cout << "Введите номер команды: ";
 
-        int choice = failure(1, 3);
+        int choice = failure(1, 4);
         switch (choice) {
             case 1:
                 if (isEmpty(my_list)) {
-                    std::cout << "Список пустой.";
+                    std::cout << "\nСписок пуст\n";
                 } else {
-                    std::cout << "Список: ";
+                    std::cout << "\nСписок: ";
                     printList(my_list);
                 }
-                std::cout << "\n\n";
+                std::cout << "\n";
                 break;
             case 2:
                 if (isFull(my_list)) {
-                    std::cout << "Список заполнен";
+                    std::cout << "\nСписок заполнен\n";
                     break;
                 }
-                std::cout << "Введите число, которое хотите добавить: ";
+                std::cout << "\nВведите число, которое хотите добавить: ";
                 insert(my_list, failure());
-                std::cout << "\n\n";
+                std::cout << "\n";
                 break;
             case 3:
+                if (isEmpty(my_list)) {
+                    std::cout << "\nСписок пуст\n";
+                    break;
+                }
+                int value_index;
+                std::cout << "\nВведите информационную часть элемента, индекс которого вы хотите найти: ";
+                value_index = search(my_list, failure());
+                if (value_index == -1) {
+                    std::cout << "\nЭлемент не найден\n";
+                } else {
+                    std::cout << "\nЭлемент найден, его индекс: " << value_index << "\n";
+                }
+                break;
+            case 4:
                 work = false;
-                std::cout << "\n\n";
+                std::cout << "\n";
                 break;
             default:
                 break;
@@ -155,4 +178,5 @@ int main() {
     initList(my_list);
     callMenu(my_list);
     delete my_list;
+    return 0;
 }
