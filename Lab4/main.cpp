@@ -63,9 +63,16 @@ int search(ArrayList *my_list, int value) {
     return -1;  // Элемент не найден
 }
 
-
+// Функция удаления элемента по его индексу
 void remove(ArrayList *my_list, int index) {
-    // TODO: Реализовать функцию для удаления элемента из списка по индексу
+    // Сдвигаем все элементы, начиная с позиции index + 1, на одну позицию влево
+    for (int i = index; i < my_list->count - 1; i++) {
+        my_list->array[i] = my_list->array[i + 1];
+    }
+
+    // Обнуляем последний элемент и уменьшаем количество элементов на 1
+    my_list->array[my_list->count - 1] = 0;
+    my_list->count--;
 }
 
 
@@ -85,7 +92,7 @@ int failure() {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(32767, '\n');
-            std::cout << "Введите данные правильно: ";
+            std::cout << "\nВведите данные правильно: ";
             continue;
         }
         std::cin.ignore(32767, '\n');
@@ -102,12 +109,12 @@ int failure(int begin, int end) {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(32767, '\n');
-            std::cout << "Введите данные правильно: ";
+            std::cout << "\nВведите данные правильно: ";
             continue;
         }
         std::cin.ignore(32767, '\n');
         if (choice < begin || choice > end) {
-            std::cout << "Введите данные правильно: ";
+            std::cout << "\nВведите данные правильно: ";
             continue;
         }
         break;
@@ -124,11 +131,12 @@ void callMenu(ArrayList *my_list) {
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывести текущее состояние списка\n";
         std::cout << "2. Добавить элемент в список\n";
-        std::cout << "3. Поиск элемента\n";
-        std::cout << "4. Завершить работу программы\n";
+        std::cout << "3. Удаление элемента по индексу\n";
+        std::cout << "4. Поиск элемента\n";
+        std::cout << "5. Завершить работу программы\n";
         std::cout << "Введите номер команды: ";
 
-        int choice = failure(1, 4);
+        int choice = failure(1, 5);
         switch (choice) {
             case 1:
                 if (isEmpty(my_list)) {
@@ -153,6 +161,17 @@ void callMenu(ArrayList *my_list) {
                     std::cout << "\nСписок пуст\n";
                     break;
                 }
+                int remove_index;
+                std::cout << "\nВведите индекс элемента, который вы хотите удалить: ";
+                remove_index = failure(0, my_list->count - 1);
+                remove(my_list, remove_index);
+                std::cout << "\n";
+                break;
+            case 4:
+                if (isEmpty(my_list)) {
+                    std::cout << "\nСписок пуст\n";
+                    break;
+                }
                 int value_index;
                 std::cout << "\nВведите информационную часть элемента, индекс которого вы хотите найти: ";
                 value_index = search(my_list, failure());
@@ -162,7 +181,7 @@ void callMenu(ArrayList *my_list) {
                     std::cout << "\nЭлемент найден, его индекс: " << value_index << "\n";
                 }
                 break;
-            case 4:
+            case 5:
                 work = false;
                 std::cout << "\n";
                 break;
