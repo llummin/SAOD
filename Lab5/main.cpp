@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-const int kMaxSize = 5;
+const int kMaxSize = 3;
 
 struct ListItem {
     int data;
@@ -34,29 +34,12 @@ bool isEmpty(List *my_list) {
 
 // Функция проверки списка на полноту
 bool isFull(List *my_list) {
-// Ищем первую свободную ячейку в массиве
-    for (int i = 1; i < kMaxSize; i++) {
-        if (my_list->array[i].next == -1) {
-            return false; // список не полный, так как есть свободные ячейки
-        }
+    if (my_list->count == kMaxSize) {
+        return true;
+    } else {
+        return false;
     }
-    return true; // список полный, так как не найдено свободных ячеек
 }
-
-// Функция для отображения текущего состояния списка
-void printList(List *my_list) {
-    if (isEmpty(my_list)) {
-        std::cout << "\nСписок пуст" << std::endl;
-        return;
-    }
-    int current = my_list->array[0].next;
-    while (current != 0) {
-        std::cout << my_list->array[current].data << " ";
-        current = my_list->array[current].next;
-    }
-    std::cout << std::endl;
-}
-
 
 // Ввод целочисленного значения с проверкой
 int failure() {
@@ -98,7 +81,9 @@ int failure(int begin, int end) {
 
 // Функция добавления нового элемента перед заданным
 void insertBefore(List *my_list) {
-    if (!isFull(my_list)) {
+    if (isFull(my_list)) {
+        std::cout << "\nCписок полон! Добавление невозможно!\n";
+    } else {
         std::cout << "\nВведите значение элемента, перед которым нужно вставить новый: ";
         int pos = failure();
         int current = my_list->array[0].next;
@@ -127,17 +112,7 @@ void insertBefore(List *my_list) {
             }
             my_list->count++;
         }
-    } else {
-        std::cout << "\nДобавление невозможно" << std::endl;
     }
-}
-
-void search(List *my_list, int value) {
-    // TODO: Реализовать функцию для поиска элемента
-}
-
-void remove(List *my_list, int index) {
-    // TODO: Реализовать функцию для удаления элемента из списка
 }
 
 // Функция добавления нового элемента после заданного
@@ -178,6 +153,28 @@ void insertAfter(List *my_list) {
             }
         }
     }
+}
+
+void search(List *my_list, int value) {
+    // TODO: Реализовать функцию для поиска элемента
+}
+
+void remove(List *my_list, int index) {
+    // TODO: Реализовать функцию для удаления элемента из списка
+}
+
+// Функция для отображения текущего состояния списка
+void printList(List *my_list) {
+    if (isEmpty(my_list)) {
+        std::cout << "\nСписок пуст" << std::endl;
+        return;
+    }
+    int current = my_list->array[0].next;
+    while (current != 0) {
+        std::cout << my_list->array[current].data << " ";
+        current = my_list->array[current].next;
+    }
+    std::cout << std::endl;
 }
 
 
