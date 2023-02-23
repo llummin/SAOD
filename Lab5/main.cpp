@@ -166,15 +166,41 @@ int search(List *my_list) {
         current = my_list->array[current].next;
     }
     if (index == -1) {
-        std::cout << "\nЭлемент не найден.\n";
+        std::cout << "\nЭлемент не найден\n";
     } else {
         std::cout << "\nИндекс искомого элемента: " << index << std::endl;
     }
     return index;
 }
 
-void remove(List *my_list, int index) {
-    // TODO: Реализовать функцию для удаления элемента из списка
+// Функция удаления элемента по значению из списка
+void remove(List *my_list, int value) {
+    if (isEmpty(my_list)) {
+        std::cout << "\nСписок пуст\n";
+        return;
+    }
+
+    int current = my_list->array[0].next;
+    int prev = 0;
+    bool found = false;
+
+    while (current != 0) {
+        if (my_list->array[current].data == value) {
+            found = true;
+            break;
+        }
+        prev = current;
+        current = my_list->array[current].next;
+    }
+
+    if (!found) {
+        std::cout << "\nЭлемент не найден\n";
+        return;
+    }
+
+    my_list->array[prev].next = my_list->array[current].next;
+    my_list->array[current].next = -1;
+    my_list->count--;
 }
 
 // Функция для отображения текущего состояния списка
@@ -200,10 +226,11 @@ void callMenu(List *my_list) {
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывести текущее состояние списка\n";
         std::cout << "2. Добавить элемент в список\n";
-        std::cout << "3. Поиск элемента\n";
-        std::cout << "4. Завершить работу программы\n";
+        std::cout << "3. Удаление элемента из списка\n";
+        std::cout << "4. Поиск элемента\n";
+        std::cout << "5. Завершить работу программы\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 4);
+        int choice = failure(1, 5);
         switch (choice) {
             case 1:
                 if (isEmpty(my_list)) {
@@ -234,9 +261,20 @@ void callMenu(List *my_list) {
                 }
                 break;
             case 3:
-                search(my_list);
+                if (isEmpty(my_list)) {
+                    std::cout << "\nСписок пуст\n";
+                    break;
+                }
+                int remove_value;
+                std::cout << "\nВведите значение элемента, который вы хотите удалить: ";
+                remove_value = failure();
+                remove(my_list, remove_value);
+                std::cout << "\n";
                 break;
             case 4:
+                search(my_list);
+                break;
+            case 5:
                 work = false;
                 std::cout << "\nПрограмма завершена\n";
                 break;
