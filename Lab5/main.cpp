@@ -17,11 +17,9 @@ struct List {
 
 // Функция инициализации списка
 void initList(List *my_list) {
-    my_list->array[0].data = 0;
     my_list->array[0].next = 0;
     my_list->count = 0;
     for (int i = 1; i < kMaxSize; i++) {
-        my_list->array[i].data = 0;
         my_list->array[i].next = -1; // отметить ячейку как свободную
     }
 }
@@ -155,8 +153,24 @@ void insertAfter(List *my_list) {
     }
 }
 
-void search(List *my_list, int value) {
-    // TODO: Реализовать функцию для поиска элемента
+// Функция поиска элемента по значению
+int search(List *my_list) {
+    std::cout << "\nВведите значение элемента для поиска: ";
+    int elem = failure();
+    int current = my_list->array[0].next;
+    int index = -1;
+    for (int i = 0; i < my_list->count; i++) {
+        if (my_list->array[current].data == elem) {
+            index = i;
+        }
+        current = my_list->array[current].next;
+    }
+    if (index == -1) {
+        std::cout << "\nЭлемент не найден.\n";
+    } else {
+        std::cout << "\nИндекс искомого элемента: " << index << std::endl;
+    }
+    return index;
 }
 
 void remove(List *my_list, int index) {
@@ -166,7 +180,7 @@ void remove(List *my_list, int index) {
 // Функция для отображения текущего состояния списка
 void printList(List *my_list) {
     if (isEmpty(my_list)) {
-        std::cout << "\nСписок пуст" << std::endl;
+        std::cout << "\nСписок пуст!" << std::endl;
         return;
     }
     int current = my_list->array[0].next;
@@ -186,13 +200,14 @@ void callMenu(List *my_list) {
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывести текущее состояние списка\n";
         std::cout << "2. Добавить элемент в список\n";
-        std::cout << "3. Завершить работу программы\n";
+        std::cout << "3. Поиск элемента\n";
+        std::cout << "4. Завершить работу программы\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 3);
+        int choice = failure(1, 4);
         switch (choice) {
             case 1:
                 if (isEmpty(my_list)) {
-                    std::cout << "\nСписок пуст";
+                    std::cout << "\nСписок пуст!";
                 } else {
                     std::cout << "\nСписок: ";
                     printList(my_list);
@@ -219,6 +234,9 @@ void callMenu(List *my_list) {
                 }
                 break;
             case 3:
+                search(my_list);
+                break;
+            case 4:
                 work = false;
                 std::cout << "\nПрограмма завершена\n";
                 break;
