@@ -121,7 +121,7 @@ void insertAfter(ListItem *head) {
 // Функция поиска элемента по значению
 int search(ListItem *head) {
     if (isEmpty(head)) {
-        std::cout << "\nСписок пуст. Поиск невозможен!\n";
+        std::cout << "\nГлавный список пуст. Поиск невозможен!\n";
         return -1;
     }
     std::cout << "\nВведите значение элемента для поиска: ";
@@ -140,14 +140,34 @@ int search(ListItem *head) {
     return -1;
 }
 
+// Функция удаления элемента по значению и занесение его во вспомогательный список
 void remove(ListItem *head, ListItem *stackHead) {
-    // TODO: Реализовать функцию для удаления элемента из списка
+    if (isEmpty(head)) {
+        std::cout << "\nГлавный список пуст! Удаление невозможно!" << std::endl;
+        return;
+    }
+    std::cout << "\nВведите значение элемента, который нужно удалить: ";
+    int elem = failure();
+    ListItem *current = head->next;
+    ListItem *prev = head;
+    while (current != nullptr) {
+        if (current->data == elem) {
+            prev->next = current->next; // удаление элемента из главного списка
+            current->next = stackHead->next; // добавление элемента во вспомогательный список
+            stackHead->next = current;
+            std::cout << "\nЭлемент удален из главного списка и добавлен во вспомогательный.\n";
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+    std::cout << "\nЭлемент не найден.\n";
 }
 
 // Функция для отображения текущего состояния списка
 void printList(ListItem *head) {
     if (isEmpty(head)) {
-        std::cout << "Список пуст!" << std::endl;
+        std::cout << "\nВспомогательный список пуст!" << std::endl;
     } else {
         ListItem *current = head->next;
         while (current != nullptr) {
@@ -159,27 +179,35 @@ void printList(ListItem *head) {
 }
 
 // Основное меню
-void callMenu(ListItem *head) {
+void callMenu(ListItem *head, ListItem *stackHead) {
     bool work{true};
     while (work) {
         std::cout << "\n...................................................\n";
         std::cout << "\nВведите номер команды: \n";
-        std::cout << "1. Вывести текущее состояние списка\n";
-        std::cout << "2. Добавить элемент в список\n";
-        std::cout << "3. Поиск элемента\n";
-        std::cout << "4. Завершить работу программы\n";
+        std::cout << "1. Вывести текущее состояние главного списка\n";
+        std::cout << "2. Вывести текущее состояние вспомогательного списка\n";
+        std::cout << "3. Добавить элемент в главный список\n";
+        std::cout << "4. Удаление элемента из главного списка\n";
+        std::cout << "5. Поиск элемента в главном списке\n";
+        std::cout << "6. Завершить работу программы\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 4);
+        int choice = failure(1, 6);
         switch (choice) {
             case 1:
                 if (isEmpty(head)) {
-                    std::cout << "\nСписок пуст!";
+                    std::cout << "\nГлавный список пуст!";
                 } else {
-                    std::cout << "\nСписок: ";
+                    std::cout << "\nГлавный список: ";
                     printList(head);
                 }
                 break;
             case 2:
+                if (!isEmpty(stackHead)) {
+                    std::cout << "\nВспомогательный список: ";
+                }
+                printList(stackHead);
+                break;
+            case 3:
                 if (isEmpty(head))
                     insertAfter(head);
                 else {
@@ -199,10 +227,13 @@ void callMenu(ListItem *head) {
                     }
                 }
                 break;
-            case 3:
+            case 4:
+                remove(head, stackHead);
+                break;
+            case 5:
                 search(head);
                 break;
-            case 4:
+            case 6:
                 work = false;
                 std::cout << "\nПрограмма завершена\n";
                 break;
@@ -217,5 +248,5 @@ int main() {
     ListItem *head = nullptr;
     ListItem *stackHead = nullptr;
     initList(head, stackHead);
-    callMenu(head);
+    callMenu(head, stackHead);
 }
