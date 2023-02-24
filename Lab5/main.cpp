@@ -87,14 +87,15 @@ void insertBefore(List *my_list) {
         int current = my_list->array[0].next;
         int prev = 0;
         while (current != 0) {
-            if (my_list->array[current].data == pos)
+            if (my_list->array[current].data == pos) {
                 break;
+            }
             prev = current;
             current = my_list->array[current].next;
         }
-        if (current == 0)
+        if (current == 0) {
             std::cout << "\nЭлемент не найден.\n";
-        else {
+        } else {
             int temp = 1;
             while (my_list->array[temp].next != -1) {
                 temp++;
@@ -131,18 +132,19 @@ void insertAfter(List *my_list) {
             int pos = failure();
             int current = my_list->array[0].next;
             while (current != 0) {
-                if (my_list->array[current].data == pos)
+                if (my_list->array[current].data == pos) {
                     break;
+                }
                 current = my_list->array[current].next;
             }
-            if (current == 0)
+            if (current == 0) {
                 std::cout << "\nЭлемент не найден!\n";
-            else {
+            } else {
                 int temp = 1;
                 while (my_list->array[temp].next != -1) {
                     temp++;
                 }
-                std::cout << "Введите значение нового элемента: ";
+                std::cout << "\nВведите значение нового элемента: ";
                 int elem = failure();
                 my_list->array[temp].data = elem;
                 my_list->array[temp].next = my_list->array[current].next;
@@ -155,6 +157,10 @@ void insertAfter(List *my_list) {
 
 // Функция поиска элемента по значению
 int search(List *my_list) {
+    if (isEmpty(my_list)) {
+        std::cout << "\nСписок пуст. Поиск невозможен!\n";
+        return -1;
+    }
     std::cout << "\nВведите значение элемента для поиска: ";
     int elem = failure();
     int current = my_list->array[0].next;
@@ -176,7 +182,7 @@ int search(List *my_list) {
 // Функция удаления элемента по значению из списка
 void remove(List *my_list, int value) {
     if (isEmpty(my_list)) {
-        std::cout << "\nСписок пуст\n";
+        std::cout << "\nСписок пуст. Удаление невозможно!\n";
         return;
     }
 
