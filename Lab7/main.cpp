@@ -58,6 +58,7 @@ int failure(int begin, int end) {
     return choice;
 }
 
+
 // Функция добавления нового элемента перед заданным
 void insertBefore(ListItem *&head) {
     auto *info = new ListItem;
@@ -118,8 +119,20 @@ void insertAfter(ListItem *&head) {
     }
 }
 
+void searchForward(ListItem *head) {
+    // TODO: Реализовать функцию поиска элемента в прямом направлении списка
+}
+
+void searchBackward(ListItem *head) {
+    // TODO: Реализовать функцию поиска элемента в обратном направлении списка
+}
+
+void remove(ListItem *&head) {
+    // TODO: Реализовать функцию для удаления элемента из списка
+}
+
 // Функция вывода списка на экран в прямом направлении
-void printList(ListItem *head) {
+void printForward(ListItem *head) {
     if (isEmpty(head)) {
         std::cout << "Список пуст" << std::endl;
         return;
@@ -132,6 +145,20 @@ void printList(ListItem *head) {
     std::cout << std::endl;
 }
 
+// Функция вывода списка на экран в обратном направлении
+void printBackward(ListItem *head) {
+    if (isEmpty(head)) {
+        std::cout << "Список пуст" << std::endl;
+        return;
+    }
+    ListItem *cur = head->prev;
+    while (cur != head) {
+        std::cout << cur->data << " ";
+        cur = cur->prev;
+    }
+    std::cout << std::endl;
+}
+
 // Основное меню
 void callMenu(ListItem *head) {
     bool work{true};
@@ -139,20 +166,29 @@ void callMenu(ListItem *head) {
         std::cout << "\n...................................................\n";
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывод списка в прямом направлении\n";
-        std::cout << "2. Добавление нового элемента в список\n";
-        std::cout << "3. Завершение работы программы\n";
+        std::cout << "2. Вывод списка в обратном направлении\n";
+        std::cout << "3. Добавление нового элемента в список\n";
+        std::cout << "4. Завершение работы программы\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 3);
+        int choice = failure(1, 4);
         switch (choice) {
             case 1:
                 if (isEmpty(head)) {
                     std::cout << "\nСписок пуст!";
                 } else {
                     std::cout << "\nСписок в прямом направлении: ";
-                    printList(head);
+                    printForward(head);
                 }
                 break;
             case 2:
+                if (isEmpty(head)) {
+                    std::cout << "\nСписок пуст!";
+                } else {
+                    std::cout << "\nСписок в обратном направлении: ";
+                    printBackward(head);
+                }
+                break;
+            case 3:
                 if (isEmpty(head))
                     insertAfter(head);
                 else {
@@ -172,7 +208,7 @@ void callMenu(ListItem *head) {
                     }
                 }
                 break;
-            case 3:
+            case 4:
                 work = false;
                 std::cout << "\nПрограмма завершена...\n";
                 break;
