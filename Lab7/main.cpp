@@ -1,4 +1,4 @@
-// Лабораторная работа №7 (раздел 1, тема 3, номер 5) - ЛИНЕЙНЫЙ ДИНАМИЧЕСКИЙ ДВУНАПРАВЛЕННЫЙ СПИСОК
+// Лабораторная работа №7 (раздел 1, тема 4, номер 1) - ЛИНЕЙНЫЙ ДИНАМИЧЕСКИЙ ДВУНАПРАВЛЕННЫЙ СПИСОК
 
 #include <iostream>
 
@@ -57,7 +57,6 @@ int failure(int begin, int end) {
     }
     return choice;
 }
-
 
 // Функция добавления нового элемента перед заданным
 void insertBefore(ListItem *&head) {
@@ -167,7 +166,6 @@ void searchBackward(ListItem *head) {
     std::cout << "\nЭлемент со значением " << value << " не найден!\n";
 }
 
-
 // Функция удаления элемента по значению
 void remove(ListItem *&head) {
     if (isEmpty(head)) {
@@ -193,7 +191,6 @@ void remove(ListItem *&head) {
     }
     std::cout << "\nЭлемент не найден!\n";
 }
-
 
 // Функция вывода списка на экран в прямом направлении
 void printForward(ListItem *head) {
