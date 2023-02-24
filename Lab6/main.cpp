@@ -118,8 +118,26 @@ void insertAfter(ListItem *head) {
     }
 }
 
-void search(ListItem *head) {
-    // TODO: Реализовать функцию для поиска элемента
+// Функция поиска элемента по значению
+int search(ListItem *head) {
+    if (isEmpty(head)) {
+        std::cout << "\nСписок пуст. Поиск невозможен!\n";
+        return -1;
+    }
+    std::cout << "\nВведите значение элемента для поиска: ";
+    int elem = failure();
+    ListItem *current = head->next;
+    int index = 0;
+    while (current != nullptr) {
+        if (current->data == elem) {
+            std::cout << "\nИндекс искомого элемента: " << index << std::endl;
+            return index;
+        }
+        current = current->next;
+        index++;
+    }
+    std::cout << "\nЭлемент не найден\n";
+    return -1;
 }
 
 void remove(ListItem *head, ListItem *stackHead) {
@@ -148,9 +166,10 @@ void callMenu(ListItem *head) {
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывести текущее состояние списка\n";
         std::cout << "2. Добавить элемент в список\n";
-        std::cout << "3. Завершить работу программы\n";
+        std::cout << "3. Поиск элемента\n";
+        std::cout << "4. Завершить работу программы\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 3);
+        int choice = failure(1, 4);
         switch (choice) {
             case 1:
                 if (isEmpty(head)) {
@@ -181,6 +200,9 @@ void callMenu(ListItem *head) {
                 }
                 break;
             case 3:
+                search(head);
+                break;
+            case 4:
                 work = false;
                 std::cout << "\nПрограмма завершена\n";
                 break;
