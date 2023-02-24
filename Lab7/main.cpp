@@ -127,9 +127,31 @@ void searchBackward(ListItem *head) {
     // TODO: Реализовать функцию поиска элемента в обратном направлении списка
 }
 
+// Функция удаления элемента по значению
 void remove(ListItem *&head) {
-    // TODO: Реализовать функцию для удаления элемента из списка
+    if (isEmpty(head)) {
+        std::cout << "\nСписок пуст!\n";
+        return;
+    }
+
+    std::cout << "\nВведите значение элемента, который нужно удалить: ";
+    int pos = failure();
+    ListItem *current = head->next;
+    ListItem *prev = head;
+
+    while (current != head) {
+        if (current->data == pos) {
+            prev->next = current->next;
+            delete current;
+            std::cout << "\nЭлемент удален!\n";
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+    std::cout << "\nЭлемент не найден!\n";
 }
+
 
 // Функция вывода списка на экран в прямом направлении
 void printForward(ListItem *head) {
@@ -168,9 +190,10 @@ void callMenu(ListItem *head) {
         std::cout << "1. Вывод списка в прямом направлении\n";
         std::cout << "2. Вывод списка в обратном направлении\n";
         std::cout << "3. Добавление нового элемента в список\n";
-        std::cout << "4. Завершение работы программы\n";
+        std::cout << "4. Удаление элемента из списка\n";
+        std::cout << "5. Завершение работы программы\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 4);
+        int choice = failure(1, 5);
         switch (choice) {
             case 1:
                 if (isEmpty(head)) {
@@ -209,6 +232,9 @@ void callMenu(ListItem *head) {
                 }
                 break;
             case 4:
+                remove(head);
+                break;
+            case 5:
                 work = false;
                 std::cout << "\nПрограмма завершена...\n";
                 break;
