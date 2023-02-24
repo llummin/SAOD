@@ -119,8 +119,28 @@ void insertAfter(ListItem *&head) {
     }
 }
 
+// Функция поиска элемента в прямом направлении списка
 void searchForward(ListItem *head) {
-    // TODO: Реализовать функцию поиска элемента в прямом направлении списка
+    if (isEmpty(head)) {
+        std::cout << "\nСписок пуст! Поиск невозможен!\n";
+        return;
+    }
+
+    std::cout << "\nВведите значение элемента, который нужно найти: ";
+    int value = failure();
+
+    ListItem *current = head->next;
+    int index = 0;
+    while (current != head) {
+        if (current->data == value) {
+            std::cout << "\nНайден элемент со значением " << current->data << " на позиции " << index << ".\n";
+            return;
+        }
+        current = current->next;
+        index++;
+    }
+
+    std::cout << "\nЭлемент со значением " << value << " не найден!\n";
 }
 
 void searchBackward(ListItem *head) {
@@ -189,11 +209,12 @@ void callMenu(ListItem *head) {
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывод списка в прямом направлении\n";
         std::cout << "2. Вывод списка в обратном направлении\n";
-        std::cout << "3. Добавление нового элемента в список\n";
-        std::cout << "4. Удаление элемента из списка\n";
-        std::cout << "5. Завершение работы программы\n";
+        std::cout << "3. Поиск элемента в прямом направлении списка\n";
+        std::cout << "4. Добавление нового элемента в список\n";
+        std::cout << "5. Удаление элемента из списка\n";
+        std::cout << "6. Завершение работы программы\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 5);
+        int choice = failure(1, 6);
         switch (choice) {
             case 1:
                 if (isEmpty(head)) {
@@ -212,6 +233,9 @@ void callMenu(ListItem *head) {
                 }
                 break;
             case 3:
+                searchForward(head);
+                break;
+            case 4:
                 if (isEmpty(head))
                     insertAfter(head);
                 else {
@@ -231,10 +255,10 @@ void callMenu(ListItem *head) {
                     }
                 }
                 break;
-            case 4:
+            case 5:
                 remove(head);
                 break;
-            case 5:
+            case 6:
                 work = false;
                 std::cout << "\nПрограмма завершена...\n";
                 break;
