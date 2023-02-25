@@ -132,7 +132,11 @@ void callMenu() {
     bool work{true};
     int value, cmd;
     while (work) {
+<<<<<<< Updated upstream
         std::cout << ".............................................................";
+=======
+        std::cout << "______________________________________________________________";
+>>>>>>> Stashed changes
         std::cout << "\nВарианты команд:\n";
         std::cout << "1. Вывести состояние главного стека\n";
         std::cout << "2. Добавить элемент в главный стек\n";
@@ -140,7 +144,11 @@ void callMenu() {
         std::cout << "4. Добавить несколько случайных чисел в главный стек\n";
         std::cout << "5. Вывести состояние вспомогательного стека\n";
         std::cout << "6. Завершить работу программы\n";
+<<<<<<< Updated upstream
         std::cout << ".............................................................\n";
+=======
+        std::cout << "______________________________________________________________\n";
+>>>>>>> Stashed changes
         std::cout << "Ваш выбор:  ";
         int number = failure(1, 6);
         switch (number) {
@@ -227,4 +235,8 @@ int main() {
     initStack();
     srand(static_cast<unsigned int>(time(nullptr)));
     callMenu();
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
