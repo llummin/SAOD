@@ -3,9 +3,9 @@
 #include <iostream>
 
 // Описание стека
-struct stack {
+struct Stack {
     int data;
-    stack *next;
+    Stack *next;
 } *sp, *sp_second; // sp - указатель вершины главного стека, sp_second - вспомогательного
 
 // Инициализация, создание пустого стека
@@ -16,27 +16,19 @@ inline void initStack() {
 
 // Проверка пустоты стека
 bool isEmpty() {
-    if (sp == nullptr) {
-        return true;
-    } else {
-        return false;
-    }
+    return sp == nullptr;
 }
 
 // Проверка пустоты вспомогательного стека
 bool isSecondEmpty() {
-    if (sp_second == nullptr) {
-        return true;
-    } else {
-        return false;
-    }
+    return sp_second == nullptr;
 }
 
 // Функция вывода состояния главного стека
-void showStack(stack *_sp) {
+void showStack(Stack *_sp) {
     if (_sp != nullptr) {
         std::cout << "\n";
-        stack *current;
+        Stack *current;
         current = _sp;
         int i = 1;
         do {
@@ -45,14 +37,14 @@ void showStack(stack *_sp) {
             i++;
         } while (current != nullptr);
     } else {
-        std::cout << "Стек пуст.\n";
+        std::cout << "пусто...\n";
     }
 }
 
 // Функция добавления в стек
-stack *push(stack *_sp, int _value) {
+Stack *push(Stack *_sp, int _value) {
     // Возвращает новую ссылку на head стека
-    auto *item = new stack;
+    auto *item = new Stack;
     item->data = _value;
     item->next = _sp;
     _sp = item;
@@ -61,28 +53,53 @@ stack *push(stack *_sp, int _value) {
 
 // Добавление с вершины вспомогательного стека
 void addFromSecond() {
-    stack *current = sp_second;
+    Stack *current = sp_second;
     sp_second = sp_second->next;
     current->next = sp;
     sp = current;
 }
 
-// Метод обработки ошибок ввода команды (проверяет, чтобы были введены ТОЛЬКО цифры, без букв)
+// Ввод целочисленного значения с проверкой
 int failure() {
-    int a;
-    while (!(std::cin >> a) || (std::cin.peek() != '\n')) {
-        std::cin.clear();
-        while (std::cin.get() != '\n');
-        std::cout << "\nОШИБКА ВВОДА. ПОВТОРИТЕ ВВОД \n" << std::endl;
+    int choice;
+    while (true) {
+        std::cin >> choice;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(32767, '\n');
+            std::cout << "\nВведите данные правильно: ";
+            continue;
+        }
+        std::cin.ignore(32767, '\n');
+        break;
     }
-    // cin.ignore(32767, '\n');
-    return a;
+    return choice;
+}
+
+// Ввод целочисленного значения с проверкой интервала
+int failure(int begin, int end) {
+    int choice;
+    while (true) {
+        std::cin >> choice;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(32767, '\n');
+            std::cout << "\nВведите данные правильно: ";
+            continue;
+        }
+        std::cin.ignore(32767, '\n');
+        if (choice < begin || choice > end) {
+            std::cout << "\nВведите данные правильно: ";
+            continue;
+        }
+        break;
+    }
+    return choice;
 }
 
 // Функция добавления случайного числа элементов в стек
 void pushRand() {
     int scount;
-    std::cout << "Сколько чисел добавить? ";
     scount = failure();
     for (int i = 0; i < scount; i++) {
         sp = push(sp, rand());
@@ -93,96 +110,121 @@ void pushRand() {
 int pop() {
     if (!isEmpty()) {
         int value = sp->data;
-        stack *current;
+        Stack *current;
         current = sp;
         sp = sp->next;
         delete current;
         return value;
-    } else
+    } else {
         return -1;
+    }
 }
 
-// Вместо удаления - перемещение во вспомогательный стек
+// Функция удаления - перемещения во вспомогательный стек
 void moveToSecondStack() {
-    stack *current = sp;
+    Stack *current = sp;
     sp = sp->next;
     current->next = sp_second;
     sp_second = current;
 }
 
-
-void menu() {
-    int number, value, cmd;
-    while (true) {
-        std::cout << ".............................................................\n";
-        std::cout << "\nВведите номер команды:\n";
+void callMenu() {
+    bool work{true};
+    int value, cmd;
+    while (work) {
+        std::cout << ".............................................................";
+        std::cout << "\nВарианты команд:\n";
         std::cout << "1. Вывести состояние главного стека\n";
         std::cout << "2. Добавить элемент в главный стек\n";
         std::cout << "3. Удалить элемент из главного стека\n";
         std::cout << "4. Добавить несколько случайных чисел в главный стек\n";
         std::cout << "5. Вывести состояние вспомогательного стека\n";
-        std::cout << "0. Завершить работу программы\n";
+        std::cout << "6. Завершить работу программы\n";
+        std::cout << ".............................................................\n";
         std::cout << "Ваш выбор:  ";
-        number = failure(); // ввод номера команды
-
-        if (number == 1) { // вывести состояние стека
-            std::cout << "Состояние главного стека: ";
-            showStack(sp);
-        } else if (number == 2) { // добавить элемент в стек
-            std::cout << "Уточните происхождение элемента: \n 1. Действительно создание нового элемента "
-                         "\n 2. Выбор его с вершины вспомогательного стека\nВаш выбор: ";
-            cmd = failure();
-            if (cmd == 1) {
-                std::cout << "Введите целое число: ";
-                value = failure();
-                sp = push(sp, value);
-            } else if (cmd == 2) {
-                if (!isSecondEmpty()) {
-                    addFromSecond();
-                } else std::cout << "Вспомогательный стек пуст.\n";
-            } else
-                std::cout << "Ошибка ввода. Повторите ввод команды\n";
-        } else if (number == 3) { // удалить элемент из стека
-            if (!isEmpty()) {
-                std::cout << "Уточните команду: \n 1. Действительно удалить элемент с полным освобождением памяти "
-                             "\n 2. Включить его в вершину вспомогательного стека удаленных элементов\nВаш выбор: ";
+        int number = failure(1, 6);
+        switch (number) {
+            case 1:
+                std::cout << "\nСостояние главного стека: ";
+                showStack(sp);
+                break;
+            case 2:
+                std::cout << "\nУточните происхождение элемента: \n";
+                std::cout << "1. Действительно создание нового элемента \n";
+                std::cout << "2. Выбор его с вершины вспомогательного стека\n";
+                std::cout << "Ваш выбор:  ";
                 cmd = failure();
-                if (cmd == 1) {
-                    value = pop();
-                    if (value != -1) {
-                        std::cout << "Элемент '" << value << "' удален\n";
-                    } else {
-                        std::cout << "Стек пуст.\n";
-                    }
-                } else if (cmd == 2) {
-                    if (sp != nullptr) {
-                        moveToSecondStack();
-                    } else {
-                        std::cout << "Стек пуст.\n";
+                switch (cmd) {
+                    case 1:
+                        std::cout << "\nВведите целое число: ";
+                        value = failure();
+                        sp = push(sp, value);
+                        break;
+                    case 2:
+                        if (!isSecondEmpty()) {
+                            addFromSecond();
+                        } else {
+                            std::cout << "\nВспомогательный стек пуст.\n";
+                        }
+                        break;
+                    default:
+                        std::cout << "\nОшибка ввода. Повторите ввод команды\n";
+                        break;
+                }
+                break;
+            case 3:
+                if (!isEmpty()) {
+                    std::cout << "\nУточните команду: \n";
+                    std::cout << "1. Действительно удалить элемент с полным освобождением памяти \n";
+                    std::cout << "2. Включить его в вершину вспомогательного стека удаленных элементов\n";
+                    std::cout << "Ваш выбор: ";
+                    cmd = failure();
+                    switch (cmd) {
+                        case 1:
+                            value = pop();
+                            if (value != -1) {
+                                std::cout << "\nЭлемент '" << value << "' удален\n";
+                            } else {
+                                std::cout << "\nСтек пуст.\n";
+                            }
+                            break;
+                        case 2:
+                            if (sp != nullptr) {
+                                moveToSecondStack();
+                            } else {
+                                std::cout << "\nСтек пуст.\n";
+                            }
+                            break;
+                        default:
+                            std::cout << "\nОшибка ввода. Повторите ввод команды\n";
+                            break;
                     }
                 } else {
-                    std::cout << "Ошибка ввода. Повторите ввод команды\n";
+                    std::cout << "\nСтек пуст. Удалять нечего\n";
                 }
-            } else {
-                std::cout << "Стек пуст. Удалять нечего\n";
-            }
-        } else if (number == 4) { // добавить несколько случайных чисел
-            pushRand();
-        } else if (number == 5) { // вывести состояние вспомогательного стека
-            std::cout << "Состояние вспомогательного стека удаленных элементов: ";
-            showStack(sp_second);
-        } else if (number == 0) // завершить работу
-            break;
-        else
-            std::cout << "Ошибка ввода. Повторите ввод команды\n";
+                break;
+            case 4:
+                std::cout << "\nВведите количество случайных чисел: ";
+                pushRand();
+                break;
+            case 5:
+                std::cout << "\nСостояние вспомогательного стека: ";
+                showStack(sp_second);
+                break;
+            case 6:
+                work = false;
+                std::cout << "\nПрограмма завершена....";
+                break;
+            default:
+                std::cout << "\nОшибка ввода. Повторите ввод команды\n";
+                break;
+        }
     }
 }
 
 int main() {
     setlocale(LC_ALL, "RUS");
     initStack();
-    srand(static_cast<unsigned int>(time(nullptr))); // инициализация генератора случайных чисел rand
-    std::cout << "Генератор псевдослучайных чисел запущен\n";
-    menu();
-    return 0;
+    srand(static_cast<unsigned int>(time(nullptr)));
+    callMenu();
 }
