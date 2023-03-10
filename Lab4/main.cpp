@@ -2,16 +2,17 @@
 
 #include <iostream>
 
-const int kMaxSize = 5;
+const int kMaxSize = 5; // максимальный размер массива
 
 struct ArrayList {
-    int count;
-    int array[kMaxSize];
+    int count; // текущее количество элементов в массиве
+    int array[kMaxSize]; // массив элементов
 };
 
 // Функция инициализации списка
 void initList(ArrayList *&my_list) {
     my_list->count = 0;
+    // Обнуляем все элементы массива
     for (int &i: my_list->array) {
         i = 0;
     }
@@ -29,12 +30,15 @@ bool isFull(ArrayList *my_list) {
 
 // Функция добавления элемента в упорядоченный список
 void insert(ArrayList *my_list, int item) {
+    // Проверяем, есть ли место для добавления нового элемента
     if (isFull(my_list)) {
+        // Если список полон, выводим сообщение об ошибке и прерываем выполнение функции
         std::cout << "Список полон. Не удаётся добавить новый элемент." << std::endl;
         return;
     }
 
     int i;
+    // Ищем место для вставки нового элемента в упорядоченный список
     for (i = 0; i < my_list->count; i++) {
         if (my_list->array[i] > item) {
             // Нашли правильное место для вставки элемента, сдвигаем все элементы на одну позицию вправо
@@ -55,33 +59,33 @@ void insert(ArrayList *my_list, int item) {
 
 // Функция для поиска элемента с заданной информационной частью
 int search(ArrayList *my_list, int value) {
-    for (int i = 0; i < my_list->count; i++) {
-        if (my_list->array[i] == value) {
-            return i;  // Возвращаем индекс найденного элемента
+    for (int i = 0; i < my_list->count; i++) { // проходим по всем элементам списка
+        if (my_list->array[i] == value) { // если нашли элемент со значением value
+            return i;  // возвращаем индекс найденного элемента
         }
     }
-    return -1;  // Элемент не найден
+    return -1;  // элемент не найден
 }
 
 // Функция удаления элемента по его индексу
 void remove(ArrayList *my_list, int index) {
     // Сдвигаем все элементы, начиная с позиции index + 1, на одну позицию влево
     for (int i = index; i < my_list->count - 1; i++) {
-        my_list->array[i] = my_list->array[i + 1];
+        my_list->array[i] = my_list->array[i + 1]; // каждый элемент списка, начиная с элемента
     }
 
     // Обнуляем последний элемент и уменьшаем количество элементов на 1
-    my_list->array[my_list->count - 1] = 0;
-    my_list->count--;
+    my_list->array[my_list->count - 1] = 0; // последний элемент удаляем, обнуляя его
+    my_list->count--; // уменьшаем количество элементов в списке на 1
 }
 
 
 // Функция для отображения текущего состояния списка
 void printList(ArrayList *my_list) {
-    for (int i = 0; i < my_list->count; i++) {
-        std::cout << my_list->array[i] << " ";
+    for (int i = 0; i < my_list->count; i++) { // проходим по всем элементам списка
+        std::cout << my_list->array[i] << " ";  // выводим значение каждого элемента списка
     }
-    std::cout << std::endl;
+    std::cout << std::endl; // переходим на новую строку
 }
 
 // Ввод целочисленного значения с проверкой
