@@ -2,18 +2,20 @@
 
 #include <iostream>
 
+// Структура элемента вспомогательного списка
 struct SubListItem {
-    int data;
-    SubListItem *next;
+    int data; // данные элемента
+    SubListItem *next; // указатель на следующий элемент списка
 };
 
+// Структура элемента главного списка
 struct MainListItem {
-    std::string dataStr;
-    MainListItem *pMainList{};
-    SubListItem *pSubList{};
+    std::string dataStr; // данные элемента
+    MainListItem *pMainList{}; // указатель на следующий элемент главного списка
+    SubListItem *pSubList{}; // указатель на голову вспомогательного списка
 };
 
-MainListItem *head;
+MainListItem *head; // указатель на голову главного списка
 
 // Функция инициализации списка списков
 void initList(MainListItem *&headItem) {
@@ -96,134 +98,138 @@ std::string checkStringNotEmpty() {
 }
 
 // Поиск в главном списке
-MainListItem *mainSearch(const std::string &strToSearch) {
-    MainListItem *cur = head->pMainList;
-    while (cur != nullptr) {
-        if (cur->dataStr == strToSearch) {
-            return cur;
+MainListItem *mainSearch(const std::string &strToSearch) { // принимает ссылку на строку, которую нужно найти
+    MainListItem *cur = head->pMainList; // устанавливаем указатель на начало главного списка
+    while (cur != nullptr) { // проходим по главному списку, пока не дойдем до конца
+        if (cur->dataStr == strToSearch) { // если найден элемент с заданной строкой
+            return cur; // возвращаем указатель на найденный элемент
         }
-        cur = cur->pMainList;
+        cur = cur->pMainList; // переходим к следующему элементу
     }
-    return nullptr;
+    return nullptr; // если элемент не найден, возвращаем nullptr
 }
 
 // Поиск во вспомогательном списке
 SubListItem *subSearch(int intToSearch) {
-    MainListItem *pMainCur = head->pMainList;
-    while (pMainCur != nullptr) {
-        SubListItem *pSubCur = (pMainCur->pSubList)->next;
-        while (pSubCur != nullptr) {
-            if (pSubCur->data == intToSearch) {
-                return pSubCur;
+    MainListItem *pMainCur = head->pMainList; // устанавливаем указатель на начало главного списка
+    while (pMainCur != nullptr) { // проходим по главному списку, пока не дойдем до конца
+        SubListItem *pSubCur = (pMainCur->pSubList)->next; // устанавливаем указатель на начало вспомогательного списка
+        while (pSubCur != nullptr) { // проходим по вспомогательному списку, пока не дойдем до конца
+            if (pSubCur->data == intToSearch) { // если найден элемент с заданным числом
+                return pSubCur; // возвращаем указатель на найденный элемент
             }
-            pSubCur = pSubCur->next;
+            pSubCur = pSubCur->next; // переходим к следующему элементу
         }
-        pMainCur = pMainCur->pMainList;
+        pMainCur = pMainCur->pMainList; // переходим к следующему главному элементу
     }
-    return nullptr;
+    return nullptr; // если элемент не найден, возвращаем nullptr
 }
 
 // Поиск в списке
 SubListItem *searchInList(int intToSearch, SubListItem *subHead) {
-    SubListItem *pCur = subHead;
-    while (pCur != nullptr) {
-        if (pCur->data == intToSearch) {
-            return pCur;
+    SubListItem *pCur = subHead; // создаем указатель на текущий элемент и устанавливаем его на голову списка
+    while (pCur != nullptr) { // пока текущий элемент не станет нулевым
+        if (pCur->data == intToSearch) { // если значение текущего элемента равно искомому значению
+            return pCur; // возвращаем указатель на текущий элемент
         }
-        pCur = pCur->next;
+        pCur = pCur->next; // переходим к следующему элементу списка
     }
-    return nullptr;
+    return nullptr; // если искомый элемент не найден, возвращаем нулевой указатель
 }
 
 // Функция добавления нового элемента перед заданным в главный список
 void mainInsertBefore(std::string strToAdd, const std::string &strToBefore) {
-    MainListItem *current = head->pMainList;
-    MainListItem *previous = head;
-    while (current->dataStr != strToBefore) {
-        previous = current;
-        current = current->pMainList;
+    MainListItem *current = head->pMainList; // создаем указатель на текущий элемент и устанавливаем его на первый элемент списка
+    MainListItem *previous = head; // создаем указатель на предыдущий элемент и устанавливаем его на голову списка
+    while (current->dataStr !=
+           strToBefore) { // пока значение текущего элемента не равно значению, перед которым нужно вставить новый элемент
+        previous = current; // запоминаем текущий элемент как предыдущий
+        current = current->pMainList; // переходим к следующему элементу списка
     }
-    auto *newItem = new MainListItem;
-    auto *newSub = new SubListItem;
-    newSub->data = 0;
-    newSub->next = nullptr;
-    newItem->dataStr = std::move(strToAdd);
-    newItem->pMainList = current;
-    newItem->pSubList = newSub;
-    previous->pMainList = newItem;
+    auto *newItem = new MainListItem; // выделяем память под новый элемент главного списка
+    auto *newSub = new SubListItem; // выделяем память под новый элемент вспомогательного списка
+    newSub->data = 0; // устанавливаем значение нового элемента вспомогательного списка в 0
+    newSub->next = nullptr; // указываем, что следующий элемент списка не существует
+    newItem->dataStr = std::move(strToAdd); // копируем значение нового элемента главного списка
+    newItem->pMainList = current; // устанавливаем указатель на следующий элемент главного списка
+    newItem->pSubList = newSub; // устанавливаем указатель на голову вспомогательного списка
+    previous->pMainList = newItem; // устанавливаем указатель предыдущего элемента на новый элемент главного списка
     std::cout << "\nДобавлен элемент " << newItem->dataStr << " в главный список\n";
 }
 
 // Функция добавления нового элемента после заданного в главный список
 void mainInsertAfter(std::string strToAdd, MainListItem *pTemp) {
-    auto *newItem = new MainListItem;
-    auto *newSub = new SubListItem;
-    newSub->data = 0;
-    newSub->next = nullptr;
-    newItem->dataStr = std::move(strToAdd);
-    newItem->pMainList = pTemp->pMainList;
-    newItem->pSubList = newSub;
-    pTemp->pMainList = newItem;
+    auto *newItem = new MainListItem; // выделяем память под новый элемент главного списка
+    auto *newSub = new SubListItem; // выделяем память под новый элемент вспомогательного списка
+    newSub->data = 0; // устанавливаем значение нового элемента вспомогательного списка в 0
+    newSub->next = nullptr; // указываем, что следующий элемент списка не существует
+    newItem->dataStr = std::move(strToAdd); // копируем значение нового элемента главного списка
+    newItem->pMainList = pTemp->pMainList; // устанавливает указатель на следующий элемент главного списка
+    newItem->pSubList = newSub; // устанавливает указатель на вспомогательный список нового элемента главного списка
+    pTemp->pMainList = newItem; // устанавливает указатель на следующий элемент главного списка
     std::cout << "\nДобавлен элемент " << newItem->dataStr << " в главный список\n";
 }
 
 // Функция добавления нового элемента во вспомогательный список перед заданным
 void subInsertBefore(int intToAdd, SubListItem *pHead, int intToBefore) {
-    auto *newSub = new SubListItem;
-    SubListItem *current = pHead->next;
-    SubListItem *previous = pHead;
-    while (current->data != intToBefore) {
-        previous = current;
-        current = current->next;
+    auto *newSub = new SubListItem; // создание нового узла вспомогательного списка
+    SubListItem *current = pHead->next; // указатель на первый узел вспомогательного списка
+    SubListItem *previous = pHead; // указатель на голову вспомогательного списка
+    while (current->data != intToBefore) { // поиск узла с данным значением
+        previous = current; // обновление указателя на предыдущий узел
+        current = current->next; // обновление указателя на текущий узел
     }
-    newSub->data = intToAdd;
-    newSub->next = current;
-    previous->next = newSub;
+    newSub->data = intToAdd; // присваивание новому узлу значения
+    newSub->next = current; // присваивание новому узлу указателя на текущий узел
+    previous->next = newSub; // обновление указателя предыдущего узла на новый узел
     std::cout << "\nДобавлен элемент " << newSub->data << " во вспомогательный список\n";
 }
 
 // Функция добавления нового элемента во вспомогательный список после заданного
 void subInsertAfter(int intToAdd, SubListItem *pTemp) {
-    auto *newSub = new SubListItem;
-    newSub->data = intToAdd;
-    newSub->next = pTemp->next;
-    pTemp->next = newSub;
+    auto *newSub = new SubListItem; // создание нового узла вспомогательного списка
+    newSub->data = intToAdd; // присваивание новому узлу значения
+    newSub->next = pTemp->next; // присваивание новому узлу указателя на следующий узел
+    pTemp->next = newSub; // обновление указателя текущего узла на новый узел
     std::cout << "\nДобавлен элемент " << newSub->data << " во вспомогательный список\n";
 }
 
 // Функция удаления элемента в главном списке
 void mainRemove(const std::string &strToDel) {
-    MainListItem *pTemp = head->pMainList;
-    MainListItem *pPrev = head;
-    while (pTemp != nullptr) {
-        if (pTemp->dataStr == strToDel) {
-            SubListItem *pSub = pTemp->pSubList;
-            while (pSub != nullptr) {
-                SubListItem *pSubTemp = pSub;
-                pSub = pSub->next;
-                delete pSubTemp;
+    MainListItem *pTemp = head->pMainList; // указатель на первый элемент в главном списке
+    MainListItem *pPrev = head; // указатель на голову главного списка
+    while (pTemp != nullptr) { // проход по главному списку
+        if (pTemp->dataStr == strToDel) { // если найден элемент с заданным значением
+            SubListItem *pSub = pTemp->pSubList; // указатель на первый элемент вспомогательного списка
+            while (pSub != nullptr) { // проход по вспомогательному списку
+                SubListItem *pSubTemp = pSub; //  создание временной переменной pSubTemp
+                pSub = pSub->next; // перемещение указателя pSub на следующий элемент списка
+                delete pSubTemp; // удаление элемента вспомогательного списка
             }
-            pPrev->pMainList = pTemp->pMainList;
-            delete pTemp;
+            pPrev->pMainList = pTemp->pMainList; // переназначение указателя на предыдущий элемент главного списка
+            delete pTemp; // удаление элемента главного списка
             std::cout << "\nУдален элемент " << strToDel << " из главного списка\n";
             break;
         }
-        pPrev = pTemp;
-        pTemp = pTemp->pMainList;
+        pPrev = pTemp; // сохранение указателя на предыдущий элемент списка pTemp в pPrev
+        pTemp = pTemp->pMainList; // перемещение указателя pTemp на следующий элемент списка
     }
 }
 
 // Функция удаления элемента во вспомогательном списке
 void subRemove(int intToDel, SubListItem *subHead) {
+    // Установка указателей на начало списка и на его первый элемент
     SubListItem *pTemp = subHead->next;
     SubListItem *pPrev = subHead;
+    // Поиск элемента, который нужно удалить
     while (pTemp != nullptr) {
         if (pTemp->data == intToDel) {
-            pPrev->next = pTemp->next;
+            pPrev->next = pTemp->next; // переподключение указателей для удаления элемента
             delete pTemp;
             std::cout << "\nУдален элемент " << intToDel << " из вспомогательного списка\n";
             break;
         }
+        // Переход к следующему элементу
         pPrev = pTemp;
         pTemp = pTemp->next;
     }
@@ -231,24 +237,23 @@ void subRemove(int intToDel, SubListItem *subHead) {
 
 // Функция для отображения текущего состояния списка
 void printList() {
-    MainListItem *currMain = head->pMainList;
+    MainListItem *currMain = head->pMainList; // устанавливаем текущий элемент на первый элемент главного списка
     while (currMain != nullptr) {
         std::cout << currMain->dataStr << ": ";
-        SubListItem *currSub = currMain->pSubList;
+        SubListItem *currSub = currMain->pSubList; // устанавливаем текущий элемент на первый элемент вспомогательного списка
         if (subIsEmpty(currSub)) {
             std::cout << "пусто\n";
         } else {
-            // Проверка, является ли первый элемент вспомогательного списка равным нулю
-            if (currSub->data == 0) {
-                currSub = currSub->next;
+            if (currSub->data == 0) { // проверяем, является ли первый элемент вспомогательного списка равным нулю
+                currSub = currSub->next; // если да, переходим на следующий элемент
             }
-            while (currSub != nullptr) {
+            while (currSub != nullptr) { // выводим все элементы вспомогательного списка
                 std::cout << currSub->data << " ";
                 currSub = currSub->next;
             }
             std::cout << std::endl;
         }
-        currMain = currMain->pMainList;
+        currMain = currMain->pMainList; // переходим к следующему элементу главного списка
     }
 }
 
