@@ -1,4 +1,4 @@
-// Р›Р°Р±РѕСЂР°С‚РѕСЂРЅР°СЏ СЂР°Р±РѕС‚Р° в„–8 (СЂР°Р·РґРµР» 1, С‚РµРјР° 4, РЅРѕРјРµСЂ 3) - РЎРџРРЎРћРљ РЎРџРРЎРљРћР’ РќРђ РћРЎРќРћР’Р• Р›РРќР•Р™РќРћР“Рћ Р”РРќРђРњРР§Р•РЎРљРћР“Рћ РЎРџРРЎРљРђ
+// Лабораторная работа №8 (раздел 1, тема 4, номер 3) - СПИСОК СПИСКОВ НА ОСНОВЕ ЛИНЕЙНОГО ДИНАМИЧЕСКОГО СПИСКА
 
 #include <iostream>
 
@@ -15,24 +15,24 @@ struct MainListItem {
 
 MainListItem *head;
 
-// Р¤СѓРЅРєС†РёСЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё СЃРїРёСЃРєР° СЃРїРёСЃРєРѕРІ
+// Функция инициализации списка списков
 void initList(MainListItem *&headItem) {
     headItem->pMainList = nullptr;
     headItem->pSubList = nullptr;
     headItem->dataStr = " ";
 }
 
-// Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєРё РіР»Р°РІРЅРѕРіРѕ СЃРїРёСЃРєР° РЅР° РїСѓСЃС‚РѕС‚Сѓ
-bool isEmpty(MainListItem *headItem) {
+// Функция проверки главного списка на пустоту
+bool mainIsEmpty(MainListItem *headItem) {
     return headItem->pMainList == nullptr;
 }
 
-// Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєРё РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅРѕРіРѕ СЃРїРёСЃРєР° РЅР° РїСѓСЃС‚РѕС‚Сѓ
-bool isEmpty(SubListItem *headItem) {
+// Функция проверки вспомогательного списка на пустоту
+bool subIsEmpty(SubListItem *headItem) {
     return headItem->next == nullptr;
 }
 
-// Р’РІРѕРґ С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ СЃ РїСЂРѕРІРµСЂРєРѕР№
+// Ввод целочисленного значения с проверкой
 int failure() {
     int choice;
     while (true) {
@@ -40,7 +40,7 @@ int failure() {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(32767, '\n');
-            std::cout << "\nР’РІРµРґРёС‚Рµ РґР°РЅРЅС‹Рµ РїСЂР°РІРёР»СЊРЅРѕ: ";
+            std::cout << "\nВведите данные правильно: ";
             continue;
         }
         std::cin.ignore(32767, '\n');
@@ -49,7 +49,7 @@ int failure() {
     return choice;
 }
 
-// Р’РІРѕРґ С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ СЃ РїСЂРѕРІРµСЂРєРѕР№ РёРЅС‚РµСЂРІР°Р»Р°
+// Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
     int choice;
     while (true) {
@@ -57,12 +57,12 @@ int failure(int begin, int end) {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(32767, '\n');
-            std::cout << "\nР’РІРµРґРёС‚Рµ РґР°РЅРЅС‹Рµ РїСЂР°РІРёР»СЊРЅРѕ: ";
+            std::cout << "\nВведите данные правильно: ";
             continue;
         }
         std::cin.ignore(32767, '\n');
         if (choice < begin || choice > end) {
-            std::cout << "\nР’РІРµРґРёС‚Рµ РґР°РЅРЅС‹Рµ РїСЂР°РІРёР»СЊРЅРѕ: ";
+            std::cout << "\nВведите данные правильно: ";
             continue;
         }
         break;
@@ -70,14 +70,14 @@ int failure(int begin, int end) {
     return choice;
 }
 
-// Р’РІРѕРґ СЃС‚СЂРѕРєРё СЃ РїСЂРѕРІРµСЂРєРѕР№ РЅР° РїСѓСЃС‚РѕС‚Сѓ
+// Ввод строки с проверкой на пустоту
 std::string checkStringNotEmpty() {
     std::string str;
     bool is_space;
     while (true) {
         getline(std::cin, str);
         if (str.empty()) {
-            std::cout << "Р’С‹ РІРІРµР»Рё РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·: ";
+            std::cout << "Вы ввели пустую строку. Попробуйте еще раз: ";
         } else {
             is_space = true;
             for (char i: str) {
@@ -87,7 +87,7 @@ std::string checkStringNotEmpty() {
                 }
             }
             if (is_space) {
-                std::cout << "Р’С‹ РІРІРµР»Рё РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·: ";
+                std::cout << "Вы ввели пустую строку. Попробуйте еще раз: ";
             } else {
                 return str;
             }
@@ -95,7 +95,7 @@ std::string checkStringNotEmpty() {
     }
 }
 
-// РџРѕРёСЃРє РІ РіР»Р°РІРЅРѕРј СЃРїРёСЃРєРµ
+// Поиск в главном списке
 MainListItem *mainSearch(const std::string &strToSearch) {
     MainListItem *cur = head->pMainList;
     while (cur != nullptr) {
@@ -107,7 +107,7 @@ MainListItem *mainSearch(const std::string &strToSearch) {
     return nullptr;
 }
 
-// РџРѕРёСЃРє РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅРѕРј СЃРїРёСЃРєРµ
+// Поиск во вспомогательном списке
 SubListItem *subSearch(int intToSearch) {
     MainListItem *pMainCur = head->pMainList;
     while (pMainCur != nullptr) {
@@ -123,7 +123,7 @@ SubListItem *subSearch(int intToSearch) {
     return nullptr;
 }
 
-// РџРѕРёСЃРє РІ СЃРїРёСЃРєРµ
+// Поиск в списке
 SubListItem *searchInList(int intToSearch, SubListItem *subHead) {
     SubListItem *pCur = subHead;
     while (pCur != nullptr) {
@@ -135,7 +135,7 @@ SubListItem *searchInList(int intToSearch, SubListItem *subHead) {
     return nullptr;
 }
 
-// Р¤СѓРЅРєС†РёСЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РїРµСЂРµРґ Р·Р°РґР°РЅРЅС‹Рј РІ РіР»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє
+// Функция добавления нового элемента перед заданным в главный список
 void mainInsertBefore(std::string strToAdd, const std::string &strToBefore) {
     MainListItem *current = head->pMainList;
     MainListItem *previous = head;
@@ -151,10 +151,10 @@ void mainInsertBefore(std::string strToAdd, const std::string &strToBefore) {
     newItem->pMainList = current;
     newItem->pSubList = newSub;
     previous->pMainList = newItem;
-    std::cout << "\nР”РѕР±Р°РІР»РµРЅ СЌР»РµРјРµРЅС‚ " << newItem->dataStr << " РІ РіР»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє\n";
+    std::cout << "\nДобавлен элемент " << newItem->dataStr << " в главный список\n";
 }
 
-// Р¤СѓРЅРєС†РёСЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РїРѕСЃР»Рµ Р·Р°РґР°РЅРЅРѕРіРѕ РІ РіР»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє
+// Функция добавления нового элемента после заданного в главный список
 void mainInsertAfter(std::string strToAdd, MainListItem *pTemp) {
     auto *newItem = new MainListItem;
     auto *newSub = new SubListItem;
@@ -164,10 +164,10 @@ void mainInsertAfter(std::string strToAdd, MainListItem *pTemp) {
     newItem->pMainList = pTemp->pMainList;
     newItem->pSubList = newSub;
     pTemp->pMainList = newItem;
-    std::cout << "\nР”РѕР±Р°РІР»РµРЅ СЌР»РµРјРµРЅС‚ " << newItem->dataStr << " РІ РіР»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє\n";
+    std::cout << "\nДобавлен элемент " << newItem->dataStr << " в главный список\n";
 }
 
-// Р¤СѓРЅРєС†РёСЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїРµСЂРµРґ Р·Р°РґР°РЅРЅС‹Рј
+// Функция добавления нового элемента во вспомогательный список перед заданным
 void subInsertBefore(int intToAdd, SubListItem *pHead, int intToBefore) {
     auto *newSub = new SubListItem;
     SubListItem *current = pHead->next;
@@ -179,28 +179,28 @@ void subInsertBefore(int intToAdd, SubListItem *pHead, int intToBefore) {
     newSub->data = intToAdd;
     newSub->next = current;
     previous->next = newSub;
-    std::cout << "\nР”РѕР±Р°РІР»РµРЅ СЌР»РµРјРµРЅС‚ " << newSub->data << " РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє\n";
+    std::cout << "\nДобавлен элемент " << newSub->data << " во вспомогательный список\n";
 }
 
-// Р¤СѓРЅРєС†РёСЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїРѕСЃР»Рµ Р·Р°РґР°РЅРЅРѕРіРѕ
+// Функция добавления нового элемента во вспомогательный список после заданного
 void subInsertAfter(int intToAdd, SubListItem *pTemp) {
     auto *newSub = new SubListItem;
     newSub->data = intToAdd;
     newSub->next = pTemp->next;
     pTemp->next = newSub;
-    std::cout << "\nР”РѕР±Р°РІР»РµРЅ СЌР»РµРјРµРЅС‚ " << newSub->data << " РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє\n";
+    std::cout << "\nДобавлен элемент " << newSub->data << " во вспомогательный список\n";
 }
 
-// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ С‚РµРєСѓС‰РµРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ СЃРїРёСЃРєР°
+// Функция для отображения текущего состояния списка
 void printList() {
     MainListItem *currMain = head->pMainList;
     while (currMain != nullptr) {
         std::cout << currMain->dataStr << ": ";
         SubListItem *currSub = currMain->pSubList;
-        if (isEmpty(currSub)) {
-            std::cout << "РїСѓСЃС‚Рѕ\n";
+        if (subIsEmpty(currSub)) {
+            std::cout << "пусто\n";
         } else {
-            // РџСЂРѕРІРµСЂРєР°, СЏРІР»СЏРµС‚СЃСЏ Р»Рё РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅРѕРіРѕ СЃРїРёСЃРєР° СЂР°РІРЅС‹Рј РЅСѓР»СЋ
+            // Проверка, является ли первый элемент вспомогательного списка равным нулю
             if (currSub->data == 0) {
                 currSub = currSub->next;
             }
@@ -214,122 +214,176 @@ void printList() {
     }
 }
 
-// РћСЃРЅРѕРІРЅРѕРµ РјРµРЅСЋ
+// Основное меню
 void callMenu(MainListItem *&headItem) {
     bool work{true};
     int choice;
     while (work) {
         std::cout << "_______________________________________________________________________";
-        std::cout << "\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєРѕРјР°РЅРґС‹: \n";
-        std::cout << "1. Р’С‹РІРµСЃС‚Рё С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ СЃРїРёСЃРєР° СЃРїРёСЃРєРѕРІ\n";
-        std::cout << "2. Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ РіР»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє РїРµСЂРµРґ Р·Р°РґР°РЅРЅС‹Рј\n";
-        std::cout << "3. Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ РіР»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє РїРѕСЃР»Рµ Р·Р°РґР°РЅРЅРѕРіРѕ\n";
-        std::cout << "4. Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїРµСЂРµРґ Р·Р°РґР°РЅРЅС‹Рј\n";
-        std::cout << "5. Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє РїРѕСЃР»Рµ Р·Р°РґР°РЅРЅРѕРіРѕ\n";
-        std::cout << "6. Р—Р°РІРµСЂС€РµРЅРёРµ СЂР°Р±РѕС‚С‹\n";
+        std::cout << "\nВведите номер команды: \n";
+        std::cout << "1. Вывести текущее состояние списка списков\n";
+        std::cout << "2. Добавление элемента в главный список перед заданным\n";
+        std::cout << "3. Добавление элемента в главный список после заданного\n";
+        std::cout << "4. Добавление элемента во вспомогательный список перед заданным\n";
+        std::cout << "5. Добавление элемента во вспомогательный список после заданного\n";
+        std::cout << "6. Поиск элемента в главном списке\n";
+        std::cout << "7. Поиск элемента во вспомогательном списке \n";
+        std::cout << "8. Завершение работы\n";
         std::cout << "_______________________________________________________________________\n";
-        std::cout << "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєРѕРјР°РЅРґС‹: ";
-        choice = failure(1, 6);
+        std::cout << "Введите номер команды: ";
+        choice = failure(1, 8);
         MainListItem *pMain;
         SubListItem *pSub;
         std::string strToBefore;
         int intToBefore;
         switch (choice) {
             case 1:
-                if (isEmpty(headItem)) {
-                    std::cout << "\nРЎРїРёСЃРѕРє РїСѓСЃС‚!\n";
+                if (mainIsEmpty(headItem)) {
+                    std::cout << "\nСписок пуст!\n";
                 } else {
-                    std::cout << "\nРЎРїРёСЃРєРё:\n";
+                    std::cout << "\nСписки:\n";
                     printList();
                 }
                 break;
             case 2:
-                if (isEmpty(headItem)) {
-                    std::cout << "\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРїРёСЃРєР°, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ: ";
+                if (mainIsEmpty(headItem)) {
+                    std::cout << "\nВведите название списка, который хотели бы добавить: ";
                     mainInsertAfter(checkStringNotEmpty(), headItem);
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ СЌР»РµРјРµРЅС‚, РїРµСЂРµРґ РєРѕС‚РѕСЂС‹Рј С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№: ";
+                std::cout << "\nВведите элемент, перед которым хотите добавить новый: ";
                 strToBefore = checkStringNotEmpty();
                 pMain = mainSearch(strToBefore);
                 if (pMain == nullptr) {
-                    std::cout << "\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ РіР»Р°РІРЅРѕРј СЃРїРёСЃРєРµ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n";
+                    std::cout << "\nТакого элемента в главном списке не существует.\n";
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРїРёСЃРєР°, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ: ";
+                std::cout << "\nВведите название списка, который хотели бы добавить: ";
                 mainInsertBefore(checkStringNotEmpty(), strToBefore);
                 break;
             case 3:
-                if (isEmpty(headItem)) {
-                    std::cout << "\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРїРёСЃРєР°, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ: ";
+                if (mainIsEmpty(headItem)) {
+                    std::cout << "\nВведите название списка, который хотели бы добавить: ";
                     mainInsertAfter(checkStringNotEmpty(), headItem);
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ СЌР»РµРјРµРЅС‚, РїРµСЂРµРґ РєРѕС‚РѕСЂС‹Рј С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№: ";
+                std::cout << "\nВведите элемент, перед которым хотите добавить новый: ";
                 pMain = mainSearch(checkStringNotEmpty());
                 if (pMain == nullptr) {
-                    std::cout << "\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ РіР»Р°РІРЅРѕРј СЃРїРёСЃРєРµ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n";
+                    std::cout << "\nТакого элемента в главном списке не существует.\n";
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРїРёСЃРєР°, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ: ";
+                std::cout << "\nВведите название списка, который хотели бы добавить: ";
                 mainInsertAfter(checkStringNotEmpty(), pMain);
                 break;
             case 4:
-                if (isEmpty(headItem)) {
-                    std::cout << "\nР“Р»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє РїСѓСЃС‚! Р”РѕР±Р°РІР»РµРЅРёРµ РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РЅРµРІРѕР·РјРѕР¶РЅРѕ!\n";
+                if (mainIsEmpty(headItem)) {
+                    std::cout << "\nГлавный список пуст! Добавление во вспомогательный невозможно!\n";
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРїРёСЃРєР°, РІ РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚: ";
+                std::cout << "\nВведите название списка, в который хотели бы добавить новый элемент: ";
                 pMain = mainSearch(checkStringNotEmpty());
                 if (pMain == nullptr) {
-                    std::cout << "\nРўР°РєРѕРіРѕ РЅР°Р·РІР°РЅРёСЏ РіР»Р°РІРЅРѕРіРѕ СЃРїРёСЃРєР° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n";
+                    std::cout << "\nТакого названия главного списка не существует.\n";
                     break;
                 }
-                if (isEmpty(pMain->pSubList)) {
-                    std::cout << "\nР’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ, РєРѕС‚РѕСЂРѕРµ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє: ";
+                if (subIsEmpty(pMain->pSubList)) {
+                    std::cout << "\nВведите число, которое хотели бы добавить во вспомогательный список: ";
                     subInsertAfter(failure(), pMain->pSubList);
                     break;
                 }
 
-                std::cout << "\nР’РІРµРґРёС‚Рµ СЌР»РµРјРµРЅС‚, РїРµСЂРµРґ РєРѕС‚РѕСЂС‹Рј С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№: ";
+                std::cout << "\nВведите элемент, перед которым хотите добавить новый: ";
                 intToBefore = failure();
                 pSub = searchInList(intToBefore, pMain->pSubList);
                 if (pSub == nullptr) {
-                    std::cout << "\nРўР°РєРѕРіРѕ РЅР°Р·РІР°РЅРёСЏ РіР»Р°РІРЅРѕРіРѕ СЃРїРёСЃРєР° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n";
+                    std::cout << "\nТакого названия главного списка не существует.\n";
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ, РєРѕС‚РѕСЂРѕРµ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє: ";
+                std::cout << "\nВведите число, которое хотели бы добавить во вспомогательный список: ";
                 subInsertBefore(failure(), pMain->pSubList, intToBefore);
                 break;
             case 5:
-                if (isEmpty(headItem)) {
-                    std::cout << "\nР“Р»Р°РІРЅС‹Р№ СЃРїРёСЃРѕРє РїСѓСЃС‚! Р”РѕР±Р°РІР»РµРЅРёРµ РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РЅРµРІРѕР·РјРѕР¶РЅРѕ!\n";
+                if (mainIsEmpty(headItem)) {
+                    std::cout << "\nГлавный список пуст! Добавление во вспомогательный невозможно!\n";
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ СЃРїРёСЃРєР°, РІ РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚: ";
+                std::cout << "\nВведите название списка, в который хотели бы добавить новый элемент: ";
                 pMain = mainSearch(checkStringNotEmpty());
                 if (pMain == nullptr) {
-                    std::cout << "\nРўР°РєРѕРіРѕ РЅР°Р·РІР°РЅРёСЏ РіР»Р°РІРЅРѕРіРѕ СЃРїРёСЃРєР° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n";
+                    std::cout << "\nТакого названия главного списка не существует.\n";
                     break;
                 }
-                if (isEmpty(pMain->pSubList)) {
-                    std::cout << "\nР’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ, РєРѕС‚РѕСЂРѕРµ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє: ";
+                if (subIsEmpty(pMain->pSubList)) {
+                    std::cout << "\nВведите число, которое хотели бы добавить во вспомогательный список: ";
                     subInsertAfter(failure(), pMain->pSubList);
                     break;
                 }
 
-                std::cout << "\nР’РІРµРґРёС‚Рµ СЌР»РµРјРµРЅС‚, РїРѕСЃР»Рµ РєРѕС‚РѕСЂРѕРіРѕ С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№: ";
+                std::cout << "\nВведите элемент, после которого хотите добавить новый: ";
                 pSub = searchInList(failure(), pMain->pSubList);
                 if (pSub == nullptr) {
-                    std::cout << "\nРўР°РєРѕРіРѕ РЅР°Р·РІР°РЅРёСЏ РіР»Р°РІРЅРѕРіРѕ СЃРїРёСЃРєР° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n";
+                    std::cout << "\nТакого названия главного списка не существует.\n";
                     break;
                 }
-                std::cout << "\nР’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ, РєРѕС‚РѕСЂРѕРµ С…РѕС‚РµР»Рё Р±С‹ РґРѕР±Р°РІРёС‚СЊ РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃРїРёСЃРѕРє: ";
+                std::cout << "\nВведите число, которое хотели бы добавить во вспомогательный список: ";
                 subInsertAfter(failure(), pSub);
                 break;
-            case 6:
+            case 6: {
+                if (mainIsEmpty(head)) {
+                    std::cout << "\nГлавный список пуст! Поиск невозможен!\n";
+                    break;
+                }
+                std::cout << "\nВведите название главного списка: ";
+                MainListItem *foundMain = mainSearch(checkStringNotEmpty());
+                if (foundMain == nullptr) {
+                    std::cout << "\nДанный список не найден.\n";
+                    break;
+                }
+                int index = 0;
+                MainListItem *cur = head->pMainList;
+                while (cur != foundMain) {
+                    index++;
+                    cur = cur->pMainList;
+                }
+                std::cout << "\nДанный список найден. Индекс элемента в главном списке: " << index << std::endl;
+                break;
+            }
+            case 7: {
+                if (mainIsEmpty(head)) {
+                    std::cout << "\nГлавный список пуст! Поиск невозможен!\n";
+                    break;
+                }
+                std::cout << "\nВведите название главного списка: ";
+                MainListItem *foundMain = mainSearch(checkStringNotEmpty());
+                if (foundMain == nullptr) {
+                    std::cout << "\nДанный список не найден.\n";
+                    break;
+                }
+                if (subIsEmpty(foundMain->pSubList)) {
+                    std::cout << "\nВспомогательный список пуст! Поиск невозможен!\n";
+                    break;
+                }
+                std::cout << "\nВведите целочисленное значение для поиска: ";
+                int intToSearch = failure();
+                SubListItem *foundSub = subSearch(intToSearch);
+                if (foundSub == nullptr) {
+                    std::cout << "\nДанный элемент не найден.\n";
+                    break;
+                }
+                int subIndex = 0;
+                SubListItem *subCur = foundMain->pSubList->next;
+                while (subCur != foundSub) {
+                    subIndex++;
+                    subCur = subCur->next;
+                }
+                std::cout << "\nДанный элемент найден. Индекс элемента во вспомогательном списке: " << subIndex
+                          << std::endl;
+                break;
+            }
+            case 8:
                 work = false;
-                std::cout << "\nРџСЂРѕРіСЂР°РјРјР° Р·Р°РІРµСЂС€РµРЅР°\n";
+                std::cout << "\nПрограмма завершена\n";
                 break;
             default:
                 break;
