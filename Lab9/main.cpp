@@ -60,6 +60,21 @@ void preOrderTraversal(TreeNode *root, int level) { // root - указатель
     preOrderTraversal(root->right, level + 1); // рекурсивно вызываем функцию для правого поддерева
 }
 
+// Функция вывода дерева в симметричном порядке
+void inOrderTraversal(TreeNode *root, int level) {
+    if (root != nullptr) {
+        inOrderTraversal(root->left, level + 1); // рекурсивный вызов для левого поддерева
+
+        // Вывод отступов пропорциональных уровню вершины
+        for (int i = 0; i < level * 5; i++) { // цикл для вывода отступов перед значением вершины
+            std::cout << " ";
+        }
+
+        std::cout << root->data << std::endl; // вывод значения текущей вершины
+        inOrderTraversal(root->right, level + 1); // рекурсивный вызов для правого поддерева
+    }
+}
+
 // Основное меню
 void callMenu(TreeNode *&treeRoot) {
     bool work{true};
@@ -68,7 +83,8 @@ void callMenu(TreeNode *&treeRoot) {
         std::cout << "\nВарианты команд:\n";
         std::cout << "1. Построение идеально сбалансированного двоичного дерева\n";
         std::cout << "2. Вывод дерева в прямом порядке\n";
-        std::cout << "3. Завершение работы\n";
+        std::cout << "3. Вывод дерева в симметричном порядке\n";
+        std::cout << "4. Завершение работы\n";
         std::cout << "_______________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
         int choice = failure(1, 5);
@@ -84,6 +100,10 @@ void callMenu(TreeNode *&treeRoot) {
                 preOrderTraversal(treeRoot, 0);
                 break;
             case 3:
+                std::cout << "\nВывод дерева в симметричном порядке:\n";
+                inOrderTraversal(treeRoot, 0);
+                break;
+            case 4:
                 work = false;
                 std::cout << "\nПрограмма завершена\n";
                 break;
