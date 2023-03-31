@@ -1,4 +1,4 @@
-// Лабораторная работа №9 (раздел 1, тема 5, номер 1) - ИДЕАЛЬНО СБАЛАНСИРОВАННОЕ ДВОИЧНОЕ ДЕРЕВО (РЕКУРСИВНЫЙ ВАРИАНТ)
+// Раздел 1, тема 5, номер 1 - ИДЕАЛЬНО СБАЛАНСИРОВАННОЕ ДВОИЧНОЕ ДЕРЕВО (РЕКУРСИВНЫЙ ВАРИАНТ)
 
 #include <iostream>
 #include <random>
@@ -75,6 +75,21 @@ void inOrderTraversal(TreeNode *root, int level) {
     }
 }
 
+// Функция вывода дерева в обратно-симметричном порядке
+void postOrderTraversal(TreeNode *root, int level) {
+    if (root != nullptr) {
+        postOrderTraversal(root->right, level + 1); // рекурсивно вызываем функцию для правой ветки
+
+        // Вывод отступов пропорциональных уровню вершины
+        for (int i = 0; i < level * 5; i++) { // цикл для вывода отступов перед значением вершины
+            std::cout << " ";
+        }
+
+        std::cout << root->data << std::endl; // выводим значение корневой вершины
+        postOrderTraversal(root->left, level + 1); // рекурсивно вызываем функцию для левой ветки
+    }
+}
+
 // Основное меню
 void callMenu(TreeNode *&treeRoot) {
     bool work{true};
@@ -84,7 +99,8 @@ void callMenu(TreeNode *&treeRoot) {
         std::cout << "1. Построение идеально сбалансированного двоичного дерева\n";
         std::cout << "2. Вывод дерева в прямом порядке\n";
         std::cout << "3. Вывод дерева в симметричном порядке\n";
-        std::cout << "4. Завершение работы\n";
+        std::cout << "4. Вывод дерева в обратно-симметричном порядке\n";
+        std::cout << "5. Завершение работы\n";
         std::cout << "_______________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
         int choice = failure(1, 5);
@@ -104,6 +120,10 @@ void callMenu(TreeNode *&treeRoot) {
                 inOrderTraversal(treeRoot, 0);
                 break;
             case 4:
+                std::cout << "\nВывод дерева в обратно-симметричном порядке:\n";
+                postOrderTraversal(treeRoot, 0);
+                break;
+            case 5:
                 work = false;
                 std::cout << "\nПрограмма завершена\n";
                 break;
