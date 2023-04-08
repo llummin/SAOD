@@ -8,8 +8,11 @@ struct TreeNode {
     TreeNode *right; // указатель на правую вершину
 };
 
+// Объявление указателей на корень дерева и на узел, который будет найден
 TreeNode *root;
 TreeNode *detectedNode;
+
+// Флаг, который используется для определения, продолжать ли поиск
 bool shouldContinue = true;
 
 // Ввод целочисленного значения с проверкой
@@ -57,36 +60,37 @@ bool isEmpty() {
 
 // Функция поиска вершины в дереве
 void search(TreeNode *pNode, int intToFind) {
+    // Если дерево не пустое и поиск еще не закончен
     if (shouldContinue && pNode != nullptr) {
-        if (pNode->data == intToFind) {
-            detectedNode = pNode;
-            shouldContinue = false;
+        if (pNode->data == intToFind) { // если нашли узел с нужным значением
+            detectedNode = pNode; // сохраняем найденный узел
+            shouldContinue = false; // устанавливаем флаг, чтобы прекратить поиск
             std::cout << "\nВершина со значением " << intToFind << " найдена в дереве." << std::endl;
         }
-        search(pNode->left, intToFind);
-        search(pNode->right, intToFind);
+        search(pNode->left, intToFind); // рекурсивный вызов функции для левого поддерева
+        search(pNode->right, intToFind); // рекурсивный вызов функции для правого поддерева
     }
 }
 
 // Функция добавления корня
 void addRoot() {
-    root = new TreeNode();
+    root = new TreeNode(); // выделяем память под новый узел
     std::cout << "\nДерево пустое. Введите значение для корневой вершины: ";
-    root->data = failure();
-    root->left = nullptr;
-    root->right = nullptr;
+    root->data = failure(); // считываем значение для корня
+    root->left = nullptr; // указатель на левое поддерево инициализируем как nullptr
+    root->right = nullptr; // указатель на правое поддерево инициализируем как nullptr
     std::cout << "\nДобавлена корневая вершина со значением " << root->data << std::endl;
 }
 
 // Функция добавления левого потомка
 void addLeft(TreeNode *pCurr) {
     std::cout << "У данной вершины нет левого потомка. Введите значение для добавления: ";
-    int intToAdd = failure();
-    auto *pTemp = new TreeNode();
-    pTemp->left = nullptr;
-    pTemp->right = nullptr;
-    pTemp->data = intToAdd;
-    pCurr->left = pTemp;
+    int intToAdd = failure(); // вызов функции для получения значения
+    auto *pTemp = new TreeNode(); // создание новой вершины и сохранение указателя на неё в pTemp
+    pTemp->left = nullptr; // инициализация левого потомка новой вершины как nullptr
+    pTemp->right = nullptr; // инициализация правого потомка новой вершины как nullptr
+    pTemp->data = intToAdd; // инициализация значения новой вершины как intToAdd
+    pCurr->left = pTemp; // установка новой вершины в качестве левого потомка текущей вершины
     std::cout << "\nДобавлена вершина со значением " << pTemp->data << " в качестве левого потомка.\n";
 }
 
@@ -147,9 +151,9 @@ void destroyTree(TreeNode *node) {
 }
 
 // Функция вывода дерева в обратно-симметричном порядке
-void postOrderTraversal(TreeNode *pRoot, int level) {
+void printTree(TreeNode *pRoot, int level) {
     if (pRoot != nullptr) {
-        postOrderTraversal(pRoot->right, level + 1); // рекурсивно вызываем функцию для правой ветки
+        printTree(pRoot->right, level + 1); // рекурсивно вызываем функцию для правой ветки
 
         // Вывод отступов пропорциональных уровню вершины
         for (int i = 0; i < level * 5; i++) { // цикл для вывода отступов перед значением вершины
@@ -157,7 +161,7 @@ void postOrderTraversal(TreeNode *pRoot, int level) {
         }
 
         std::cout << pRoot->data << std::endl; // выводим значение корневой вершины
-        postOrderTraversal(pRoot->left, level + 1); // рекурсивно вызываем функцию для левой ветки
+        printTree(pRoot->left, level + 1); // рекурсивно вызываем функцию для левой ветки
     }
 }
 
@@ -183,7 +187,7 @@ void callMenu() {
                     break;
                 }
                 std::cout << "\nВывод дерева в обратно-симметричном порядке:\n";
-                postOrderTraversal(root, 0);
+                printTree(root, 0);
                 break;
             case 2:
                 detectedNode = nullptr;
