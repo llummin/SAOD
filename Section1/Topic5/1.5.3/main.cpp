@@ -136,6 +136,16 @@ void addNodes(TreeNode *pCurr) {
     }
 }
 
+// Уничтожение всего дерева
+void destroyTree(TreeNode *node) {
+    if (node != nullptr) {
+        destroyTree(node->left);
+        destroyTree(node->right);
+        std::cout << "Удалена вершины, со значением: " << node->data << std::endl;
+        delete node;
+    }
+}
+
 // Функция вывода дерева в обратно-симметричном порядке
 void postOrderTraversal(TreeNode *pRoot, int level) {
     if (pRoot != nullptr) {
@@ -160,8 +170,9 @@ void callMenu() {
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Вывести текущее состояние дерева\n";
         std::cout << "2. Добавление потомка вершины дерева\n";
-        std::cout << "3. Поиск заданной вершины дерева\n";
-        std::cout << "4. Завершение работы\n";
+        std::cout << "3. Удаление дерева\n";
+        std::cout << "4. Поиск заданной вершины дерева\n";
+        std::cout << "5. Завершение работы\n";
         std::cout << "_______________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
         choice = failure(1, 5);
@@ -190,6 +201,15 @@ void callMenu() {
                 }
                 break;
             case 3:
+                if (isEmpty()) {
+                    std::cout << "\nДерево пустое. Удаление невозможно! \n";
+                    break;
+                }
+                destroyTree(root);
+                root = nullptr;
+                std::cout << "\nДерево успешно уничтожено!\n";
+                break;
+            case 4:
                 detectedNode = nullptr;
                 shouldContinue = true;
                 if (isEmpty()) {
@@ -202,7 +222,7 @@ void callMenu() {
                     std::cout << "\nВершина не найдена в дереве." << std::endl;
                 }
                 break;
-            case 4:
+            case 5:
                 work = false;
                 std::cout << "\nРабота программы завершена.\n";
                 break;
