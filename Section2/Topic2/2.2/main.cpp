@@ -4,7 +4,7 @@
 #include <memory>
 #include <cmath>
 
-const int kMaxVolume = 10000;
+const int kMaxSize = 10000;
 
 // Функция вывода массива
 void printArray(const int *data, int size) {
@@ -208,8 +208,8 @@ int failure(int begin, int end) {
 // Основное меню
 void callMenu() {
     int size;
-    std::cout << "Введите размер массива (до " << kMaxVolume << "): ";
-    size = failure(1, kMaxVolume);
+    std::cout << "Введите размер массива (до " << kMaxSize << "): ";
+    size = failure(1, kMaxSize);
     auto data = createArray(size);
     auto arrCopy = std::make_unique<int[]>(size);  // создаем копию массива
     bool work = true;
