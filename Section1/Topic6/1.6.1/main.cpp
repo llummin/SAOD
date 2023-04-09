@@ -102,6 +102,43 @@ void insertRecursive(TreeNode *&cur, int newKey) {
     }
 }
 
+// Нерекурсивная функция добавления новой вершины
+void insertNonRecursive(int newKey) {
+    if (root == nullptr) {
+        root = new TreeNode();
+        root->left = nullptr;
+        root->right = nullptr;
+        root->key = newKey;
+        root->count = 1;
+        return;
+    }
+
+    TreeNode *cur = root;
+    TreeNode *prev = nullptr;
+
+    while (cur != nullptr) {
+        prev = cur;
+        if (newKey < cur->key) cur = cur->left;
+        else if (newKey > cur->key) cur = cur->right;
+        else {
+            cur->count++;
+            return;
+        }
+    }
+
+    auto *newNode = new TreeNode();
+    newNode->key = newKey;
+    newNode->count = 1;
+    newNode->left = nullptr;
+    newNode->right = nullptr;
+
+    if (newKey < prev->key) {
+        prev->left = newNode;
+    } else {
+        prev->right = newNode;
+    }
+}
+
 // Основное меню
 void callMenu() {
     bool work = true;
@@ -112,10 +149,12 @@ void callMenu() {
         std::cout << "1. Построение дерева поиска с заданным числом вершин\n";
         std::cout << "2. Вывод дерева в обратно-симметричном порядке\n";
         std::cout << "3. Вывод всех вершин в одну строку по порядку следования ключей (со счётчиками)\n";
-        std::cout << "4. Завершение работы\n";
+        std::cout << "4. Добавление новой вершины с помощью рекурсивной функции\n";
+        std::cout << "5. Добавление новой вершины с помощью нерекурсивной функции\n";
+        std::cout << "6. Завершение работы\n";
         std::cout << "___________________________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
-        choice = failure(1, 4);
+        choice = failure(1, 6);
         int inputKey;
         switch (choice) {
             case 1:
@@ -152,6 +191,18 @@ void callMenu() {
                 std::cout << "\n";
                 break;
             case 4:
+                std::cout << "\nВведите значение добавляемого ключа: ";
+                inputKey = failure();
+                insertRecursive(root, inputKey);
+                std::cout << "\nВершина с ключом " << inputKey << " рекурсивно добавлена в дерево." << std::endl;
+                break;
+            case 5:
+                std::cout << "\nВведите значение добавляемого ключа: ";
+                inputKey = failure();
+                insertNonRecursive(inputKey);
+                std::cout << "\nВершина с ключом " << inputKey << " нерекурсивно добавлена в дерево." << std::endl;
+                break;
+            case 6:
                 work = false;
                 std::cout << "\nРабота программы завершена.\n";
                 break;
