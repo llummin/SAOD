@@ -3,20 +3,21 @@
 #include <iostream>
 #include <memory>
 
-const int kMaxVolume = 10000;
+const int kMaxSize = 10000;
 
 // Функция вывода массива
 void printArray(const int *data, int size) {
-    for (int i = 0; i < size; i++) {
-        std::cout << data[i] << " ";
+    for (int i = 0; i < size; i++) { // цикл по всем элементам массива
+        std::cout << data[i] << " "; // вывод очередного элемента на экран
     }
     std::cout << "\n";
 }
 
 // Функция создания массива
 std::unique_ptr<int[]> createArray(int size) {
+    // Создание умного указателя на массив из size элементов типа int
     auto data = std::make_unique<int[]>(size);
-    std::generate(data.get(), data.get() + size, std::rand);
+    std::generate(data.get(), data.get() + size, std::rand); // заполнение массива случайными числами
     std::cout << "\nНеотсортированный массив:" << std::endl;
     printArray(data.get(), size);
     return data;
@@ -25,10 +26,10 @@ std::unique_ptr<int[]> createArray(int size) {
 // Функция выполнения сортировки пузырьком
 void bubbleSort(int *data, int size, int &compares, int &swaps) {
     compares = swaps = 0;
-    for (int i = 1; i < size; i++) {
-        for (int j = size - 1; j >= i; j--) {
-            if (data[j - 1] > data[j]) {
-                std::swap(data[j - 1], data[j]);
+    for (int i = 1; i < size; i++) { // цикл по всем элементам массива, кроме первого
+        for (int j = size - 1; j >= i; j--) { // цикл по неотсортированной части массива
+            if (data[j - 1] > data[j]) { // если предыдущий элемент больше текущего
+                std::swap(data[j - 1], data[j]); // меняем элементы местами
                 swaps++;
             }
             compares++;
@@ -40,15 +41,15 @@ void bubbleSort(int *data, int size, int &compares, int &swaps) {
 // Функция выполнения сортировки выбором
 void selectionSort(int *data, int size, int &compares, int &swaps) {
     compares = swaps = 0;
-    for (int i = 0; i < size - 1; i++) {
-        int minIdx = i;
-        for (int j = i + 1; j < size; j++) {
+    for (int i = 0; i < size - 1; i++) { // проходим по всем элементам массива, кроме последнего
+        int minIdx = i; // индекс минимального элемента устанавливаем на i
+        for (int j = i + 1; j < size; j++) { // проходим по всем элементам, начиная со следующего после i
             compares++;
-            if (data[j] < data[minIdx]) {
-                minIdx = j;
+            if (data[j] < data[minIdx]) { // если текущий элемент меньше минимального
+                minIdx = j; // обновляем индекс минимального элемента
             }
         }
-        std::swap(data[minIdx], data[i]);
+        std::swap(data[minIdx], data[i]); // меняем местами минимальный элемент и текущий элемент
         swaps++;
     }
     printArray(data, size);
@@ -57,17 +58,17 @@ void selectionSort(int *data, int size, int &compares, int &swaps) {
 // Функция выполнения сортировки вставками
 void insertionSort(int *data, int size, int &compares, int &swaps) {
     compares = swaps = 0;
-    for (int i = 1; i < size; i++) {
-        int j = i - 1;
-        int key = data[i];
-        while (j >= 0 && data[j] > key) {
+    for (int i = 1; i < size; i++) { // проходим по всем элементам массива, начиная со второго
+        int j = i - 1; // устанавливаем j на предыдущий элемент
+        int key = data[i]; // запоминаем текущий элемент
+        while (j >= 0 && data[j] > key) { // пока j >= 0 и предыдущий элемент больше текущего
             compares++;
-            data[j + 1] = data[j];
+            data[j + 1] = data[j]; // сдвигаем предыдущий элемент на одну позицию вправо
             swaps++;
             j--;
         }
         compares++;
-        data[j + 1] = key;
+        data[j + 1] = key; // вставляем текущий элемент на освободившееся место
     }
     printArray(data, size);
 }
@@ -96,8 +97,8 @@ int failure(int begin, int end) {
 // Основное меню
 void callMenu() {
     int size;
-    std::cout << "Введите размер массива (до " << kMaxVolume << "): ";
-    size = failure(1, kMaxVolume);
+    std::cout << "Введите размер массива (до " << kMaxSize << "): ";
+    size = failure(1, kMaxSize);
     auto data = createArray(size);
     auto arrCopy = std::make_unique<int[]>(size);  // создаем копию массива
     bool work = true;
