@@ -81,6 +81,21 @@ void printAllNodes(TreeNode *cur) {
     }
 }
 
+// Функция поиска вершины по ключу
+TreeNode *search(int searchKey) {
+    pCur = root;
+    while (pCur != nullptr) {
+        if (pCur->key == searchKey) {
+            return pCur;
+        } else if (pCur->key > searchKey) {
+            pCur = pCur->left;
+        } else {
+            pCur = pCur->right;
+        }
+    }
+    return nullptr;
+}
+
 // Рекурсивная функция добавления новой вершины
 void insertRecursive(TreeNode *&cur, int newKey) {
     if (cur == nullptr) {
@@ -151,10 +166,11 @@ void callMenu() {
         std::cout << "3. Вывод всех вершин в одну строку по порядку следования ключей (со счётчиками)\n";
         std::cout << "4. Добавление новой вершины с помощью рекурсивной функции\n";
         std::cout << "5. Добавление новой вершины с помощью нерекурсивной функции\n";
-        std::cout << "6. Завершение работы\n";
+        std::cout << "6. Поиск вершины с заданным значением ключа\n";
+        std::cout << "7. Завершение работы\n";
         std::cout << "___________________________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
-        choice = failure(1, 6);
+        choice = failure(1, 7);
         int inputKey;
         switch (choice) {
             case 1:
@@ -203,6 +219,19 @@ void callMenu() {
                 std::cout << "\nВершина с ключом " << inputKey << " нерекурсивно добавлена в дерево." << std::endl;
                 break;
             case 6:
+                if (isEmpty()) {
+                    std::cout << "\nДерево пустое. Поиск невозможен!" << std::endl;
+                    break;
+                }
+                std::cout << "\nВведите значение ключа, которого хотите найти: ";
+                pTemp = search(failure());
+                if (pTemp == nullptr) {
+                    std::cout << "\nЗаданный элемент не найден!\n";
+                } else {
+                    std::cout << "\nЗаданный элемент найден. Счётчик: " << pTemp->count << std::endl;
+                }
+                break;
+            case 7:
                 work = false;
                 std::cout << "\nРабота программы завершена.\n";
                 break;
