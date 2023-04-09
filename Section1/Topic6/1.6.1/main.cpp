@@ -72,7 +72,7 @@ void printPostOrder(TreeNode *pRoot, int level) {
     }
 }
 
-// Функция вывода всех вершин в одну строку по порядку следования ключей
+// Функция всех вершин в одну строку по порядку следования ключей
 void printAllNodes(TreeNode *cur) {
     if (cur != nullptr) {
         printAllNodes(cur->left);
@@ -154,6 +154,42 @@ void insertNonRecursive(int newKey) {
     }
 }
 
+// Функция удаления вершины (ближайшая большая вершина)
+void remove(TreeNode *&pRoot, int key) {
+    // Проверяем, была ли удалена вершина
+    if (pRoot == nullptr) {
+        std::cout << "Вершина с ключом " << key << " не найдена в дереве.\n";
+    } else {
+        if (key < pRoot->key) {
+            remove(pRoot->left, key);
+        } else if (key > pRoot->key) {
+            remove(pRoot->right, key);
+        } else {
+            if (pRoot->left == nullptr) {
+                TreeNode *temp = pRoot->right;
+                delete pRoot;
+                pRoot = temp;
+                std::cout << "\nВершина с ключом " << key << " удалена из дерева.\n";
+            } else if (pRoot->right == nullptr) {
+                TreeNode *temp = pRoot->left;
+                delete pRoot;
+                pRoot = temp;
+                std::cout << "\nВершина с ключом " << key << " удалена из дерева.\n";
+            } else {
+                TreeNode *min = pRoot->right;
+                while (min->left != nullptr) {
+                    min = min->left;
+                }
+                int minKey = min->key; // сохраняем значение ключа вершины-заменителя
+                pRoot->key = minKey;
+                remove(pRoot->right, minKey); // используем сохраненное значение
+                std::cout << "\nВершина с ключом " << key << " удалена из дерева.\n";
+                std::cout << "Новая вершина-заменитель: " << minKey << std::endl; // выводим сохраненное значение
+            }
+        }
+    }
+}
+
 // Основное меню
 void callMenu() {
     bool work = true;
@@ -167,10 +203,11 @@ void callMenu() {
         std::cout << "4. Добавление новой вершины с помощью рекурсивной функции\n";
         std::cout << "5. Добавление новой вершины с помощью нерекурсивной функции\n";
         std::cout << "6. Поиск вершины с заданным значением ключа\n";
-        std::cout << "7. Завершение работы\n";
+        std::cout << "7. Удаление вершины с заданным значением ключа\n";
+        std::cout << "8. Завершение работы\n";
         std::cout << "___________________________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
-        choice = failure(1, 7);
+        choice = failure(1, 8);
         int inputKey;
         switch (choice) {
             case 1:
@@ -232,8 +269,17 @@ void callMenu() {
                 }
                 break;
             case 7:
+                if (isEmpty()) {
+                    std::cout << "\nДерево пустое. Удаление невозможно!" << std::endl;
+                    break;
+                }
+                std::cout << "\nВведите ключ удаляемой вершины: ";
+                inputKey = failure();
+                remove(root, inputKey);
+                break;
+            case 8:
                 work = false;
-                std::cout << "\nРабота программы завершена.\n";
+                std::cout << "\nПрограмма завершена\n";
                 break;
             default:
                 break;
