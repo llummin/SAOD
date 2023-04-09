@@ -37,6 +37,24 @@ void bubbleSort(int *data, int size, int &compares, int &swaps) {
     printArray(data, size);
 }
 
+// Функция выполнения сортировки выбором заданного массива
+void selectionSort(int *data, int size, int &compares, int &swaps) {
+    compares = swaps = 0;
+    for (int i = 0; i < size - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < size; j++) {
+            compares++;
+            if (data[j] < data[minIdx]) {
+                minIdx = j;
+            }
+        }
+        std::swap(data[minIdx], data[i]);
+        swaps++;
+    }
+    printArray(data, size);
+}
+
+
 // Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
     int choice;
@@ -70,10 +88,11 @@ void callMenu() {
         std::cout << "____________________________________________";
         std::cout << "\nВарианты команд:\n";
         std::cout << "1. Сортировка обменом (метод пузырька)\n";
-        std::cout << "2. Завершение работы\n";
+        std::cout << "2. Сортировка выбором\n";
+        std::cout << "3. Завершение работы\n";
         std::cout << "____________________________________________\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 2);
+        int choice = failure(1, 3);
         std::copy(data.get(), data.get() + size, arrCopy.get());  // копируем неотсортированный массив
         int compares = 0, swaps = 0;
         switch (choice) {
@@ -86,6 +105,14 @@ void callMenu() {
                 std::cout << "Число перестановок: " << swaps << std::endl;
                 break;
             case 2:
+                std::cout << "\nНеотсортированный массив: \n";
+                printArray(data.get(), size);
+                std::cout << "\nОтсортированный массив: \n";
+                selectionSort(arrCopy.get(), size, compares, swaps);
+                std::cout << "\nЧисло сравнений: " << compares << std::endl;
+                std::cout << "Число перестановок: " << swaps << std::endl;
+                break;
+            case 3:
                 work = false;
                 break;
             default:
