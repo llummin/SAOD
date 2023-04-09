@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <cmath>
 
 const int kMaxVolume = 10000;
 
@@ -72,6 +73,35 @@ void insertionSort(int *data, int size, int &compares, int &swaps) {
     printArray(data, size);
 }
 
+// Функция выполнения сортировки методом Шелла
+void shellSort(int *data, int size, int &compares, int &swaps) {
+    compares = swaps = 0;
+    int t = (int) log2(size) - 1;
+    int *h = new int[t];
+    for (int m = 1; m <= t; m++) {
+        h[m - 1] = static_cast<int>(pow(2, t - m + 1)) - 1;
+    }
+
+    for (int m = 0; m < t; m++) {
+        int k = h[m];
+        for (int i = k; i < size; i++) {
+            int temp = data[i];
+            int j = i - k;
+            while (j >= 0 && temp < data[j]) {
+                compares++;
+                data[j + k] = data[j];
+                j = j - k;
+                swaps++;
+            }
+            compares++;
+            data[j + k] = temp;
+        }
+    }
+
+    delete[] h;
+    printArray(data, size);
+}
+
 // Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
     int choice;
@@ -107,10 +137,11 @@ void callMenu() {
         std::cout << "1. Сортировка обменом (метод пузырька)\n";
         std::cout << "2. Сортировка выбором\n";
         std::cout << "3. Сортировка вставками\n";
-        std::cout << "4. Завершение работы\n";
+        std::cout << "4. Сортировка методом Шелла\n";
+        std::cout << "5. Завершение работы\n";
         std::cout << "____________________________________________\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 4);
+        int choice = failure(1, 5);
         std::copy(data.get(), data.get() + size, arrCopy.get());  // копируем неотсортированный массив
         int compares = 0, swaps = 0;
         switch (choice) {
@@ -139,6 +170,14 @@ void callMenu() {
                 std::cout << "Число перестановок: " << swaps << std::endl;
                 break;
             case 4:
+                std::cout << "\nНеотсортированный массив: \n";
+                printArray(data.get(), size);
+                std::cout << "\nОтсортированный массив: \n";
+                shellSort(arrCopy.get(), size, compares, swaps);
+                std::cout << "\nЧисло сравнений: " << compares << std::endl;
+                std::cout << "Число перестановок: " << swaps << std::endl;
+                break;
+            case 5:
                 work = false;
                 break;
             default:
