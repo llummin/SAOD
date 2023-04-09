@@ -72,6 +72,15 @@ void printPostOrder(TreeNode *pRoot, int level) {
     }
 }
 
+// Функция вывода всех вершин в одну строку по порядку следования ключей
+void printAllNodes(TreeNode *cur) {
+    if (cur != nullptr) {
+        printAllNodes(cur->left);
+        std::cout << cur->key << " (" << cur->count << ")  ";
+        printAllNodes(cur->right);
+    }
+}
+
 // Рекурсивная функция добавления новой вершины
 void insertRecursive(TreeNode *&cur, int newKey) {
     if (cur == nullptr) {
@@ -102,10 +111,11 @@ void callMenu() {
         std::cout << "\nВарианты команд:\n";
         std::cout << "1. Построение дерева поиска с заданным числом вершин\n";
         std::cout << "2. Вывод дерева в обратно-симметричном порядке\n";
-        std::cout << "3. Завершение работы\n";
+        std::cout << "3. Вывод всех вершин в одну строку по порядку следования ключей (со счётчиками)\n";
+        std::cout << "4. Завершение работы\n";
         std::cout << "___________________________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
-        choice = failure(1, 3);
+        choice = failure(1, 4);
         int inputKey;
         switch (choice) {
             case 1:
@@ -133,6 +143,15 @@ void callMenu() {
                 printPostOrder(root, 0);
                 break;
             case 3:
+                if (isEmpty()) {
+                    std::cout << "\nДерево пустое!\n";
+                    break;
+                }
+                std::cout << "\nВывод дерева в виде упорядоченной строки вершин: ";
+                printAllNodes(root);
+                std::cout << "\n";
+                break;
+            case 4:
                 work = false;
                 std::cout << "\nРабота программы завершена.\n";
                 break;
