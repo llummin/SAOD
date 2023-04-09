@@ -44,6 +44,28 @@ void simpleBucketSort(int *data, int size, int &swaps) {
     delete[] bucket;
 }
 
+// Функция выполнения простейшей карманной сортировки без использования второго массива
+void simpleBucketSortNoBucket(int *data, int size, int &compares, int &swaps) {
+    compares = 0;
+    swaps = 0;
+    int temp;
+    for (int i = 0; i < size; i++) {
+        temp = data[i];
+        while (temp != i) {
+            swaps++;
+            compares++;
+            data[i] = data[temp];
+            data[temp] = temp;
+            temp = data[i];
+        }
+        compares++;
+    }
+    std::cout << std::endl << "Отсортированный массив:\n";
+    printArray(data, size);
+    std::cout << "\nКоличество перестановок: " << swaps << std::endl;
+    std::cout << "Количество сравнений: " << compares << std::endl;
+}
+
 // Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
     int choice;
@@ -75,10 +97,11 @@ void callMenu() {
         std::cout << "__________________________________________________________________________";
         std::cout << "\nВведите номер команды: \n";
         std::cout << "1. Простейшая карманная сортировка с использованием второго массива\n";
-        std::cout << "2. Завершение работы\n";
+        std::cout << "2. Простейшая карманная сортировка без использованием второго массива\n";
+        std::cout << "3. Завершение работы\n";
         std::cout << "__________________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 5);
+        int choice = failure(1, 3);
         switch (choice) {
             case 1:
                 std::cout << "Введите размер массива (до " << kMaxSize << "): ";
@@ -90,6 +113,15 @@ void callMenu() {
                 simpleBucketSort(mainArray, size, compares);
                 break;
             case 2:
+                std::cout << "Введите размер массива (до " << kMaxSize << "): ";
+                size = failure(1, kMaxSize);
+                mainArray = new int[size];
+                createUniqueArray(mainArray, size);
+                std::cout << "\nНеотсортированный массив: \n";
+                printArray(mainArray, size);
+                simpleBucketSortNoBucket(mainArray, size, compares, swaps);
+                break;
+            case 3:
                 work = false;
                 std::cout << "\nРабота программы завершена.\n";
                 break;
