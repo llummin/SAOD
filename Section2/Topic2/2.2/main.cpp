@@ -102,6 +102,36 @@ void shellSort(int *data, int size, int &compares, int &swaps) {
     printArray(data, size);
 }
 
+// Функция выполнения сортировки методом быстрой сортировки
+void quickSort(int *data, int begin, int end, int &compares, int &swaps) {
+    int i = begin, j = end;
+    int pivot = data[(begin + end) / 2];
+
+    while (i <= j) {
+        while (data[i] < pivot) {
+            i++;
+            compares++;
+        }
+        while (data[j] > pivot) {
+            j--;
+            compares++;
+        }
+        if (i <= j) {
+            std::swap(data[i], data[j]);
+            i++;
+            j--;
+            swaps++;
+        }
+    }
+
+    if (begin < j) {
+        quickSort(data, begin, j, compares, swaps);
+    }
+    if (i < end) {
+        quickSort(data, i, end, compares, swaps);
+    }
+}
+
 // Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
     int choice;
@@ -138,10 +168,11 @@ void callMenu() {
         std::cout << "2. Сортировка выбором\n";
         std::cout << "3. Сортировка вставками\n";
         std::cout << "4. Сортировка методом Шелла\n";
-        std::cout << "5. Завершение работы\n";
+        std::cout << "5. Сортировка методом быстрой сортировки\n";
+        std::cout << "6. Завершение работы\n";
         std::cout << "____________________________________________\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 5);
+        int choice = failure(1, 6);
         std::copy(data.get(), data.get() + size, arrCopy.get());  // копируем неотсортированный массив
         int compares = 0, swaps = 0;
         switch (choice) {
@@ -178,6 +209,15 @@ void callMenu() {
                 std::cout << "Число перестановок: " << swaps << std::endl;
                 break;
             case 5:
+                std::cout << "\nНеотсортированный массив: \n";
+                printArray(data.get(), size);
+                std::cout << "\nОтсортированный массив: \n";
+                quickSort(arrCopy.get(), 0, size - 1, compares, swaps);
+                printArray(arrCopy.get(), size);
+                std::cout << "\nЧисло сравнений: " << compares << std::endl;
+                std::cout << "Число перестановок: " << swaps << std::endl;
+                break;
+            case 6:
                 work = false;
                 break;
             default:
