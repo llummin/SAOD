@@ -121,6 +121,51 @@ void bucketSort(int *data, int size, int &swaps) {
     delete[] sortedArray;
 }
 
+// Функция выполнения поразрядной сортировки
+void radixSort(int *data, int size, int &swaps) {
+    int max = 0;
+    for (int i = 0; i < size; i++) {
+        if (data[i] > max)
+            max = data[i]; // поиск максимального элемента
+    }
+
+    auto *sortedArray = new ListItem[10];
+    int i = 0;
+    int div = 1; // значение делителя
+    swaps = 0; // счетчик перестановок
+
+    while (max / div > 0) {
+        i++;
+        for (int j = 0; j < 10; j++)
+            sortedArray[j].next = nullptr;
+
+        // Распределение элементов в списки
+        for (int j = 0; j < size; j++) {
+            int digit = (data[j] / div) % 10;
+            addItem(&sortedArray[digit], data[j]);
+            swaps++;
+        }
+
+        // Сборка элементов из списков
+        int index = 0;
+        for (int j = 0; j < 10; j++) {
+            ListItem *tmp = sortedArray[j].next;
+            while (tmp != nullptr) {
+                data[index] = tmp->data;
+                tmp = tmp->next;
+                index++;
+            }
+        }
+
+        div *= 10; // увеличение делителя
+    }
+
+    std::cout << "\nОтсортированный массив:" << std::endl;
+    printArray(data, size);
+    std::cout << "\nКоличество перестановок: " << swaps << std::endl;
+    delete[] sortedArray; // освобождение памяти
+}
+
 // Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
     int choice;
@@ -154,10 +199,11 @@ void callMenu() {
         std::cout << "1. Простейшая карманная сортировка с использованием второго массива\n";
         std::cout << "2. Простейшая карманная сортировка без использованием второго массива\n";
         std::cout << "3. Обобщённая карманная сортировка\n";
-        std::cout << "4. Завершение работы\n";
+        std::cout << "4. Поразрядная сортировка\n";
+        std::cout << "5. Завершение работы\n";
         std::cout << "__________________________________________________________________________\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 4);
+        int choice = failure(1, 5);
         switch (choice) {
             case 1:
                 std::cout << "Введите размер массива (до " << kMaxSize << "): ";
@@ -189,6 +235,17 @@ void callMenu() {
                 bucketSort(mainArray, size, swaps);
                 break;
             case 4:
+                std::cout << "Введите размер массива (до " << kMaxSize << "): ";
+                size = failure(1, kMaxSize);
+                mainArray = new int[size];
+                for (int i = 0; i < size; i++) {
+                    mainArray[i] = rand() % size;
+                }
+                std::cout << "\nНеотсортированный массив: \n";
+                printArray(mainArray, size);
+                radixSort(mainArray, size, swaps);
+                break;
+            case 5:
                 work = false;
                 std::cout << "\nРабота программы завершена.\n";
                 break;
