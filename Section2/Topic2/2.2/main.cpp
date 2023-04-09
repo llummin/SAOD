@@ -133,46 +133,46 @@ void quickSort(int *data, int begin, int end, int &compares, int &swaps) {
 }
 
 // Вспомогательная функция по просеиванию элементов
-void heapify(int *data, int left, int right, int &swaps) {
-    int i = left;
-    int j = 2 * left;
-    int x = data[left];
-
+void heapify(int *data, int left, int right, int &compares, int &swaps) {
+    int i = left, j = 2 * left, x = data[left];
     if (j < right && data[j + 1] > data[j]) {
         j++;
     }
-
+    compares++;
     while (j <= right && data[j] > x) {
+        compares++;
         data[i] = data[j];
         i = j;
         j = 2 * j;
-
+        swaps++;
         if (j < right && data[j + 1] > data[j]) {
             j++;
         }
-        swaps++;
+        compares++;
     }
+    compares++;
     data[i] = x;
+    swaps++;
 }
 
 // Функция выполнения пирамидальной сортировки
 void heapSort(int *data, int size, int &compares, int &swaps) {
-    int left = size / 2 + 1;
-    int right = size;
+    compares = swaps = 0;
+    int left = (size / 2) + 2;
+    int right = size - 1;
 
-    while (left > 1) {
+    while (left > 0) {
         left--;
-        heapify(data, left, right, swaps);
+        heapify(data, left, right, compares, swaps);
     }
 
-    while (right > 1) {
-        int temp = data[1];
-        data[1] = data[right];
-        data[right] = temp;
+    while (right > 0) {
+        std::swap(data[0], data[right]);
+        swaps++;
         right--;
-        heapify(data, left, right, swaps);
-        compares++;
+        heapify(data, left, right, compares, swaps);
     }
+    printArray(data, size);
 }
 
 // Ввод целочисленного значения с проверкой интервала
