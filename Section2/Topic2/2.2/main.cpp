@@ -132,6 +132,49 @@ void quickSort(int *data, int begin, int end, int &compares, int &swaps) {
     }
 }
 
+// Вспомогательная функция по просеиванию элементов
+void heapify(int *data, int left, int right, int &swaps) {
+    int i = left;
+    int j = 2 * left;
+    int x = data[left];
+
+    if (j < right && data[j + 1] > data[j]) {
+        j++;
+    }
+
+    while (j <= right && data[j] > x) {
+        data[i] = data[j];
+        i = j;
+        j = 2 * j;
+
+        if (j < right && data[j + 1] > data[j]) {
+            j++;
+        }
+        swaps++;
+    }
+    data[i] = x;
+}
+
+// Функция выполнения пирамидальной сортировки
+void heapSort(int *data, int size, int &compares, int &swaps) {
+    int left = size / 2 + 1;
+    int right = size;
+
+    while (left > 1) {
+        left--;
+        heapify(data, left, right, swaps);
+    }
+
+    while (right > 1) {
+        int temp = data[1];
+        data[1] = data[right];
+        data[right] = temp;
+        right--;
+        heapify(data, left, right, swaps);
+        compares++;
+    }
+}
+
 // Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
     int choice;
@@ -169,10 +212,11 @@ void callMenu() {
         std::cout << "3. Сортировка вставками\n";
         std::cout << "4. Сортировка методом Шелла\n";
         std::cout << "5. Сортировка методом быстрой сортировки\n";
-        std::cout << "6. Завершение работы\n";
+        std::cout << "6. Пирамидальная сортировка\n";
+        std::cout << "7. Завершение работы\n";
         std::cout << "____________________________________________\n";
         std::cout << "Введите номер команды: ";
-        int choice = failure(1, 6);
+        int choice = failure(1, 7);
         std::copy(data.get(), data.get() + size, arrCopy.get());  // копируем неотсортированный массив
         int compares = 0, swaps = 0;
         switch (choice) {
@@ -218,6 +262,14 @@ void callMenu() {
                 std::cout << "Число перестановок: " << swaps << std::endl;
                 break;
             case 6:
+                std::cout << "\nНеотсортированный массив: \n";
+                printArray(data.get(), size);
+                std::cout << "\nОтсортированный массив: \n";
+                heapSort(arrCopy.get(), size, compares, swaps);
+                std::cout << "\nЧисло сравнений: " << compares << std::endl;
+                std::cout << "Число перестановок: " << swaps << std::endl;
+                break;
+            case 7:
                 work = false;
                 break;
             default:
