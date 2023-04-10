@@ -1,41 +1,40 @@
 // Раздел 2, тема 4, номер 1 - БЕСКОНФЛИКТНАЯ ХЕШ-ТАБЛИЦА
 
 #include <iostream>
-#include <string>
 
 const int kArraySize = 10;
 
 // Функция вычисления хэш-кода
 int hash(const std::string &key) {
     int code = 0;
-    for (char i: key) {
-        code += (int) i;
+    for (char i: key) { // цикл по символам ключа
+        code += (int) i; // прибавление кода символа к общему коду ключа
     }
-    return code % kArraySize;
+    return code % kArraySize; // вычисление остатка от деления кода ключа на размер массива
 }
 
 // Функция создания хэш-таблицы на основе массива ключей
 void createHashTable(std::string *&hashTable, std::string *keys) {
-    for (int i = 0; i < kArraySize; i++) {
-        hashTable[hash(keys[i])] = keys[i];
+    for (int i = 0; i < kArraySize; i++) { // цикл по всем элементам массива ключей
+        hashTable[hash(keys[i])] = keys[i]; // расстановка ключей в ячейки таблицы в соответствии с их хэш-кодом
     }
 }
 
 // Функция вывода хэш-таблицы в консоль
 void printHashTable(std::string *hashTable) {
     std::cout << "-----------------------" << std::endl;
-    for (int i = 0; i < kArraySize; i++) {
-        std::cout << "| " << i << " | " << hashTable[i] << std::endl;
+    for (int i = 0; i < kArraySize; i++) { // цикл по всем ячейкам таблицы
+        std::cout << "| " << i << " | " << hashTable[i] << std::endl; // вывод номера ячейки и ее содержимого
         std::cout << "-----------------------" << std::endl;
     }
 }
 
 // Функция поиска ключа в хэш-таблице
 int keySearch(const std::string &key, std::string *hashTable) {
-    if (hashTable[hash(key)] == key) {
-        return hash(key);
+    if (hashTable[hash(key)] == key) { // проверка соответствия ключа его хэш-коду и содержимому ячейки таблицы
+        return hash(key); // возврат номера ячейки, если ключ найден
     }
-    return -1;
+    return -1; // возврат -1, если ключ не найден
 }
 
 // Ввод целочисленного значения с проверкой интервала
@@ -118,7 +117,7 @@ void callMenu(std::string *&hashTable, std::string *keys) {
                     if (index == -1) {
                         std::cout << "\nТакого ключа нет!" << std::endl;
                     } else {
-                        std::cout << "\nКлюч " << key << " в хеш таблице имеет место " << index << "." << std::endl;
+                        std::cout << "\nКлюч " << key << " в хеш-таблица имеет место " << index << "." << std::endl;
                     }
                 } else {
                     std::cout << "\nХеш-таблица пуста!" << std::endl;
