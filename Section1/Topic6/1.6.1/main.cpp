@@ -58,17 +58,11 @@ bool isEmpty() {
 }
 
 // Функция вывода дерева в обратно-симметричном порядке
-void printPostOrder(TreeNode *pRoot, int level) {
-    if (pRoot != nullptr) {
-        printPostOrder(pRoot->right, level + 1); // рекурсивно вызываем функцию для правой ветки
-
-        // Вывод отступов пропорциональных уровню вершины
-        for (int i = 0; i < level * 5; i++) { // цикл для вывода отступов перед значением вершины
-            std::cout << " ";
-        }
-
-        std::cout << pRoot->key << std::endl; // выводим значение корневой вершины
-        printPostOrder(pRoot->left, level + 1); // рекурсивно вызываем функцию для левой ветки
+void printPostOrder(TreeNode *node, const std::string &prefix = "", bool isRight = false) {
+    if (node != nullptr) {
+        printPostOrder(node->right, prefix + (isRight ? "    " : "│   "), true);
+        std::cout << prefix << (isRight ? "┌── " : "└── ") << node->key << std::endl;
+        printPostOrder(node->left, prefix + (isRight ? "│   " : "    "), false);
     }
 }
 
@@ -232,7 +226,7 @@ void callMenu() {
                     break;
                 }
                 std::cout << "\nВывод дерева в обратно-симметричном порядке:\n";
-                printPostOrder(root, 0);
+                printPostOrder(root);
                 break;
             case 3:
                 if (isEmpty()) {
