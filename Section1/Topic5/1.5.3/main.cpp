@@ -98,11 +98,14 @@ void addLeft(TreeNode *pCurr) {
 void addRight(TreeNode *pCurr) {
     std::cout << "У данной вершины нет правого потомка. Введите значение для добавления: ";
     int intToAdd = failure();
+    // Создание новой вершины и присвоение значение intToAdd
     auto *pTemp = new TreeNode();
     pTemp->left = nullptr;
     pTemp->right = nullptr;
     pTemp->data = intToAdd;
+    // Присвоение указателю pCurr->right адреса созданной вершины pTemp
     pCurr->right = pTemp;
+    // Вывод сообщения о том, что вершина успешно добавлена и какое значение она имеет
     std::cout << "\nДобавлена вершина со значением " << pTemp->data << " в качестве правого потомка.\n";
 }
 
@@ -110,14 +113,18 @@ void addRight(TreeNode *pCurr) {
 void addNewNode(TreeNode *pCurr, int whereToAdd) {
     std::cout << "\nВведите значение для новой вершины: ";
     int intToAdd = failure();
+    // Создание новой вершины и присвоение значение intToAdd
     auto *pTemp = new TreeNode();
     pTemp->left = nullptr;
     pTemp->right = nullptr;
     pTemp->data = intToAdd;
+    // Проверка, куда добавлять новую вершину
     if (whereToAdd == 1) {
+        // Присвоение указателю pCurr->left адреса созданной вершины pTemp и вывод сообщения об успешном добавлении
         pCurr->left = pTemp;
         std::cout << "\nДобавлена вершина со значением " << pTemp->data << " в качестве левого потомка.\n";
     } else {
+        // Присвоение указателю pCurr->right адреса созданной вершины pTemp и вывод сообщения об успешном добавлении
         pCurr->right = pTemp;
         std::cout << "\nДобавлена вершина со значением " << pTemp->data << " в качестве правого потомка.\n";
     }
@@ -125,13 +132,13 @@ void addNewNode(TreeNode *pCurr, int whereToAdd) {
 
 // Функция добавления вершин
 void addNodes(TreeNode *pCurr) {
-    if (pCurr->left != nullptr && pCurr->right != nullptr) {
+    if (pCurr->left != nullptr && pCurr->right != nullptr) { // если у текущей вершины уже есть оба потомка
         std::cout << "У данной вершины уже есть оба потомка.\n";
-    } else if (pCurr->left == nullptr && pCurr->right != nullptr) {
+    } else if (pCurr->left == nullptr && pCurr->right != nullptr) { // если у текущей вершины есть только правый потомок
         addLeft(pCurr);
-    } else if (pCurr->left != nullptr && pCurr->right == nullptr) {
+    } else if (pCurr->left != nullptr && pCurr->right == nullptr) { // если у текущей вершины есть только левый потомок
         addRight(pCurr);
-    } else {
+    } else { // если у текущей вершины нет потомков, запрашиваем у пользователя
         int whereToAdd;
         std::cout << "У данной вершины нет потомков. В какую сторону добавить новую вершину?";
         std::cout << "\n1. Влево\n2. Вправо\nВаш выбор: ";
@@ -142,6 +149,7 @@ void addNodes(TreeNode *pCurr) {
 
 // Уничтожение всего дерева
 void destroyTree(TreeNode *node) {
+    // Если вершина не равна nullptr, вызываем функцию destroyTree для левого и правого потомков
     if (node != nullptr) {
         destroyTree(node->left);
         destroyTree(node->right);

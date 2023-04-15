@@ -4,15 +4,15 @@
 #include <random>
 
 struct TreeNode {
-    int key;
-    int count;
-    TreeNode *left;
-    TreeNode *right;
+    int key;  // ключ вершины
+    int count;  // счетчик количества вершин с таким же ключом
+    TreeNode *left;  // указатель на левое поддерево
+    TreeNode *right;  // указатель на правое поддерево
 };
 
-TreeNode *root;
-TreeNode *pTemp;
-TreeNode *pCur;
+TreeNode *root; // указатель на корень дерева
+TreeNode *pTemp; // указатель на временную вершину
+TreeNode *pCur; // указатель на текущую вершину
 
 // Ввод целочисленного значения с проверкой
 int failure() {
@@ -60,33 +60,45 @@ bool isEmpty() {
 // Функция вывода дерева в обратно-симметричном порядке
 void printPostOrder(TreeNode *node, const std::string &prefix = "", bool isRight = false) {
     if (node != nullptr) {
+        // Рекурсивный вызов для правого поддерева
         printPostOrder(node->right, prefix + (isRight ? "    " : "│   "), true);
+        // Вывод вершины
         std::cout << prefix << (isRight ? "┌── " : "└── ") << node->key << std::endl;
+        // Рекурсивный вызов для левого поддерева
         printPostOrder(node->left, prefix + (isRight ? "│   " : "    "), false);
     }
 }
 
-// Функция всех вершин в одну строку по порядку следования ключей
+// Функция вывода всех вершин в одну строку по порядку следования ключей
 void printAllNodes(TreeNode *cur) {
     if (cur != nullptr) {
+        // Рекурсивный вызов для левого поддерева
         printAllNodes(cur->left);
+        // Вывод ключа и счетчика вершины
         std::cout << cur->key << " (" << cur->count << ")  ";
+        // Рекурсивный вызов для правого поддерева
         printAllNodes(cur->right);
     }
 }
 
 // Функция поиска вершины по ключу
 TreeNode *search(int searchKey) {
+    // Устанавливаем текущую вершину в корень дерева
     pCur = root;
+    // Пока не достигнут конец дерева
     while (pCur != nullptr) {
         if (pCur->key == searchKey) {
+            // Если ключ найден, возвращаем указатель на вершину
             return pCur;
         } else if (pCur->key > searchKey) {
+            // Если ключ меньше текущего, переходим в левое поддерево
             pCur = pCur->left;
         } else {
+            // Иначе переходим в правое поддерево
             pCur = pCur->right;
         }
     }
+    // Если ключ не найден, возвращаем nullptr
     return nullptr;
 }
 
@@ -113,72 +125,73 @@ void insertRecursive(TreeNode *&cur, int newKey) {
 
 // Нерекурсивная функция добавления новой вершины
 void insertNonRecursive(int newKey) {
-    if (root == nullptr) {
-        root = new TreeNode();
-        root->left = nullptr;
-        root->right = nullptr;
-        root->key = newKey;
-        root->count = 1;
+    if (root == nullptr) { // если дерево пустое
+        root = new TreeNode(); // создаем корень дерева
+        root->left = nullptr; // указываем, что левого потомка нет
+        root->right = nullptr; // указываем, что правого потомка нет
+        root->key = newKey; // устанавливаем ключ корня
+        root->count = 1; // количество узлов в корне равно 1
         return;
     }
 
-    TreeNode *cur = root;
-    TreeNode *prev = nullptr;
+    TreeNode *cur = root; // указатель на текущий узел равен корню
+    TreeNode *prev = nullptr; // указатель на предыдущий узел равен нулю
 
-    while (cur != nullptr) {
-        prev = cur;
-        if (newKey < cur->key) cur = cur->left;
-        else if (newKey > cur->key) cur = cur->right;
-        else {
-            cur->count++;
+    while (cur != nullptr) { // пока текущий узел не нулевой
+        prev = cur; // предыдущий узел равен текущему
+        if (newKey < cur->key) { // если ключ меньше текущего, переходим к левому потомку
+            cur = cur->left;
+        } else if (newKey > cur->key) { // если ключ больше текущего, переходим к правому потомку
+            cur = cur->right;
+        } else { // Иначе, если ключ равен текущему
+            cur->count++; // увеличиваем количество узлов в текущем узле
             return;
         }
     }
 
-    auto *newNode = new TreeNode();
-    newNode->key = newKey;
-    newNode->count = 1;
-    newNode->left = nullptr;
-    newNode->right = nullptr;
+    auto *newNode = new TreeNode(); // создаем новый узел
+    newNode->key = newKey; // устанавливаем ключ нового узла
+    newNode->count = 1; // количество узлов в новом узле равно 1
+    newNode->left = nullptr; // указываем, что левого потомка нет
+    newNode->right = nullptr; // указываем, что правого потомка нет
 
-    if (newKey < prev->key) {
-        prev->left = newNode;
-    } else {
-        prev->right = newNode;
+    if (newKey < prev->key) { // если ключ меньше ключа предыдущего узла
+        prev->left = newNode; // устанавливаем новый узел в качестве левого потомка предыдущего узла
+    } else { // иначе, если ключ больше ключа предыдущего узла
+        prev->right = newNode; // устанавливаем новый узел в качестве правого потомка предыдущего узла
     }
 }
 
 // Функция удаления вершины (ближайшая большая вершина)
-void remove(TreeNode *&pRoot, int key) {
-    // Проверяем, была ли удалена вершина
-    if (pRoot == nullptr) {
-        std::cout << "Вершина с ключом " << key << " не найдена в дереве.\n";
+void remove(TreeNode *&pRoot, int key) { // объявляем функцию удаления узла
+    if (pRoot == nullptr) { // проверяем, была ли удалена вершина
+        std::cout << "Вершина с ключом " << key << " не найдена в дереве.\n"; // выводим сообщение об ошибке
     } else {
-        if (key < pRoot->key) {
-            remove(pRoot->left, key);
-        } else if (key > pRoot->key) {
-            remove(pRoot->right, key);
-        } else {
-            if (pRoot->left == nullptr) {
-                TreeNode *temp = pRoot->right;
-                delete pRoot;
-                pRoot = temp;
+        if (key < pRoot->key) { // если ключ удаляемого узла меньше ключа текущего узла
+            remove(pRoot->left, key); // рекурсивно вызываем функцию удаления для левого поддерева
+        } else if (key > pRoot->key) { // если ключ удаляемого узла больше ключа текущего узла
+            remove(pRoot->right, key); // рекурсивно вызываем функцию удаления для правого поддерева
+        } else { // если ключи совпадают
+            if (pRoot->left == nullptr) { // если левое поддерево отсутствует
+                TreeNode *temp = pRoot->right; // временный указатель на правое поддерево
+                delete pRoot; // удаляем узел
+                pRoot = temp; // текущий узел становится правым поддеревом
                 std::cout << "\nВершина с ключом " << key << " удалена из дерева.\n";
-            } else if (pRoot->right == nullptr) {
-                TreeNode *temp = pRoot->left;
-                delete pRoot;
-                pRoot = temp;
+            } else if (pRoot->right == nullptr) { // если правое поддерево отсутствует
+                TreeNode *temp = pRoot->left; // временный указатель на левое поддерево
+                delete pRoot; // удаляем узел
+                pRoot = temp; // текущий узел становится левым поддеревом
                 std::cout << "\nВершина с ключом " << key << " удалена из дерева.\n";
-            } else {
-                TreeNode *min = pRoot->right;
-                while (min->left != nullptr) {
+            } else { // если у удаляемого узла есть оба поддерева
+                TreeNode *min = pRoot->right; // указатель на минимальный элемент в правом поддереве
+                while (min->left != nullptr) { // ищем минимальный элемент в правом поддереве
                     min = min->left;
                 }
                 int minKey = min->key; // сохраняем значение ключа вершины-заменителя
-                pRoot->key = minKey;
-                remove(pRoot->right, minKey); // используем сохраненное значение
+                pRoot->key = minKey; // заменяем ключ удаляемого узла на ключ вершины-заменителя
+                remove(pRoot->right, minKey); // рекурсивно вызываем функцию удаления для правого поддерева
                 std::cout << "\nВершина с ключом " << key << " удалена из дерева.\n";
-                std::cout << "Новая вершина-заменитель: " << minKey << std::endl; // выводим сохраненное значение
+                std::cout << "Новая вершина-заменитель: " << minKey << std::endl;
             }
         }
     }
