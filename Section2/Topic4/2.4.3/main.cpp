@@ -1,26 +1,30 @@
+// Раздел 2, тема 4, номер 3 - МЕТОД ОТКРЫТОГО ХЕШИРОВАНИЯ
+
 #include <iostream>
 
-const int mTableSize = 5;
-int count = 0;
+const int mTableSize = 5; // Константа, определяющая размер хэш-таблицы
+int count = 0; // Счетчик элементов в хэш-таблице
 
+// Структура для узла с ключом и значением
 struct KeyValueNode {
-    KeyValueNode *next{};
-    std::string key;
+    KeyValueNode *next{}; // Указатель на следующий узел
+    std::string key; // Ключ
 };
 
+// Структура для узла хэш-таблицы
 struct HashTableNode {
-    std::string key;
-    KeyValueNode *begin{};
-    KeyValueNode *end{};
+    std::string key; // Ключ
+    KeyValueNode *begin{}; // Указатель на начало списка узлов с ключами и значениями
+    KeyValueNode *end{}; // Указатель на конец списка узлов с ключами и значениями
 };
 
-// Функция инициализации очереди
+// Функция инициализации очереди (хэш-таблицы)
 void initQueue(HashTableNode *hashTable[]) {
     for (int i = 0; i < mTableSize; i++) {
-        hashTable[i] = new HashTableNode();
-        hashTable[i]->key = "";
-        hashTable[i]->begin = nullptr;
-        hashTable[i]->end = nullptr;
+        hashTable[i] = new HashTableNode(); // Создание нового узла хэш-таблицы
+        hashTable[i]->key = ""; // Инициализация ключа пустым значением
+        hashTable[i]->begin = nullptr; // Инициализация начала списка узлов пустым значением
+        hashTable[i]->end = nullptr; // Инициализация конца списка узлов пустым значением
     }
 }
 
@@ -54,104 +58,105 @@ void printHashTable(HashTableNode **hashTable) {
 // Функция поиска ключа в хэш-таблице
 int findKey(HashTableNode **hashTable, const std::string &key, int &counter) {
     KeyValueNode *current;
-    counter = 0;
-    int index = hashCode(key);
+    counter = 0; // Счетчик сравнений
+    int index = hashCode(key); // Вычисление хэш-кода ключа
     counter++;
-    if (hashTable[index]->key == key) {
+    if (hashTable[index]->key == key) { // Если ключ найден в самом узле хэш-таблицы
         return index;
     }
     current = hashTable[index]->begin;
-    while (current != nullptr) {
+    while (current != nullptr) { // Поиск ключа в списке узлов
         counter++;
         if (current->key == key) {
             return index;
         }
         current = current->next;
     }
-    return -1;
+    return -1; // Ключ не найден
 }
 
 // Функция добавления ключа в хэш-таблицу
 void insertKey(HashTableNode **hashTable, const std::string &key) {
-    int counter = 0;
-    KeyValueNode *temp;
-    int index = hashCode(key);
+    int counter = 0; // Счетчик числа сравнений
+    KeyValueNode *temp; // Временный указатель на узел
+    int index = hashCode(key); // Вычисление хэш-кода ключа
 
     counter++;
-    if ((hashTable[index]->key).empty()) {
-        hashTable[index]->key = key;
+    if ((hashTable[index]->key).empty()) { // Если ячейка хэш-таблицы пуста
+        hashTable[index]->key = key; // Присваиваем ключу значение
         std::cout << "\nКлюч добавлен успешно. Число сравнений: " << counter << "\n";
-        count++;
+        count++; // Увеличиваем счетчик элементов в хэш-таблице
         return;
     }
 
     counter++;
-    if (hashTable[index]->key == key) {
+    if (hashTable[index]->key == key) { // Если ключ уже присутствует в ячейке
         std::cout << "\nДанный ключ уже находится в ячейке. Число сравнений: " << counter << "\n";
         return;
     }
 
     counter++;
-    if (hashTable[index]->begin == nullptr) {
-        hashTable[index]->begin = hashTable[index]->end = temp = new KeyValueNode();
-        temp->key = key;
+    if (hashTable[index]->begin == nullptr) { // Если список узлов пуст
+        hashTable[index]->begin = hashTable[index]->end = temp = new KeyValueNode(); // Создаем новый узел
+        temp->key = key; // Присваиваем ключу значение
         temp->next = nullptr;
         std::cout << "\nКлюч добавлен успешно. Число сравнений: " << counter << "\n";
-        count++;
-    } else {
-        temp = new KeyValueNode();
-        temp->key = key;
+        count++; // Увеличиваем счетчик элементов в хэш-таблице
+    } else { // Если список узлов не пуст
+        temp = new KeyValueNode(); // Создаем новый узел
+        temp->key = key; // Присваиваем ключу значение
         temp->next = nullptr;
-        hashTable[index]->end->next = temp;
+        hashTable[index]->end->next = temp; // Связываем новый узел с последним узлом в списке
         std::cout << "\nКлюч добавлен успешно. Число сравнений: " << counter << "\n";
-        count++;
+        count++; // Увеличиваем счетчик элементов в хэш-таблице
     }
 }
 
 // Функция удаления ключа из хэш-таблицы
 void removeKey(HashTableNode **hashTable, const std::string &key) {
-    int index = hashCode(key);
-    HashTableNode *currentCell = hashTable[index];
+    int index = hashCode(key); // Вычисление хэш-кода ключа
+    HashTableNode *currentCell = hashTable[index]; // Получение текущей ячейки хэш-таблицы
 
-    if (currentCell->key == key) {
-        if (currentCell->begin == nullptr) {
-            currentCell->key = "";
+    if (currentCell->key == key) { // Если ключ найден в самом узле хэш-таблицы
+        if (currentCell->begin == nullptr) { // Если список узлов пуст
+            currentCell->key = ""; // Очищаем ключ
         } else {
-            currentCell->key = currentCell->begin->key;
-            if (currentCell->end != currentCell->begin) {
+            currentCell->key = currentCell->begin->key; // Заменяем ключ на ключ первого узла
+            if (currentCell->end != currentCell->begin) { // Если в списке есть более одного узла
                 KeyValueNode *temp = currentCell->begin;
-                currentCell->begin = currentCell->begin->next;
-                delete temp;
-            } else {
-                delete currentCell->begin;
+                currentCell->begin = currentCell->begin->next; // Переустанавливаем начало списка
+                delete temp; // Удаляем первый узел
+            } else { // Если в списке только один узел
+                delete currentCell->begin; // Удаляем первый и последний узел
                 currentCell->begin = currentCell->end = nullptr;
             }
         }
-        count--;
+        count--; // Уменьшаем счетчик элементов в хэш-таблице
         std::cout << "\nКлюч успешно удален\n";
         return;
     }
 
-    KeyValueNode *curr = currentCell->begin;
-    KeyValueNode *prev = nullptr;
+    KeyValueNode *curr = currentCell->begin; // Указатель на текущий узел
+    KeyValueNode *prev = nullptr; // Указатель на предыдущий узел
 
-    while (curr != nullptr && curr->key != key) {
+    while (curr != nullptr && curr->key != key) { // Поиск ключа в списке узлов
         prev = curr;
         curr = curr->next;
     }
 
-    if (curr != nullptr) {
-        prev->next = curr->next;
-        if (curr->next == nullptr) {
-            currentCell->end = prev;
+    if (curr != nullptr) { // Если ключ найден в списке узлов
+        prev->next = curr->next; // Пропускаем текущий узел при связывании предыдущего и следующего узлов
+        if (curr->next == nullptr) { // Если текущий узел - последний в списке
+            currentCell->end = prev; // Обновляем указатель на конец списка
         }
-        delete curr;
-        count--;
+        delete curr; // Удаляем текущий узел
+        count--; // Уменьшаем счетчик элементов в хэш-таблице
         std::cout << "\nКлюч успешно удален\n";
-    } else {
+    } else { // Если ключ не найден
         std::cout << "\nКлюч не найден\n";
     }
 }
+
 
 // Ввод целочисленного значения с проверкой интервала
 int failure(int begin, int end) {
@@ -270,7 +275,6 @@ void callMenu(HashTableNode **hashTable) {
 }
 
 int main() {
-    setlocale(LC_ALL, "RUS");
     auto *hashTable = new HashTableNode *[mTableSize];
     initQueue(hashTable);
     callMenu(hashTable);
