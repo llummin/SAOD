@@ -153,7 +153,7 @@ void destroyTree(TreeNode *node) {
     if (node != nullptr) {
         destroyTree(node->left);
         destroyTree(node->right);
-        std::cout << "Удалена вершины, со значением: " << node->data << std::endl;
+        std::cout << "Удалена вершина, со значением: " << node->data << std::endl;
         delete node;
     }
 }

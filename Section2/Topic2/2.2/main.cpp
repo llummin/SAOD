@@ -74,7 +74,7 @@ void insertionSort(int *data, int size, int &compares, int &swaps) {
     printArray(data, size);
 }
 
-// Функция выполнения сортировки методом Шелла
+// Функция выполнения сортировки методом Шелла (улучшенный метод вставок)
 void shellSort(int *data, int size, int &compares, int &swaps) {
     compares = swaps = 0;
     int t = (int) log2(size) - 1; // определяем количество промежутков (шагов)
@@ -103,7 +103,7 @@ void shellSort(int *data, int size, int &compares, int &swaps) {
     printArray(data, size);
 }
 
-// Функция выполнения сортировки методом быстрой сортировки
+// Функция выполнения сортировки методом быстрой сортировки (улучшенный метод обмена)
 void quickSort(int *data, int begin, int end, int &compares, int &swaps) {
     // Установка границ и опорного элемента
     int i = begin, j = end;
@@ -162,7 +162,7 @@ void heapify(int *data, int left, int right, int &compares, int &swaps) {
     swaps++;
 }
 
-// Функция выполнения пирамидальной сортировки
+// Функция выполнения пирамидальной сортировки (улучшенный метод выбором)
 void heapSort(int *data, int size, int &compares, int &swaps) {
     compares = swaps = 0;
     int left = (size / 2) + 2; // определяем начальное значение индекса левого потомка последнего узла

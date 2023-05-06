@@ -117,7 +117,7 @@ void callMenu(std::string *&hashTable, std::string *keys) {
                     if (index == -1) {
                         std::cout << "\nТакого ключа нет!" << std::endl;
                     } else {
-                        std::cout << "\nКлюч " << key << " в хеш-таблица имеет место " << index << "." << std::endl;
+                        std::cout << "\nКлюч " << key << " в хеш-таблице имеет место " << index << "." << std::endl;
                     }
                 } else {
                     std::cout << "\nХеш-таблица пуста!" << std::endl;

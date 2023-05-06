@@ -23,7 +23,7 @@ std::unique_ptr<int[]> createArray(int size) {
     return data;
 }
 
-// Функция выполнения сортировки пузырьком
+// Функция выполнения сортировки пузырьком (метод обменом)
 void bubbleSort(int *data, int size, int &compares, int &swaps) {
     compares = swaps = 0;
     for (int i = 1; i < size; i++) { // цикл по всем элементам массива, кроме первого
