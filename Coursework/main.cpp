@@ -2,7 +2,7 @@
 
 int main() {
     MainMenu mainMenu;
-    mainMenu.startMenu();
+    mainMenu.run();
 
     return 0;
 }

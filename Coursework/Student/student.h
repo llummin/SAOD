@@ -11,6 +11,10 @@ public:
 
     int getYearOfBirth() const;
 
+    std::string to_string() const;
+
+    static Student from_string(const std::string &studentStr);
+
 private:
     std::string name;
     int yearOfBirth;

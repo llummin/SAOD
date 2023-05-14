@@ -2,19 +2,18 @@
 #define COURSEWORK_MAIN_MENU_H
 
 #include "../School/school.h"
+#include "../DataIO/data_io.h"
 
 class MainMenu {
 public:
-    MainMenu();
-
-    void startMenu();
+    void run();
 
 private:
     School school;
 
     void displayMenu();
 
-    void processInput(int choice);
+    void processSelection(int choice);
 
     void addClass();
 

@@ -9,11 +9,19 @@ class Class {
 public:
     Class(const std::string &className);
 
-    void addStudent(const std::string &studentName, int yearOfBirth);
+    std::string getClassName() const;
 
-    void removeStudent(const std::string &studentName);
+    const std::vector<Student> &getStudents() const;
 
-    Student *findStudent(const std::string &studentName);
+    void addStudent(const std::string &name, int yearOfBirth);
+
+    void removeStudent(const std::string &name);
+
+    Student *findStudent(const std::string &name);
+
+    std::string to_string() const;
+
+    static Class from_string(const std::string &classStr);
 
 private:
     std::string className;

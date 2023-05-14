@@ -1,26 +1,22 @@
 #include <iostream>
 #include "main_menu.h"
 
-MainMenu::MainMenu() {
-    // TODO: Инициализировать объект школы
-}
-
-void MainMenu::startMenu() {
+void MainMenu::run() {
     int choice = 0;
-    while (choice != 8) {
+
+    while (choice != 7) {
         displayMenu();
+
         std::cout << "Введите ваш выбор: ";
         std::cin >> choice;
         std::cin.ignore();
 
-        processInput(choice);
+        processSelection(choice);
     }
 }
 
 void MainMenu::displayMenu() {
-    std::cout << "-------------------------" << std::endl;
-    std::cout << "      ГЛАВНОЕ МЕНЮ" << std::endl;
-    std::cout << "-------------------------" << std::endl;
+    std::cout << "=========== ГЛАВНОЕ МЕНЮ ===========" << std::endl;
     std::cout << "1. Добавить класс" << std::endl;
     std::cout << "2. Удалить класс" << std::endl;
     std::cout << "3. Добавить студента" << std::endl;
@@ -29,10 +25,10 @@ void MainMenu::displayMenu() {
     std::cout << "6. Сохранить данные" << std::endl;
     std::cout << "7. Загрузить данные" << std::endl;
     std::cout << "8. Выход" << std::endl;
-    std::cout << "-------------------------" << std::endl;
+    std::cout << "=================================" << std::endl;
 }
 
-void MainMenu::processInput(int choice) {
+void MainMenu::processSelection(int choice) {
     switch (choice) {
         case 1:
             addClass();
@@ -60,6 +56,7 @@ void MainMenu::processInput(int choice) {
             break;
         default:
             std::cout << "Неверный выбор. Пожалуйста, попробуйте еще раз." << std::endl;
+            break;
     }
 }
 
@@ -74,7 +71,7 @@ void MainMenu::addClass() {
 
 void MainMenu::removeClass() {
     std::string className;
-    std::cout << "Введите название класса для удаления: ";
+    std::cout << "Введите название класса: ";
     std::getline(std::cin, className);
 
     school.removeClass(className);
@@ -83,21 +80,20 @@ void MainMenu::removeClass() {
 
 void MainMenu::addStudent() {
     std::string className;
-    std::cout << "Введите название класса, чтобы добавить ученика: ";
+    std::cout << "Введите название класса: ";
     std::getline(std::cin, className);
 
-    Class *classObj = school.findClass(className);
+    Class* classObj = school.findClass(className);
     if (classObj) {
-        std::string studentName;
-        std::cout << "Введите имя ученика: ";
-        std::getline(std::cin, studentName);
-
+        std::string name;
         int yearOfBirth;
+        std::cout << "Введите имя ученика: ";
+        std::getline(std::cin, name);
         std::cout << "Введите год рождения ученика: ";
         std::cin >> yearOfBirth;
         std::cin.ignore();
 
-        classObj->addStudent(studentName, yearOfBirth);
+        classObj->addStudent(name, yearOfBirth);
         std::cout << "Ученик успешно добавлен!" << std::endl;
     } else {
         std::cout << "Класс не найден!" << std::endl;
@@ -106,19 +102,36 @@ void MainMenu::addStudent() {
 
 void MainMenu::removeStudent() {
     std::string className;
-    std::cout << "Введите название класса, чтобы удалить ученика: ";
+    std::cout << "Введите название класса: ";
     std::getline(std::cin, className);
 
-    Class *classObj = school.findClass(className);
+    Class* classObj = school.findClass(className);
     if (classObj) {
-        std::string studentName;
-        std::cout << "Введите имя ученика, которого нужно удалить: ";
-        std::getline(std::cin, studentName);
+        std::string name;
+        std::cout << "Введите имя ученика: ";
+        std::getline(std::cin, name);
 
-        Student *student = classObj->findStudent(studentName);
+        classObj->removeStudent(name);
+        std::cout << "Ученик успешно удален!" << std::endl;
+    } else {
+        std::cout << "Класс не найден!" << std::endl;
+    }
+}
+
+void MainMenu::searchStudent() {
+    std::string className;
+    std::cout << "Введите название класса: ";
+    std::getline(std::cin, className);
+
+    Class* classObj = school.findClass(className);
+    if (classObj) {
+        std::string name;
+        std::cout << "Введите имя ученика: ";
+        std::getline(std::cin, name);
+
+        Student* student = classObj->findStudent(name);
         if (student) {
-            classObj->removeStudent(studentName);
-            std::cout << "Ученик успешно удален!" << std::endl;
+            std::cout << "Ученик найден. Год рождения: " << student->getYearOfBirth() << std::endl;
         } else {
             std::cout << "Ученик не найден!" << std::endl;
         }
@@ -127,14 +140,18 @@ void MainMenu::removeStudent() {
     }
 }
 
-void MainMenu::searchStudent() {
-    // TODO: Реализовать поиск студента в школе
-}
-
 void MainMenu::saveData() {
-    // TODO: Реализовать сохранение данных школы в файл
+    std::string filename;
+    std::cout << "Введите имя файла для сохранения данных: ";
+    std::getline(std::cin, filename);
+
+    DataIO::saveSchoolData(school, filename);
 }
 
 void MainMenu::loadData() {
-    // TODO: Реализовать загрузку данных школы из файла
+    std::string filename;
+    std::cout << "Введите имя файла для загрузки данных из: ";
+    std::getline(std::cin, filename);
+
+    DataIO::loadSchoolData(school, filename);
 }
