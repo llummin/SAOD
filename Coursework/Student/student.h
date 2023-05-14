@@ -5,15 +5,11 @@
 
 class Student {
 public:
-    Student(const std::string &name, int yearOfBirth);
+    Student(std::string name, int yearOfBirth);
 
-    std::string getName() const;
+    [[nodiscard]] std::string getName() const;
 
-    int getYearOfBirth() const;
-
-    std::string to_string() const;
-
-    static Student from_string(const std::string &studentStr);
+    [[nodiscard]] int getYearOfBirth() const;
 
 private:
     std::string name;

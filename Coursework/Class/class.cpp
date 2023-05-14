@@ -1,15 +1,12 @@
+#include <sstream>
+#include <utility>
 #include "class.h"
 
-Class::Class(const std::string &className) {
-    this->className = className;
-}
+Class::Class(std::string className)
+        : className(std::move(className)) {}
 
 std::string Class::getClassName() const {
     return className;
-}
-
-const std::vector<Student> &Class::getStudents() const {
-    return students;
 }
 
 void Class::addStudent(const std::string &name, int yearOfBirth) {
@@ -35,31 +32,28 @@ Student *Class::findStudent(const std::string &name) {
 }
 
 std::string Class::to_string() const {
-    std::string classStr = "Class: " + className + "\n";
+    std::string classStr = className + "\n";
     for (const auto &student: students) {
-        classStr += "Student: " + student.to_string() + "\n";
+        classStr += student.getName() + "," + std::to_string(student.getYearOfBirth()) + "\n";
     }
     return classStr;
 }
 
 Class Class::from_string(const std::string &classStr) {
-    std::string className;
-    std::vector<Student> students;
+    std::istringstream iss(classStr);
+    std::string line;
+    std::getline(iss, line);
+    Class newClass(line);
 
-    size_t startPos = classStr.find("Class: ") + 7;
-    size_t endPos = classStr.find("\n", startPos);
-    className = classStr.substr(startPos, endPos - startPos);
-
-    size_t studentPos = classStr.find("Student: ");
-    while (studentPos != std::string::npos) {
-        size_t nextStudentPos = classStr.find("Student: ", studentPos + 1);
-        endPos = classStr.find("\n", studentPos);
-        std::string studentStr = classStr.substr(studentPos + 9, endPos - studentPos - 9);
-        students.push_back(Student::from_string(studentStr));
-        studentPos = nextStudentPos;
+    while (std::getline(iss, line)) {
+        std::istringstream lineStream(line);
+        std::string name;
+        std::string yearOfBirthStr;
+        std::getline(lineStream, name, ',');
+        std::getline(lineStream, yearOfBirthStr, ',');
+        int yearOfBirth = std::stoi(yearOfBirthStr);
+        newClass.addStudent(name, yearOfBirth);
     }
 
-    Class classObj(className);
-    classObj.students = students;
-    return classObj;
+    return newClass;
 }

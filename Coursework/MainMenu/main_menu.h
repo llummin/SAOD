@@ -9,9 +9,7 @@ public:
     void run();
 
 private:
-    School school;
-
-    void displayMenu();
+    static void displayMenu();
 
     void processSelection(int choice);
 
@@ -28,6 +26,8 @@ private:
     void saveData();
 
     void loadData();
+
+    School school;
 };
 
 #endif //COURSEWORK_MAIN_MENU_H

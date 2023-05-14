@@ -7,11 +7,9 @@
 
 class Class {
 public:
-    Class(const std::string &className);
+    explicit Class(std::string className);
 
-    std::string getClassName() const;
-
-    const std::vector<Student> &getStudents() const;
+    [[nodiscard]] std::string getClassName() const;
 
     void addStudent(const std::string &name, int yearOfBirth);
 
@@ -19,7 +17,7 @@ public:
 
     Student *findStudent(const std::string &name);
 
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
     static Class from_string(const std::string &classStr);
 

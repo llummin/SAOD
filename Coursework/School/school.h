@@ -13,11 +13,7 @@ public:
 
     Class *findClass(const std::string &className);
 
-    void addStudentToClass(const std::string &className, const std::string &name, int yearOfBirth);
-
-    void removeStudentFromClass(const std::string &className, const std::string &name);
-
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
     static School from_string(const std::string &schoolStr);
 
