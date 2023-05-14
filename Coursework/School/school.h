@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include "../Class/class.h"
 
 class School {
 public:
