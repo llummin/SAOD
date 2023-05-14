@@ -1,4 +1,3 @@
-#include <sstream>
 #include <utility>
 #include "class.h"
 
@@ -37,23 +36,4 @@ std::string Class::to_string() const {
         classStr += student.getName() + "," + std::to_string(student.getYearOfBirth()) + "\n";
     }
     return classStr;
-}
-
-Class Class::from_string(const std::string &classStr) {
-    std::istringstream iss(classStr);
-    std::string line;
-    std::getline(iss, line);
-    Class newClass(line);
-
-    while (std::getline(iss, line)) {
-        std::istringstream lineStream(line);
-        std::string name;
-        std::string yearOfBirthStr;
-        std::getline(lineStream, name, ',');
-        std::getline(lineStream, yearOfBirthStr, ',');
-        int yearOfBirth = std::stoi(yearOfBirthStr);
-        newClass.addStudent(name, yearOfBirth);
-    }
-
-    return newClass;
 }

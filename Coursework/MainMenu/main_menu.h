@@ -2,7 +2,6 @@
 #define COURSEWORK_MAIN_MENU_H
 
 #include "../School/school.h"
-#include "../DataIO/data_io.h"
 
 class MainMenu {
 public:
@@ -17,6 +16,8 @@ private:
 
     void removeClass();
 
+    void findClass();
+
     void addStudent();
 
     void removeStudent();
@@ -26,6 +27,8 @@ private:
     void saveData();
 
     void loadData();
+
+    void traverseSchool();
 
     School school;
 };

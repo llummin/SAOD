@@ -19,8 +19,6 @@ public:
 
     [[nodiscard]] std::string to_string() const;
 
-    static Class from_string(const std::string &classStr);
-
 private:
     std::string className;
     std::vector<Student> students;

@@ -1,5 +1,5 @@
-#include <sstream>
 #include "school.h"
+#include <sstream>
 
 void School::addClass(const std::string &className) {
     classes.emplace_back(className);
@@ -59,3 +59,4 @@ School School::from_string(const std::string &schoolStr) {
 
     return school;
 }
+
