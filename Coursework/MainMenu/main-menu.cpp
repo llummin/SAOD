@@ -56,19 +56,29 @@ void MainMenu::processInput(int choice) {
             loadData();
             break;
         case 9:
-            std::cout << "Завершение программы..." << std::endl;
+            std::cout << "Выход из программы..." << std::endl;
             break;
         default:
-            std::cout << "Неверный выбор. Пожалуйста, попробуйте еще раз." << std::endl;
+            std::cout << "Неверный выбор! Пожалуйста, попробуйте еще раз." << std::endl;
     }
 }
 
 void MainMenu::addClass() {
-    // TODO: Реализовать добавление класса в школу
+    std::string className;
+    std::cout << "Введите название класса: ";
+    std::getline(std::cin, className);
+
+    school.addClass(className);
+    std::cout << "Класс успешно добавлен!" << std::endl;
 }
 
 void MainMenu::removeClass() {
-    // TODO: Реализовать удаление класса из школы
+    int classNumber;
+    std::cout << "Введите номер класса для удаления: ";
+    std::cin >> classNumber;
+
+    school.removeClass(classNumber);
+    std::cout << "Класс успешно удален!" << std::endl;
 }
 
 void MainMenu::addStudent() {

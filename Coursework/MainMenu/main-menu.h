@@ -1,7 +1,7 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
 
-#include "School.h"
+#include "../School/school.h"
 
 class MainMenu {
 public:
