@@ -73,27 +73,29 @@ void MainMenu::addClass() {
 }
 
 void MainMenu::removeClass() {
-    int classNumber;
-    std::cout << "Введите номер класса для удаления: ";
-    std::cin >> classNumber;
+    std::string className;
+    std::cout << "Введите название класса для удаления: ";
+    std::getline(std::cin, className);
 
-    school.removeClass(classNumber);
+    school.removeClass(className);
     std::cout << "Класс успешно удален!" << std::endl;
 }
 
 void MainMenu::addStudent() {
-    int classNumber;
-    std::cout << "Введите номер класса, чтобы добавить ученика: ";
-    std::cin >> classNumber;
+    std::string className;
+    std::cout << "Введите название класса, чтобы добавить ученика: ";
+    std::getline(std::cin, className);
 
-    Class *classObj = school.findClass(classNumber);
+    Class *classObj = school.findClass(className);
     if (classObj) {
         std::string studentName;
-        int yearOfBirth;
         std::cout << "Введите имя ученика: ";
-        std::getline(std::cin.ignore(), studentName);
+        std::getline(std::cin, studentName);
+
+        int yearOfBirth;
         std::cout << "Введите год рождения ученика: ";
         std::cin >> yearOfBirth;
+        std::cin.ignore();
 
         classObj->addStudent(studentName, yearOfBirth);
         std::cout << "Ученик успешно добавлен!" << std::endl;
@@ -103,22 +105,22 @@ void MainMenu::addStudent() {
 }
 
 void MainMenu::removeStudent() {
-    int classNumber;
-    std::cout << "Введите номер класса, чтобы удалить ученика: ";
-    std::cin >> classNumber;
+    std::string className;
+    std::cout << "Введите название класса, чтобы удалить ученика: ";
+    std::getline(std::cin, className);
 
-    Class *classObj = school.findClass(classNumber);
+    Class *classObj = school.findClass(className);
     if (classObj) {
         std::string studentName;
         std::cout << "Введите имя ученика, которого нужно удалить: ";
-        std::getline(std::cin.ignore(), studentName);
+        std::getline(std::cin, studentName);
 
         Student *student = classObj->findStudent(studentName);
         if (student) {
-            classObj->removeStudent(studentIndex);
+            classObj->removeStudent(studentName);
             std::cout << "Ученик успешно удален!" << std::endl;
         } else {
-            std::cout << "Класс не найден!" << std::endl;
+            std::cout << "Ученик не найден!" << std::endl;
         }
     } else {
         std::cout << "Класс не найден!" << std::endl;

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "student.h"
+#include "../Student/student.h"
 
 class Class {
 public:
@@ -11,7 +11,7 @@ public:
 
     void addStudent(const std::string &studentName, int yearOfBirth);
 
-    void removeStudent(int studentIndex);
+    void removeStudent(const std::string &studentName);
 
     Student *findStudent(const std::string &studentName);
 

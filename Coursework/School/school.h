@@ -11,9 +11,9 @@ public:
 
     void addClass(const std::string &className);
 
-    void removeClass(int classNumber);
+    void removeClass(const std::string &className);
 
-    Class *findClass(int classNumber);
+    Class *findClass(const std::string &className);
 
 private:
     std::vector<Class> classes;
