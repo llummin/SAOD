@@ -1,5 +1,5 @@
-#ifndef CLASS_H
-#define CLASS_H
+#ifndef COURSEWORK_CLASS_H
+#define COURSEWORK_CLASS_H
 
 #include <string>
 #include <vector>
@@ -20,4 +20,4 @@ private:
     std::vector<Student> students;
 };
 
-#endif  // CLASS_H
+#endif //COURSEWORK_CLASS_H

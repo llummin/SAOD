@@ -1,5 +1,5 @@
 #include <iostream>
-#include "main-menu.h"
+#include "main_menu.h"
 
 MainMenu::MainMenu() {
     // TODO: Инициализировать объект школы

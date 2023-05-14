@@ -1,5 +1,5 @@
-#ifndef MAINMENU_H
-#define MAINMENU_H
+#ifndef COURSEWORK_MAIN_MENU_H
+#define COURSEWORK_MAIN_MENU_H
 
 #include "../School/school.h"
 
@@ -31,4 +31,4 @@ private:
     void loadData();
 };
 
-#endif  // MAINMENU_H
+#endif //COURSEWORK_MAIN_MENU_H

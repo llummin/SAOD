@@ -1,5 +1,5 @@
-#ifndef STUDENT_H
-#define STUDENT_H
+#ifndef COURSEWORK_STUDENT_H
+#define COURSEWORK_STUDENT_H
 
 #include <string>
 
@@ -16,4 +16,4 @@ private:
     int yearOfBirth;
 };
 
-#endif  // STUDENT_H
+#endif //COURSEWORK_STUDENT_H
