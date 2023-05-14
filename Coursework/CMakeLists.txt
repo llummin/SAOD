@@ -3,4 +3,4 @@ project(Coursework)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(Coursework main.cpp)
+add_executable(Coursework main.cpp MainMenu/main-menu.cpp MainMenu/main-menu.h)
