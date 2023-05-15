@@ -9,11 +9,11 @@ enum class Cases {
     Menu,
     AddSchool,
     AddClass,
+    SearchClass,
+    DeleteClass,
     AddStudent,
     SearchStudent,
-    DeleteClass,
     DeleteStudent,
-    SearchClass,
     ClearStructure,
     ShowStructure,
     Exit
@@ -24,7 +24,7 @@ private:
     School *school;
 
 public:
-    static void CaseShowMenu();
+    static void ShowMenu();
 
     static int GetIntInput();
 
@@ -32,25 +32,25 @@ public:
 
     void Run();
 
-    void CaseAddSchool();
+    void AddSchool();
 
-    void CaseAddClass();
+    void AddClass();
 
-    void CaseAddStudent();
+    void AddStudent();
 
-    void CaseDeleteClass();
+    void DeleteClass();
 
-    void CaseDeleteStudent();
+    void DeleteStudent();
 
-    void CaseSearchClass();
+    void SearchClass();
 
-    void CaseSearchStudent();
+    void SearchStudent();
 
-    void CaseClearStructure();
+    void ClearStructure();
 
-    void CaseShowStructure();
+    void ShowStructure();
 
-    void CaseExit(bool &stop);
+    void Exit(bool &stop);
 };
 
 #endif //COURSEWORK_APPLICATION_H
