@@ -26,9 +26,11 @@ private:
 public:
     static void CaseShowMenu();
 
-    static int InputInteger();
+    static int GetIntInput();
 
-    void AppCycle();
+    static int GetIntInputWithRange(int begin, int end);
+
+    void Run();
 
     void CaseAddSchool();
 

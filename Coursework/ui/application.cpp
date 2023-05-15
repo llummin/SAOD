@@ -3,7 +3,7 @@
 #include <limits>
 
 void Application::CaseShowMenu() {
-    std::cout << "---------- Меню управления ----------" << std::endl;
+    std::cout << "__________Меню управления__________" << std::endl;
     std::cout << "1. Создать школу" << std::endl;
     std::cout << "2. Добавить класс" << std::endl;
     std::cout << "3. Добавить ученика в класс" << std::endl;
@@ -14,30 +14,53 @@ void Application::CaseShowMenu() {
     std::cout << "8. Очистить структуру" << std::endl;
     std::cout << "9. Вывести структуру" << std::endl;
     std::cout << "10. Завершить работу" << std::endl;
-    std::cout << "-------------------------------------" << std::endl;
+    std::cout << "___________________________________" << std::endl;
+    std::cout << "Введите номер команды: ";
 }
 
-int Application::InputInteger() {
-    std::string input;
-    bool stop = false;
-    int integer = -1;
-    while (!stop) {
-        try {
-            std::cin >> input;
-            integer = std::stoi(input);
-            stop = true;
-        } catch (const std::exception &) {
-            std::cout << "Введите целое число: ";
+// Ввод целочисленного значения с проверкой
+int Application::GetIntInput() {
+    int choice;
+    while (true) {
+        std::cin >> choice;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(32767, '\n');
+            std::cout << "\nВведите данные правильно: ";
+            continue;
         }
+        std::cin.ignore(32767, '\n');
+        break;
     }
-    return integer;
+    return choice;
 }
 
-void Application::AppCycle() {
-    bool stop = false;
+// Ввод целочисленного значения с проверкой интервала
+int Application::GetIntInputWithRange(int begin, int end) {
+    int choice;
+    while (true) {
+        std::cin >> choice;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(32767, '\n');
+            std::cout << "\nВведите данные правильно: ";
+            continue;
+        }
+        std::cin.ignore(32767, '\n');
+        if (choice < begin || choice > end) {
+            std::cout << "\nВведите данные правильно: ";
+            continue;
+        }
+        break;
+    }
+    return choice;
+}
+
+void Application::Run() {
+    bool work{true};
     CaseShowMenu();
-    while (!stop) {
-        switch (static_cast<Cases>(InputInteger())) {
+    while (work) {
+        switch (static_cast<Cases>(GetIntInputWithRange(1, 10))) {
             case Cases::Menu:
                 CaseShowMenu();
                 break;
@@ -79,25 +102,26 @@ void Application::AppCycle() {
                 break;
 
             case Cases::Exit:
-                CaseExit(stop);
+                CaseExit(work);
                 break;
 
             default:
                 break;
         }
-        std::cout << "0 - меню." << std::endl;
     }
 }
 
 void Application::CaseAddSchool() {
     if (school == nullptr) {
-        std::string school_name;
-        while (school_name.empty()) {
-            std::cout << "Введите название школы: ";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::getline(std::cin, school_name);
+        int school_number = 0;
+        while (school_number == 0) {
+            std::cout << "Введите номер школы: ";
+            school_number = GetIntInput();
+            if (school_number == 0) {
+                std::cout << "Некорректный номер школы. Введите только цифры." << std::endl;
+            }
         }
-        school = new School(school_name);
+        school = new School(school_number);
         std::cout << "Школа создана." << std::endl;
     } else {
         std::cout << "Школа уже создана." << std::endl;
@@ -110,7 +134,7 @@ void Application::CaseAddClass() {
             int class_number = -1;
             while (class_number < 0) {
                 std::cout << "Введите номер класса: ";
-                class_number = InputInteger();
+                class_number = GetIntInput();
             }
             if (school->SearchClass(class_number)) {
                 std::cout << "Класс " << class_number << " уже есть в школе." << std::endl;
@@ -132,7 +156,7 @@ void Application::CaseAddStudent() {
     if (school != nullptr) {
         if (!school->IsEmpty()) {
             std::cout << "Введите номер класса в которую нужно добавить ученика: ";
-            int class_number = InputInteger();
+            int class_number = GetIntInput();
             bool check_search = false;
             int curr_class = 0;
             school->SearchClass(curr_class, class_number, check_search);
@@ -147,7 +171,7 @@ void Application::CaseAddStudent() {
                 int yearOfBirth = -1;
                 while (yearOfBirth < 0) {
                     std::cout << "Введите год рождения ученика: ";
-                    yearOfBirth = InputInteger();
+                    yearOfBirth = GetIntInput();
                 }
                 pClass->AddStudent(surname, yearOfBirth);
                 std::cout << "Ученик добавлен." << std::endl;
@@ -166,7 +190,7 @@ void Application::CaseDeleteClass() {
     if (school != nullptr) {
         if (!school->IsEmpty()) {
             std::cout << "Введите номер класса который нужно удалить: ";
-            int class_number = InputInteger();
+            int class_number = GetIntInput();
             bool check_search = false;
             int curr_class = 0;
             int prev_class = school->SearchClass(curr_class, class_number, check_search);
@@ -186,7 +210,7 @@ void Application::CaseSearchStudent() {
     if (school != nullptr) {
         if (!school->IsEmpty()) {
             std::cout << "Введите номер класса: ";
-            int class_number = InputInteger();
+            int class_number = GetIntInput();
             bool check_search = false;
             int curr_class = 0;
             school->SearchClass(curr_class, class_number, check_search);
@@ -221,7 +245,7 @@ void Application::CaseDeleteStudent() {
     if (school != nullptr) {
         if (!school->IsEmpty()) {
             std::cout << "Введите номер класса, из которого нужно удалить ученика: ";
-            int class_number = InputInteger();
+            int class_number = GetIntInput();
             bool check_search = false;
             int curr_class = 0;
             school->SearchClass(curr_class, class_number, check_search);
@@ -260,7 +284,7 @@ void Application::CaseSearchClass() {
     if (school != nullptr) {
         if (!school->IsEmpty()) {
             std::cout << "Введите номер класса: ";
-            int class_number = InputInteger();
+            int class_number = GetIntInput();
             bool check_search = false;
             int curr_class = 0;
             school->SearchClass(curr_class, class_number, check_search);

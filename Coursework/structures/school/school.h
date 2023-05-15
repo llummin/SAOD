@@ -6,14 +6,14 @@
 
 class School {
 private:
-    std::string school_name_;
+    int school_number_;
     static int MaxNumberOfClasses;
     int class_counter_;
     int head_free_;
     StaticListElement *classes_;
 
 public:
-    explicit School(std::string school_name);
+    explicit School(int school_number);
 
     static int GetMaxNumberOfClasses();
 

@@ -1,11 +1,10 @@
 #include <iostream>
-#include <utility>
 #include "school.h"
 
 int School::MaxNumberOfClasses = 11;
 
-School::School(std::string school_name) {
-    school_name_ = std::move(school_name);
+School::School(int school_number) {
+    school_number_ = school_number;
     classes_ = new StaticListElement[MaxNumberOfClasses];
     classes_[0].SetNext(0);
     head_free_ = 1;
@@ -103,7 +102,7 @@ void School::DeleteClass(int prev_class, int curr_class) {
 }
 
 void School::ShowClasses() {
-    std::cout << "   Название школы: " << school_name_ << std::endl;
+    std::cout << "   Название школы: " << school_number_ << std::endl;
     if (!IsEmpty()) {
         int current = classes_[0].GetNext();
         while (current != 0) {
