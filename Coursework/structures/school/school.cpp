@@ -1,125 +1,93 @@
 #include <iostream>
 #include "school.h"
 
-int School::MaxNumberOfClasses = 11;
+School* School::instance_ = nullptr;
 
 School::School(int school_number) {
     school_number_ = school_number;
-    classes_ = new StaticListElement[MaxNumberOfClasses];
-    classes_[0].SetNext(0);
-    head_free_ = 1;
-    for (int i = 1; i < MaxNumberOfClasses; i++) {
-        classes_[i].SetNext(i == MaxNumberOfClasses - 1 ? 0 : i + 1);
+    for (int i = 0; i < kMaxClasses; i++) {
+        classes_[i] = nullptr;
     }
-    class_counter_ = 0;
 }
 
-int School::GetMaxNumberOfClasses() {
-    return MaxNumberOfClasses - 1;
+School* School::GetInstance(int school_number) {
+    if (instance_ == nullptr) {
+        instance_ = new School(school_number);
+    }
+    return instance_;
 }
 
-Class *School::GetClass(int curr_class) {
-    return classes_[curr_class].GetClass();
+int School::GetSchoolNumber() const {
+    return school_number_;
 }
 
-bool School::IsFull() const {
-    return (class_counter_ + 1 == MaxNumberOfClasses);
-}
+void School::AddClass(Class* class_instance) {
+    auto* new_element = new StaticListElement();
+    new_element->SetClass(class_instance);
 
-bool School::IsEmpty() const {
-    return (class_counter_ == 0);
-}
+    int index = 0;
+    while (index < kMaxClasses && classes_[index] != nullptr) {
+        index++;
+    }
 
-int School::FindBigger(int &current, int added_class_number) {
-    int parent = 0;
-    current = classes_[0].GetNext();
-    while (current != 0) {
-        if (classes_[current].GetClass()->GetClassNumber() >= added_class_number) {
-            break;
+    if (index < kMaxClasses) {
+        classes_[index] = new_element;
+        if (head_ == nullptr) {
+            head_ = new_element;
         }
-        parent = current;
-        current = classes_[current].GetNext();
-    }
-    return parent;
-}
 
-int School::SearchClass(int &curr_class, int searched_element, bool &check) {
-    int prev_class = 0;
-    curr_class = classes_[0].GetNext();
-    while (curr_class != 0) {
-        if (classes_[curr_class].GetClass()->GetClassNumber() == searched_element) {
-            check = true;
-            break;
-        } else {
-            check = false;
+        StaticListElement* current = head_;
+        while (!current->GetNext().empty()) {
+            current = classes_[index];
         }
-        prev_class = curr_class;
-        curr_class = classes_[curr_class].GetNext();
+        current->SetNext(class_instance->GetClassName());
+    } else {
+        std::cout << "Максимальное количество классов достигнуто." << std::endl;
     }
-    return prev_class;
 }
 
-bool School::SearchClass(int searched_element) {
-    int curr_class = classes_[0].GetNext();
-    while (curr_class != 0) {
-        if (classes_[curr_class].GetClass()->GetClassNumber() == searched_element) {
+Class* School::SearchClass(const std::string& class_name) {
+    for (int i = 0; i < kMaxClasses; i++) {
+        if (classes_[i] != nullptr && classes_[i]->GetClass()->GetClassName() == class_name) {
+            return classes_[i]->GetClass();
+        }
+    }
+    return nullptr;
+}
+
+bool School::DeleteClass(Class* class_instance) {
+    for (int i = 0; i < kMaxClasses; i++) {
+        if (classes_[i] != nullptr && classes_[i]->GetClass() == class_instance) {
+            delete classes_[i];
+            classes_[i] = nullptr;
             return true;
         }
-        curr_class = classes_[curr_class].GetNext();
     }
     return false;
 }
 
-void School::AddClass(Class *class_instance) {
-    int free_cell = head_free_;
-    head_free_ = classes_[free_cell].GetNext();
-    classes_[free_cell].SetClass(class_instance);
-    if (IsEmpty()) {
-        classes_[0].SetNext(free_cell);
-        classes_[free_cell].SetNext(0);
-        class_counter_++;
-        return;
-    }
-    int curr_class = 0;
-    int prev_class = FindBigger(curr_class, class_instance->GetClassNumber());
-    classes_[prev_class].SetNext(free_cell);
-    int pNext = curr_class == 0 ? 0 : curr_class;
-    classes_[free_cell].SetNext(pNext);
-    class_counter_++;
-}
-
-void School::AddClass(int class_number) {
-    auto *pClass = new Class(class_number);
-    AddClass(pClass);
-}
-
-void School::DeleteClass(int prev_class, int curr_class) {
-    classes_[curr_class].GetClass()->ListClearMemory();
-    classes_[prev_class].SetNext(classes_[curr_class].GetNext());
-    classes_[curr_class].SetNext(head_free_);
-    head_free_ = curr_class;
-    class_counter_--;
-}
-
-void School::ShowClasses() {
-    std::cout << "   Название школы: " << school_number_ << std::endl;
-    if (!IsEmpty()) {
-        int current = classes_[0].GetNext();
-        while (current != 0) {
-            classes_[current].GetClass()->ShowClass();
-            current = classes_[current].GetNext();
+void School::ShowSchool() {
+    std::cout << "\nШкола №" << school_number_ << std::endl;
+    bool hasClasses = false;
+    for (int i = 0; i < kMaxClasses; i++) {
+        if (classes_[i] != nullptr) {
+            if (!hasClasses) {
+                std::cout << "Список классов:" << std::endl;
+                hasClasses = true;
+            }
+            std::cout << " - " << classes_[i]->GetClass()->GetClassName() << std::endl;
         }
-    } else {
-        std::cout << "Групп для вывода нет." << std::endl;
+    }
+    if (!hasClasses) {
+        std::cout << "В школе нет классов." << std::endl;
     }
 }
 
-void School::ClearMemory() {
-    int current = classes_[0].GetNext();
-    while (current != 0) {
-        classes_[current].GetClass()->ListClearMemory();
-        current = classes_[current].GetNext();
+void School::SchoolClearMemory() {
+    for (int i = 0; i < kMaxClasses; i++) {
+        if (classes_[i] != nullptr) {
+            delete classes_[i];
+            classes_[i] = nullptr;
+        }
     }
-    delete[] classes_;
-    classes_ = nullptr;
 }

@@ -2,13 +2,13 @@
 #include <utility>
 #include <iomanip>
 
-Class::Class(int class_number) {
-    class_number_ = class_number;
+Class::Class(std::string class_name) {
+    class_name_ = std::move(class_name);
     p_head_ = nullptr;
 }
 
-int Class::GetClassNumber() const {
-    return class_number_;
+std::string Class::GetClassName() const {
+    return class_name_;
 }
 
 bool Class::IsEmpty() {
@@ -25,8 +25,8 @@ void Class::AddStudent(Student *student) {
     p_head_ = list_element;
 }
 
-Student* Class::SearchStudent(const std::string& surname) {
-    DynamicListElement* current = p_head_;
+Student *Class::SearchStudent(const std::string &surname) {
+    DynamicListElement *current = p_head_;
     while (current != nullptr) {
         if (current->GetStudent()->GetSurname() == surname) {
             return current->GetStudent();
@@ -36,10 +36,10 @@ Student* Class::SearchStudent(const std::string& surname) {
     return nullptr;
 }
 
-bool Class::DeleteStudent(Student* student) {
+bool Class::DeleteStudent(Student *student) {
     if (!IsEmpty()) {
-        DynamicListElement* current = p_head_;
-        DynamicListElement* prev = nullptr;
+        DynamicListElement *current = p_head_;
+        DynamicListElement *prev = nullptr;
         while (current != nullptr) {
             if (current->GetStudent() == student) {
                 if (prev != nullptr) {
@@ -59,14 +59,15 @@ bool Class::DeleteStudent(Student* student) {
 
 
 void Class::ShowClass() {
-    std::cout << "\n\tКласс " << class_number_ << std::endl;
+    std::cout << "\n\tКласс " << class_name_ << std::endl;
     if (!IsEmpty()) {
         std::cout << "  №  |    Фамилия    | Год рождения" << std::endl;
         std::cout << "-----+--------------+-------------" << std::endl;
         DynamicListElement *current = p_head_;
         int student_number = 1;
         while (current != nullptr) {
-            std::cout << std::setw(4) << student_number << "  | " << std::setw(13) << current->GetStudent()->GetSurname()
+            std::cout << std::setw(4) << student_number << "  | " << std::setw(13)
+                      << current->GetStudent()->GetSurname()
                       << " | " << std::setw(5) << current->GetStudent()->GetDateOfBirth() << std::endl;
             current = current->GetNext();
             student_number++;
@@ -75,7 +76,6 @@ void Class::ShowClass() {
         std::cout << "Учеников для вывода нет." << std::endl;
     }
 }
-
 
 void Class::ListClearMemory() {
     DynamicListElement *current = p_head_;

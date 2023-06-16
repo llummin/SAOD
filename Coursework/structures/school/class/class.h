@@ -7,13 +7,13 @@
 
 class Class {
 private:
-    int class_number_;
+    std::string class_name_;
     DynamicListElement *p_head_;
 
 public:
-    explicit Class(int class_number);
+    explicit Class(std::string class_name);
 
-    [[nodiscard]] int GetClassNumber() const;
+    [[nodiscard]] std::string GetClassName() const;
 
     bool IsEmpty();
 

@@ -6,7 +6,7 @@
 class StaticListElement {
 private:
     Class *class_;
-    int next_;
+    std::string next_;
 
 public:
     StaticListElement();
@@ -15,9 +15,9 @@ public:
 
     Class *GetClass();
 
-    void SetNext(int next);
+    void SetNext(std::string next);
 
-    [[nodiscard]] int GetNext() const;
+    [[nodiscard]] std::string GetNext() const;
 };
 
 #endif //COURSEWORK_STATIC_LIST_ELEMENT_H

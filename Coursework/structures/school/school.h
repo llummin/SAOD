@@ -4,40 +4,31 @@
 #include "../list/static_list_element/static_list_element.h"
 #include <string>
 
+const int kMaxClasses = 10; // Константа для максимального количества классов
+
 class School {
 private:
+    static School *instance_;
     int school_number_;
-    static int MaxNumberOfClasses;
-    int class_counter_;
-    int head_free_;
-    StaticListElement *classes_;
+    StaticListElement *head_{};
+    StaticListElement *classes_[kMaxClasses]{}; // Массив для хранения классов
 
 public:
-    explicit School(int school_number);
+    static School* GetInstance(int school_number);
 
-    static int GetMaxNumberOfClasses();
-
-    Class *GetClass(int curr_class);
-
-    [[nodiscard]] bool IsFull() const;
-
-    [[nodiscard]] bool IsEmpty() const;
-
-    int FindBigger(int &current, int added_class_number);
-
-    int SearchClass(int &curr_class, int searched_element, bool &check);
-
-    bool SearchClass(int searched_element);
+    int GetSchoolNumber() const;
 
     void AddClass(Class *class_instance);
 
-    void AddClass(int class_number);
+    Class *SearchClass(const std::string &class_name);
 
-    void DeleteClass(int prev_class, int curr_class);
+    bool DeleteClass(Class *class_instance);
 
-    void ShowClasses();
+    void ShowSchool();
 
-    void ClearMemory();
+    void SchoolClearMemory();
+
+    School(int school_number);
 };
 
 #endif //COURSEWORK_SCHOOL_H

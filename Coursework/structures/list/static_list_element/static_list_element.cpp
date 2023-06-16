@@ -1,8 +1,10 @@
 #include "static_list_element.h"
 
+#include <utility>
+
 StaticListElement::StaticListElement() {
     class_ = nullptr;
-    next_ = 0;
+    next_ = "";
 }
 
 void StaticListElement::SetClass(Class *class_instance) {
@@ -13,10 +15,10 @@ Class *StaticListElement::GetClass() {
     return class_;
 }
 
-void StaticListElement::SetNext(int next) {
-    next_ = next;
+void StaticListElement::SetNext(std::string next) {
+    next_ = std::move(next);
 }
 
-int StaticListElement::GetNext() const {
+std::string StaticListElement::GetNext() const {
     return next_;
 }

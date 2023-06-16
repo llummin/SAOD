@@ -50,7 +50,7 @@ public:
 
     void ShowStructure();
 
-    void Exit(bool &stop);
+    static void Exit(bool &stop);
 };
 
 #endif //COURSEWORK_APPLICATION_H
