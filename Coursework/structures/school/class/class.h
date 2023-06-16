@@ -27,7 +27,6 @@ public:
 
     void ShowClass();
 
-    void ListClearMemory();
 };
 
 #endif //COURSEWORK_CLASS_H

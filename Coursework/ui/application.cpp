@@ -217,9 +217,9 @@ void Application::ClearStructure() {
         return;
     }
 
-    int school_number = school->GetSchoolNumber();
-    school = School::GetInstance(school_number);
     school->SchoolClearMemory();
+    delete school;
+    school = nullptr;
     std::cout << "Структура данных очищена." << std::endl;
 }
 
@@ -237,7 +237,7 @@ void Application::ShowStructure() {
 
 void Application::Exit(bool &stop) {
     std::cout << "Выход из программы." << std::endl;
-    stop = true;
+    stop = false;
 }
 
 void Application::ShowMenu() {

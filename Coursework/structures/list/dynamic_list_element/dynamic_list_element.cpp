@@ -13,6 +13,6 @@ DynamicListElement *DynamicListElement::GetNext() {
     return next_;
 }
 
-void DynamicListElement::SetNext(DynamicListElement* next) {
+void DynamicListElement::SetNext(DynamicListElement *next) {
     next_ = next;
 }

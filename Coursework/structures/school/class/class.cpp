@@ -56,8 +56,6 @@ bool Class::DeleteStudent(Student *student) {
     return false;
 }
 
-
-
 void Class::ShowClass() {
     std::cout << "\n\tКласс " << class_name_ << std::endl;
     if (!IsEmpty()) {
@@ -75,15 +73,4 @@ void Class::ShowClass() {
     } else {
         std::cout << "Учеников для вывода нет." << std::endl;
     }
-}
-
-void Class::ListClearMemory() {
-    DynamicListElement *current = p_head_;
-    DynamicListElement *temp;
-    while (current != nullptr) {
-        temp = current->GetNext();
-        delete current;
-        current = temp;
-    }
-    p_head_ = nullptr;
 }

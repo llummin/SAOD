@@ -1,16 +1,16 @@
 #include <iostream>
 #include "school.h"
 
-School* School::instance_ = nullptr;
+School *School::instance_ = nullptr;
 
 School::School(int school_number) {
     school_number_ = school_number;
-    for (auto & classes : classes_) {
+    for (auto &classes: classes_) {
         classes = nullptr;
     }
 }
 
-School* School::GetInstance(int school_number) {
+School *School::GetInstance(int school_number) {
     if (instance_ == nullptr) {
         instance_ = new School(school_number);
     }
@@ -21,8 +21,8 @@ int School::GetSchoolNumber() const {
     return school_number_;
 }
 
-void School::AddClass(Class* class_instance) {
-    auto* new_element = new StaticListElement();
+void School::AddClass(Class *class_instance) {
+    auto *new_element = new StaticListElement();
     new_element->SetClass(class_instance);
 
     int index = 0;
@@ -36,7 +36,7 @@ void School::AddClass(Class* class_instance) {
             head_ = new_element;
         }
 
-        StaticListElement* current = head_;
+        StaticListElement *current = head_;
         while (!current->GetNext().empty()) {
             current = classes_[index];
         }
@@ -46,8 +46,8 @@ void School::AddClass(Class* class_instance) {
     }
 }
 
-Class* School::SearchClass(const std::string& class_name) {
-    for (auto & classes : classes_) {
+Class *School::SearchClass(const std::string &class_name) {
+    for (auto &classes: classes_) {
         if (classes != nullptr && classes->GetClass()->GetClassName() == class_name) {
             return classes->GetClass();
         }
@@ -55,8 +55,8 @@ Class* School::SearchClass(const std::string& class_name) {
     return nullptr;
 }
 
-bool School::DeleteClass(Class* class_instance) {
-    for (auto & classes : classes_) {
+bool School::DeleteClass(Class *class_instance) {
+    for (auto &classes: classes_) {
         if (classes != nullptr && classes->GetClass() == class_instance) {
             delete classes;
             classes = nullptr;
@@ -69,9 +69,9 @@ bool School::DeleteClass(Class* class_instance) {
 void School::ShowSchoolStructure() {
     std::cout << "Школа №" << school_number_ << std::endl;
 
-    for (auto & classes : classes_) {
+    for (auto &classes: classes_) {
         if (classes != nullptr) {
-            Class* currentClass = classes->GetClass();
+            Class *currentClass = classes->GetClass();
             std::cout << "Класс " << currentClass->GetClassName() << std::endl;
             currentClass->ShowClass();
         }
@@ -79,7 +79,7 @@ void School::ShowSchoolStructure() {
 }
 
 void School::SchoolClearMemory() {
-    for (auto & classes : classes_) {
+    for (auto &classes: classes_) {
         if (classes != nullptr) {
             delete classes;
             classes = nullptr;

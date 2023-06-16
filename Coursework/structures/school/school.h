@@ -14,7 +14,7 @@ private:
     StaticListElement *classes_[kMaxClasses]{};
 
 public:
-    static School* GetInstance(int school_number);
+    static School *GetInstance(int school_number);
 
     [[nodiscard]] int GetSchoolNumber() const;
 
