@@ -123,7 +123,7 @@ void Application::AddStudent() {
         std::cin.ignore();
         std::getline(std::cin, className);
 
-        Class* pClass = school->SearchClass(className);
+        Class *pClass = school->SearchClass(className);
         if (pClass != nullptr) {
             std::string surname;
             while (surname.empty()) {
@@ -139,7 +139,8 @@ void Application::AddStudent() {
             pClass->AddStudent(surname, yearOfBirth);
             std::cout << "\nУченик успешно добавлен в класс!\n" << std::endl;
         } else {
-            std::cout << "Данный класс не найден. Создайте класс с этим именем или проверьте правильность ввода.\n" << std::endl;
+            std::cout << "Данный класс не найден. Создайте класс с этим именем или проверьте правильность ввода.\n"
+                      << std::endl;
         }
     } else {
         std::cout << "Школа не создана. Создайте школу сначала!\n" << std::endl;
@@ -153,7 +154,7 @@ void Application::SearchStudent() {
         std::cin.ignore();
         std::getline(std::cin, className);
 
-        Class* pClass = school->SearchClass(className);
+        Class *pClass = school->SearchClass(className);
         if (pClass != nullptr) {
             std::string surname;
             while (surname.empty()) {
@@ -178,41 +179,37 @@ void Application::SearchStudent() {
     }
 }
 
-//
-//void Application::DeleteStudent() {
-//    if (school != nullptr) {
-//        if (!school->IsEmpty()) {
-//            std::cout << "\nВведите название класса, из которого нужно удалить ученика: ";
-//            int class_number = GetIntInput();
-//            bool check_search = false;
-//            int curr_class = 0;
-//            school->SearchClass(curr_class, class_number, check_search);
-//            if (check_search) {
-//                Class *pClass = school->GetClass(curr_class);
-//                std::string surname;
-//                while (surname.empty()) {
-//                    std::cout << "\nВведите фамилию ученика, которого нужно удалить: ";
-//                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-//                    std::getline(std::cin, surname);
-//                }
-//                Student *target = pClass->SearchStudent(surname);
-//                if (target != nullptr) {
-//                    if (pClass->DeleteStudent(target)) {
-//                        std::cout << "\nУченик успешно удален из класса!\n" << std::endl;
-//                    }
-//                } else {
-//                    std::cout << "\nУченик с указанной фамилией не найден!\n" << std::endl;
-//                }
-//            } else {
-//                std::cout << "\nДанный класс не создан. Создайте класс!\n" << std::endl;
-//            }
-//        } else {
-//            std::cout << "\nКласс не создан. Создайте класс!\n" << std::endl;
-//        }
-//    } else {
-//        std::cout << "\nШкола не создана. Создайте школу!\n" << std::endl;
-//    }
-//}
+void Application::DeleteStudent() {
+    if (school != nullptr) {
+        std::cout << "Введите название класса, из которого нужно удалить ученика: ";
+        std::string className;
+        std::cin.ignore();
+        std::getline(std::cin, className);
+
+        Class *pClass = school->SearchClass(className);
+        if (pClass != nullptr) {
+            std::string surname;
+            while (surname.empty()) {
+                std::cout << "Введите фамилию ученика, которого нужно удалить: ";
+                std::cin.ignore();
+                std::getline(std::cin, surname);
+            }
+
+            Student *target = pClass->SearchStudent(surname);
+            if (target != nullptr) {
+                if (pClass->DeleteStudent(target)) {
+                    std::cout << "\nУченик успешно удален из класса!\n" << std::endl;
+                }
+            } else {
+                std::cout << "\nУченик с указанной фамилией не найден в данном классе!\n" << std::endl;
+            }
+        } else {
+            std::cout << "\nДанный класс не найден. Пожалуйста, проверьте правильность ввода.\n" << std::endl;
+        }
+    } else {
+        std::cout << "\nШкола не создана. Создайте школу сначала!\n" << std::endl;
+    }
+}
 
 void Application::ClearStructure() {
     if (school == nullptr) {
@@ -286,9 +283,9 @@ void Application::Run() {
             case Cases::SearchStudent:
                 SearchStudent();
                 break;
-//            case Cases::DeleteStudent:
-//                DeleteStudent();
-//                break;
+            case Cases::DeleteStudent:
+                DeleteStudent();
+                break;
             case Cases::ClearStructure:
                 ClearStructure();
                 break;

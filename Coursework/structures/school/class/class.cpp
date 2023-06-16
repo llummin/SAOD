@@ -37,25 +37,25 @@ Student *Class::SearchStudent(const std::string &surname) {
 }
 
 bool Class::DeleteStudent(Student *student) {
-    if (!IsEmpty()) {
-        DynamicListElement *current = p_head_;
-        DynamicListElement *prev = nullptr;
-        while (current != nullptr) {
-            if (current->GetStudent() == student) {
-                if (prev != nullptr) {
-                    prev->SetNext(current->GetNext());
-                } else {
-                    p_head_ = current->GetNext();
-                }
-                delete current;
-                return true;
+    DynamicListElement *current = p_head_;
+    DynamicListElement *prev = nullptr;
+    while (current != nullptr) {
+        if (current->GetStudent() == student) {
+            if (prev != nullptr) {
+                prev->SetNext(current->GetNext());
+            } else {
+                p_head_ = current->GetNext();
             }
-            prev = current;
-            current = current->GetNext();
+            delete current;
+            return true;
         }
+        prev = current;
+        current = current->GetNext();
     }
+
     return false;
 }
+
 
 
 void Class::ShowClass() {
