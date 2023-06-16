@@ -4,7 +4,7 @@
 #include "../list/static_list_element/static_list_element.h"
 #include <string>
 
-const int kMaxClasses = 10; // Константа для максимального количества классов
+const int kMaxClasses = 10;
 
 class School {
 private:
@@ -24,11 +24,11 @@ public:
 
     bool DeleteClass(Class *class_instance);
 
-    void ShowSchool();
-
     void SchoolClearMemory();
 
     explicit School(int school_number);
+
+    void ShowSchoolStructure();
 };
 
 #endif //COURSEWORK_SCHOOL_H

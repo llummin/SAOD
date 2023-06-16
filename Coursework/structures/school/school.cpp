@@ -66,20 +66,15 @@ bool School::DeleteClass(Class* class_instance) {
     return false;
 }
 
-void School::ShowSchool() {
-    std::cout << "\nШкола №" << school_number_ << std::endl;
-    bool hasClasses = false;
+void School::ShowSchoolStructure() {
+    std::cout << "Школа №" << school_number_ << std::endl;
+
     for (auto & classes : classes_) {
         if (classes != nullptr) {
-            if (!hasClasses) {
-                std::cout << "Список классов:" << std::endl;
-                hasClasses = true;
-            }
-            std::cout << " - " << classes->GetClass()->GetClassName() << std::endl;
+            Class* currentClass = classes->GetClass();
+            std::cout << "Класс " << currentClass->GetClassName() << std::endl;
+            currentClass->ShowClass();
         }
-    }
-    if (!hasClasses) {
-        std::cout << "В школе нет классов." << std::endl;
     }
 }
 
