@@ -11,12 +11,12 @@ private:
     static School *instance_;
     int school_number_;
     StaticListElement *head_{};
-    StaticListElement *classes_[kMaxClasses]{}; // Массив для хранения классов
+    StaticListElement *classes_[kMaxClasses]{};
 
 public:
     static School* GetInstance(int school_number);
 
-    int GetSchoolNumber() const;
+    [[nodiscard]] int GetSchoolNumber() const;
 
     void AddClass(Class *class_instance);
 
@@ -28,7 +28,7 @@ public:
 
     void SchoolClearMemory();
 
-    School(int school_number);
+    explicit School(int school_number);
 };
 
 #endif //COURSEWORK_SCHOOL_H
