@@ -3,6 +3,7 @@
 
 #include "../list/static_list_element/static_list_element.h"
 #include <string>
+#include <list>
 
 const int kMaxClasses = 5;
 
@@ -10,8 +11,7 @@ class School {
 private:
     static School *instance_;
     int school_number_;
-    StaticListElement *head_{};
-    StaticListElement *classes_[kMaxClasses]{};
+    std::list<StaticListElement*> classes_;
 
 public:
     static School *GetInstance(int school_number);
