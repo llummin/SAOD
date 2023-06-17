@@ -4,7 +4,7 @@
 #include "../list/static_list_element/static_list_element.h"
 #include <string>
 
-const int kMaxClasses = 10;
+const int kMaxClasses = 5;
 
 class School {
 private:

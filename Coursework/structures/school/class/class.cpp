@@ -57,20 +57,21 @@ bool Class::DeleteStudent(Student *student) {
 }
 
 void Class::ShowClass() {
-    std::cout << "\n\tКласс " << class_name_ << std::endl;
     if (!IsEmpty()) {
-        std::cout << "  №  |    Фамилия    | Год рождения" << std::endl;
-        std::cout << "-----+--------------+-------------" << std::endl;
+        std::cout << "    ├─ Ученики класса: " << std::endl;
+        std::cout << "       №  | Фамилия | Год рождения" << std::endl;
+        std::cout << "      ----+---------+-------------" << std::endl;
         DynamicListElement *current = p_head_;
         int student_number = 1;
         while (current != nullptr) {
-            std::cout << std::setw(4) << student_number << "  | " << std::setw(13)
-                      << current->GetStudent()->GetSurname()
-                      << " | " << std::setw(5) << current->GetStudent()->GetDateOfBirth() << std::endl;
+            std::cout << "      " << std::setw(2) << student_number << "  | "
+                      << std::left << std::setw(8) << current->GetStudent()->GetSurname()
+                      << std::left << " | " << std::setw(10)
+                      << current->GetStudent()->GetDateOfBirth() << std::endl;
             current = current->GetNext();
             student_number++;
         }
     } else {
-        std::cout << "Учеников для вывода нет." << std::endl;
+        std::cout << "      Учеников для вывода нет." << std::endl;
     }
 }

@@ -41,8 +41,10 @@ void School::AddClass(Class *class_instance) {
             current = classes_[index];
         }
         current->SetNext(class_instance->GetClassName());
+
+        std::cout << "Класс '" << class_instance->GetClassName() << "' успешно добавлен в школу!" << std::endl;
     } else {
-        std::cout << "Максимальное количество классов достигнуто." << std::endl;
+        std::cout << "Максимальное количество классов достигнуто!" << std::endl;
     }
 }
 
@@ -67,12 +69,12 @@ bool School::DeleteClass(Class *class_instance) {
 }
 
 void School::ShowSchoolStructure() {
-    std::cout << "Школа №" << school_number_ << std::endl;
+    std::cout << "\nШкола №" << school_number_ << std::endl;
 
     for (auto &classes: classes_) {
         if (classes != nullptr) {
             Class *currentClass = classes->GetClass();
-            std::cout << "Класс " << currentClass->GetClassName() << std::endl;
+            std::cout << "  └─ Класс: " << currentClass->GetClassName() << std::endl;
             currentClass->ShowClass();
         }
     }
