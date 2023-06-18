@@ -3,11 +3,8 @@
 
 School *School::instance_ = nullptr;
 
-School::School(int school_number) {
-    school_number_ = school_number;
-    for (auto &classes: classes_) {
-        classes = nullptr;
-    }
+School::School(int school_number) : school_number_(school_number) {
+
 }
 
 School *School::GetInstance(int school_number) {
@@ -21,9 +18,18 @@ int School::GetSchoolNumber() const {
     return school_number_;
 }
 
+void School::SetSchoolNumber(int school_number) {
+    school_number_ = school_number;
+}
+
 void School::AddClass(Class *class_instance) {
     if (classes_.size() >= kMaxClasses) {
         std::cout << "Максимальное количество классов достигнуто!" << std::endl;
+        return;
+    }
+
+    if (SearchClass(class_instance->GetClassName()) != nullptr) {
+        std::cout << "Класс '" << class_instance->GetClassName() << "' уже существует в школе!" << std::endl;
         return;
     }
 
@@ -37,6 +43,7 @@ void School::AddClass(Class *class_instance) {
 
     std::cout << "Класс '" << class_instance->GetClassName() << "' успешно добавлен в школу!" << std::endl;
 }
+
 
 Class *School::SearchClass(const std::string &class_name) {
     for (auto &classes: classes_) {

@@ -39,6 +39,8 @@ public:
     explicit School(int school_number);
 
     void ShowSchoolStructure();
+
+    void SetSchoolNumber(int i);
 };
 
 #endif //COURSEWORK_SCHOOL_H

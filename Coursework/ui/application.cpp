@@ -59,9 +59,6 @@ void Application::AddClass() {
         return;
     }
 
-    int school_number = school->GetSchoolNumber();
-    school = School::GetInstance(school_number);
-
     std::cout << "Введите название класса: ";
     std::string className;
     std::getline(std::cin, className);
@@ -75,9 +72,6 @@ void Application::SearchClass() {
         std::cout << "\nШкола не создана. Сначала создайте школу!" << std::endl;
         return;
     }
-
-    int school_number = school->GetSchoolNumber();
-    school = School::GetInstance(school_number);
 
     std::cout << "Введите название класса для поиска: ";
     std::string className;
@@ -96,9 +90,6 @@ void Application::DeleteClass() {
         std::cout << "\nШкола не создана. Сначала создайте школу!" << std::endl;
         return;
     }
-
-    int school_number = school->GetSchoolNumber();
-    school = School::GetInstance(school_number);
 
     std::cout << "Введите название класса для удаления: ";
     std::string className;
@@ -221,9 +212,6 @@ void Application::ShowStructure() {
         return;
     }
 
-    int school_number = school->GetSchoolNumber();
-    school = School::GetInstance(school_number);
-
     school->ShowSchoolStructure();
     std::cout << std::endl;
 }
@@ -250,10 +238,7 @@ void Application::LoadData() {
     std::cout << "Введите имя файла для загрузки данных: ";
     std::getline(std::cin, filename);
 
-    School *loadedSchool = nullptr;
-    if (data_manager::LoadFromFile(&loadedSchool, filename)) {
-        delete school;
-        school = loadedSchool;
+    if (data_manager::LoadFromFile(school, filename)) {
         std::cout << "\nДанные успешно загружены из файла: " << filename << std::endl;
     } else {
         std::cout << "\nНе удалось загрузить данные из файла: " << filename << std::endl;

@@ -6,6 +6,8 @@
 class data_manager {
 public:
     static bool SaveToFile(const School &school, const std::string &filename);
+
+    static bool LoadFromFile(School *&school, const std::string &filename);
 };
 
 
