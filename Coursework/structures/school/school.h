@@ -11,12 +11,22 @@ class School {
 private:
     static School *instance_;
     int school_number_;
-    std::list<StaticListElement*> classes_;
+    std::list<StaticListElement *> classes_;
 
 public:
+    School() {
+        school_number_ = 0;
+    }
+
     static School *GetInstance(int school_number);
 
     [[nodiscard]] int GetSchoolNumber() const;
+
+    [[nodiscard]] const std::list<StaticListElement *> &GetClasses() const {
+        return classes_;
+    }
+
+    friend class data_manager;
 
     void AddClass(Class *class_instance);
 

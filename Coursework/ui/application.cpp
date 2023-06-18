@@ -1,4 +1,5 @@
 #include "application.h"
+#include "../data_management/data_manager.h"
 #include <iostream>
 #include <limits>
 
@@ -227,6 +228,38 @@ void Application::ShowStructure() {
     std::cout << std::endl;
 }
 
+void Application::SaveData() {
+    if (school == nullptr) {
+        std::cout << "\nШкола не создана. Сначала создайте школу!" << std::endl;
+        return;
+    }
+
+    std::string filename;
+    std::cout << "Введите имя файла для сохранения данных: ";
+    std::getline(std::cin, filename);
+
+    if (data_manager::SaveToFile(*school, filename)) {
+        std::cout << "\nДанные успешно сохранены в файл: " << filename << std::endl;
+    } else {
+        std::cout << "\nНе удалось сохранить данные в файл: " << filename << std::endl;
+    }
+}
+
+void Application::LoadData() {
+    std::string filename;
+    std::cout << "Введите имя файла для загрузки данных: ";
+    std::getline(std::cin, filename);
+
+    School *loadedSchool = nullptr;
+    if (data_manager::LoadFromFile(&loadedSchool, filename)) {
+        delete school;
+        school = loadedSchool;
+        std::cout << "\nДанные успешно загружены из файла: " << filename << std::endl;
+    } else {
+        std::cout << "\nНе удалось загрузить данные из файла: " << filename << std::endl;
+    }
+}
+
 void Application::Exit(bool &stop) {
     std::cout << "Выход из программы..." << std::endl;
     stop = false;
@@ -243,7 +276,9 @@ void Application::ShowMenu() {
     std::cout << "7. Удалить ученика из класса" << std::endl;
     std::cout << "8. Очистить структуру" << std::endl;
     std::cout << "9. Вывод всей структуры" << std::endl;
-    std::cout << "10. Завершение работы" << std::endl;
+    std::cout << "10. Сохранить данные" << std::endl;
+    std::cout << "11. Загрузить данные" << std::endl;
+    std::cout << "12. Завершение работы" << std::endl;
     std::cout << "_____________________________________________" << std::endl;
     std::cout << "Введите номер команды: ";
 }
@@ -252,7 +287,7 @@ void Application::Run() {
     bool running = true;
     while (running) {
         ShowMenu();
-        int choice = GetIntInputWithRange(1, 10);
+        int choice = GetIntInputWithRange(1, 12);
         switch (static_cast<Cases>(choice)) {
             case Cases::Menu:
                 ShowMenu();
@@ -283,6 +318,12 @@ void Application::Run() {
                 break;
             case Cases::ShowStructure:
                 ShowStructure();
+                break;
+            case Cases::SaveData:
+                SaveData();
+                break;
+            case Cases::LoadData:
+                LoadData();
                 break;
             case Cases::Exit:
                 Exit(running);

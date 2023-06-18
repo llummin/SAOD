@@ -15,10 +15,10 @@ Class *StaticListElement::GetClass() {
     return class_;
 }
 
-void StaticListElement::SetNext(std::string next) {
+[[maybe_unused]] void StaticListElement::SetNext(std::string next) {
     next_ = std::move(next);
 }
 
-std::string StaticListElement::GetNext() const {
+[[maybe_unused]] std::string StaticListElement::GetNext() const {
     return next_;
 }

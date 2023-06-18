@@ -17,4 +17,6 @@ add_executable(Coursework
         structures/school/class/student/student.h
         ui/application.cpp
         ui/application.h
-        )
+        data_management/data_manager.cpp
+        data_management/data_manager.h
+)

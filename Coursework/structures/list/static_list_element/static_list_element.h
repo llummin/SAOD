@@ -15,9 +15,9 @@ public:
 
     Class *GetClass();
 
-    void SetNext(std::string next);
+    [[maybe_unused]] void SetNext(std::string next);
 
-    [[nodiscard]] std::string GetNext() const;
+    [[maybe_unused]] [[nodiscard]] std::string GetNext() const;
 };
 
 #endif //COURSEWORK_STATIC_LIST_ELEMENT_H

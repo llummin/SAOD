@@ -16,6 +16,8 @@ enum class Cases {
     DeleteStudent,
     ClearStructure,
     ShowStructure,
+    SaveData,
+    LoadData,
     Exit
 };
 
@@ -49,6 +51,10 @@ public:
     void ClearStructure();
 
     void ShowStructure();
+
+    void SaveData();
+
+    void LoadData();
 
     static void Exit(bool &stop);
 };
