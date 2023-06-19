@@ -22,3 +22,7 @@ Class *StaticListElement::GetClass() {
 [[maybe_unused]] std::string StaticListElement::GetNext() const {
     return next_;
 }
+
+StaticListElement::~StaticListElement() {
+    delete class_;
+}

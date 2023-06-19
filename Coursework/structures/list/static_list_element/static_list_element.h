@@ -11,13 +11,15 @@ private:
 public:
     StaticListElement();
 
+    ~StaticListElement();
+
     void SetClass(Class *class_instance);
 
     Class *GetClass();
 
-    [[maybe_unused]] void SetNext(std::string next);
+    void SetNext(std::string next);
 
-    [[maybe_unused]] [[nodiscard]] std::string GetNext() const;
+    std::string GetNext() const;
 };
 
 #endif //COURSEWORK_STATIC_LIST_ELEMENT_H

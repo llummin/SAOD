@@ -11,6 +11,8 @@ private:
 public:
     DynamicListElement(Student *student, DynamicListElement *next);
 
+    ~DynamicListElement();
+
     Student *GetStudent();
 
     DynamicListElement *GetNext();

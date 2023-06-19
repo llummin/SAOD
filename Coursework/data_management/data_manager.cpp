@@ -14,12 +14,14 @@ bool DataManager::SaveToFile(const School &school, const std::string &filename) 
 
     outFile << school.GetSchoolNumber() << std::endl;
     for (auto &classes: school.classes_) {
-        outFile << classes->GetClass()->GetClassName() << std::endl;
-        DynamicListElement *current = classes->GetClass()->p_head_;
-        while (current != nullptr) {
-            outFile << current->GetStudent()->GetSurname() << " " << current->GetStudent()->GetDateOfBirth()
-                    << std::endl;
-            current = current->GetNext();
+        if (classes != nullptr) {
+            outFile << classes->GetClass()->GetClassName() << std::endl;
+            DynamicListElement *current = classes->GetClass()->p_head_;
+            while (current != nullptr) {
+                outFile << current->GetStudent()->GetSurname() << " " << current->GetStudent()->GetDateOfBirth()
+                        << std::endl;
+                current = current->GetNext();
+            }
         }
     }
 

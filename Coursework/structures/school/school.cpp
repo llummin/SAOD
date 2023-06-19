@@ -1,8 +1,10 @@
 #include <iostream>
 #include "school.h"
 
-School::School(int school_number) : school_number_(school_number) {
-
+School::School(int school_number) : school_number_(school_number), class_count(0) {
+    for (auto &classe: classes_) {
+        classe = nullptr;
+    }
 }
 
 int School::GetSchoolNumber() const {
@@ -14,7 +16,7 @@ void School::SetSchoolNumber(int school_number) {
 }
 
 void School::AddClass(Class *class_instance) {
-    if (classes_.size() >= kMaxClasses) {
+    if (class_count >= kMaxClasses) {
         std::cout << "Максимальное количество классов достигнуто!" << std::endl;
         return;
     }
@@ -27,44 +29,58 @@ void School::AddClass(Class *class_instance) {
     auto *new_element = new StaticListElement();
     new_element->SetClass(class_instance);
 
-    classes_.push_back(new_element);
-    classes_.sort([](StaticListElement *a, StaticListElement *b) {
-        return a->GetClass()->GetClassName() < b->GetClass()->GetClassName();
-    });
+    classes_[class_count] = new_element;
+    class_count++;
 
     std::cout << "Класс '" << class_instance->GetClassName() << "' успешно добавлен в школу!" << std::endl;
 }
 
-
 Class *School::SearchClass(const std::string &class_name) {
-    for (auto &classes: classes_) {
-        if (classes != nullptr && classes->GetClass()->GetClassName() == class_name) {
-            return classes->GetClass();
+    for (int i = 0; i < class_count; i++) {
+        if (classes_[i] != nullptr && classes_[i]->GetClass()->GetClassName() == class_name) {
+            return classes_[i]->GetClass();
         }
     }
     return nullptr;
 }
 
 bool School::DeleteClass(Class *class_instance) {
-    classes_.remove_if([class_instance](StaticListElement *element) {
-        return element->GetClass() == class_instance;
-    });
-    return true;
+    for (int i = 0; i < class_count; i++) {
+        if (classes_[i] != nullptr && classes_[i]->GetClass() == class_instance) {
+            delete classes_[i];
+            classes_[i] = nullptr;
+            for (int j = i; j < class_count - 1; j++) {
+                classes_[j] = classes_[j + 1];
+            }
+            classes_[class_count - 1] = nullptr;
+            class_count--;
+            return true;
+        }
+    }
+    return false;
 }
 
 void School::ShowSchoolStructure() {
     std::cout << "\nШкола №" << school_number_ << std::endl;
 
-    for (auto &classes: classes_) {
-        Class *currentClass = classes->GetClass();
+    for (int i = 0; i < class_count; i++) {
+        Class *currentClass = classes_[i]->GetClass();
         std::cout << "  └─ Класс: " << currentClass->GetClassName() << std::endl;
         currentClass->ShowClass();
     }
 }
 
 void School::SchoolClearMemory() {
-    for (auto &classes: classes_) {
-        delete classes;
+    for (int i = 0; i < class_count; i++) {
+        delete classes_[i];
+        classes_[i] = nullptr;
     }
-    classes_.clear();
+    class_count = 0;
+}
+
+School::~School() {
+    for (int i = 0; i < class_count; i++) {
+        delete classes_[i];
+        classes_[i] = nullptr;
+    }
 }

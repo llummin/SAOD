@@ -3,17 +3,19 @@
 
 #include "../list/static_list_element/static_list_element.h"
 #include <string>
-#include <list>
 
 const int kMaxClasses = 5;
 
 class School {
 private:
     int school_number_;
-    std::list<StaticListElement *> classes_;
+    StaticListElement *classes_[kMaxClasses]{};
+    int class_count;
 
 public:
-    School() : school_number_(0) {}
+    School() : school_number_(0), class_count(0) {}
+
+    ~School();
 
     explicit School(int school_number);
 

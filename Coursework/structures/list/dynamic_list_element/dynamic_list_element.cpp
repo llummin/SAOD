@@ -16,3 +16,11 @@ DynamicListElement *DynamicListElement::GetNext() {
 void DynamicListElement::SetNext(DynamicListElement *next) {
     next_ = next;
 }
+
+DynamicListElement::~DynamicListElement() {
+    delete student_;
+    student_ = nullptr;
+    delete next_;
+    next_ = nullptr;
+}
+

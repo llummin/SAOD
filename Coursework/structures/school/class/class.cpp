@@ -52,9 +52,9 @@ bool Class::DeleteStudent(Student *student) {
         prev = current;
         current = current->GetNext();
     }
-
     return false;
 }
+
 
 void Class::ShowClass() {
     if (!IsEmpty()) {
@@ -73,5 +73,17 @@ void Class::ShowClass() {
         }
     } else {
         std::cout << "      Учеников для вывода нет." << std::endl;
+    }
+}
+
+Class::~Class() {
+    DynamicListElement *current = p_head_;
+    while (current != nullptr) {
+        DynamicListElement *next = current->GetNext();
+        delete current;
+        current = next;
+        if (current != nullptr) {
+            p_head_ = nullptr;
+        }
     }
 }

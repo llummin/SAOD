@@ -99,7 +99,6 @@ void Application::DeleteClass() {
     if (classToDelete != nullptr) {
         std::string deletedClassName = classToDelete->GetClassName();
         school->DeleteClass(classToDelete);
-        delete classToDelete;
         std::cout << "Класс '" << deletedClassName << "' успешно удален." << std::endl;
     } else {
         std::cout << "Класс '" << className << "' не найден и не может быть удален." << std::endl;

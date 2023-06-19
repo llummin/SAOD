@@ -13,6 +13,8 @@ private:
 public:
     explicit Class(std::string class_name);
 
+    ~Class();
+
     [[nodiscard]] std::string GetClassName() const;
 
     friend class DataManager;
