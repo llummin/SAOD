@@ -1,17 +1,8 @@
 #include <iostream>
 #include "school.h"
 
-School *School::instance_ = nullptr;
-
 School::School(int school_number) : school_number_(school_number) {
 
-}
-
-School *School::GetInstance(int school_number) {
-    if (instance_ == nullptr) {
-        instance_ = new School(school_number);
-    }
-    return instance_;
 }
 
 int School::GetSchoolNumber() const {

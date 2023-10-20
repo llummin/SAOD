@@ -15,10 +15,6 @@ public:
 
     [[nodiscard]] std::string GetClassName() const;
 
-    [[nodiscard]] DynamicListElement* GetPHead() const {
-        return p_head_;
-    }
-
     friend class data_manager;
 
     bool IsEmpty();

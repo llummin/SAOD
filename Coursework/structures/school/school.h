@@ -9,22 +9,17 @@ const int kMaxClasses = 5;
 
 class School {
 private:
-    static School *instance_;
     int school_number_;
     std::list<StaticListElement *> classes_;
 
 public:
-    School() {
-        school_number_ = 0;
-    }
+    School() : school_number_(0) {}
 
-    static School *GetInstance(int school_number);
+    explicit School(int school_number);
 
     [[nodiscard]] int GetSchoolNumber() const;
 
-    [[nodiscard]] const std::list<StaticListElement *> &GetClasses() const {
-        return classes_;
-    }
+    void SetSchoolNumber(int school_number);
 
     friend class data_manager;
 
@@ -36,11 +31,7 @@ public:
 
     void SchoolClearMemory();
 
-    explicit School(int school_number);
-
     void ShowSchoolStructure();
-
-    void SetSchoolNumber(int i);
 };
 
-#endif //COURSEWORK_SCHOOL_H
+#endif // COURSEWORK_SCHOOL_H
