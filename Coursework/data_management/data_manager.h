@@ -3,7 +3,7 @@
 
 #include "../structures/school/school.h"
 
-class data_manager {
+class DataManager {
 public:
     static bool SaveToFile(const School &school, const std::string &filename);
 

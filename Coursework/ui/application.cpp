@@ -226,7 +226,7 @@ void Application::SaveData() {
     std::cout << "Введите имя файла для сохранения данных: ";
     std::getline(std::cin, filename);
 
-    if (data_manager::SaveToFile(*school, filename)) {
+    if (DataManager::SaveToFile(*school, filename)) {
         std::cout << "\nДанные успешно сохранены в файл: " << filename << std::endl;
     } else {
         std::cout << "\nНе удалось сохранить данные в файл: " << filename << std::endl;
@@ -238,7 +238,7 @@ void Application::LoadData() {
     std::cout << "Введите имя файла для загрузки данных: ";
     std::getline(std::cin, filename);
 
-    if (data_manager::LoadFromFile(school, filename)) {
+    if (DataManager::LoadFromFile(school, filename)) {
         std::cout << "\nДанные успешно загружены из файла: " << filename << std::endl;
     } else {
         std::cout << "\nНе удалось загрузить данные из файла: " << filename << std::endl;

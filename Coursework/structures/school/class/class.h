@@ -15,7 +15,7 @@ public:
 
     [[nodiscard]] std::string GetClassName() const;
 
-    friend class data_manager;
+    friend class DataManager;
 
     bool IsEmpty();
 

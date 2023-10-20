@@ -4,7 +4,7 @@
 #include <iostream>
 #include <filesystem>
 
-bool data_manager::SaveToFile(const School &school, const std::string &filename) {
+bool DataManager::SaveToFile(const School &school, const std::string &filename) {
     std::string fullFilePath = "C:/Users/maxim/Documents/SAOD/Coursework/" + filename;
 
     std::ofstream outFile(fullFilePath, std::ios::trunc);
@@ -27,7 +27,7 @@ bool data_manager::SaveToFile(const School &school, const std::string &filename)
     return true;
 }
 
-bool data_manager::LoadFromFile(School *&school, const std::string &filename) {
+bool DataManager::LoadFromFile(School *&school, const std::string &filename) {
     std::string fullFilePath = "C:/Users/maxim/Documents/SAOD/Coursework/" + filename;
 
     std::ifstream inFile(fullFilePath);

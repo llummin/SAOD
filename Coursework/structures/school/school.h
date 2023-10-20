@@ -21,7 +21,7 @@ public:
 
     void SetSchoolNumber(int school_number);
 
-    friend class data_manager;
+    friend class DataManager;
 
     void AddClass(Class *class_instance);
 
